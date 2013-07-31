@@ -115,6 +115,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		// the ones I've added
+		'DaveJamesMiller\Boris\BorisServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
 
 	),
