@@ -1,0 +1,57 @@
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+*.sass-cache
+*sublime*
+
+# OS or Editor folders
+.DS_Store
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+.phptidy-cache
+
+# Dreamweaver added files
+_notes
+dwsync.xml
+
+# Komodo
+*.komodoproject
+.komodotools
+
+# Folders to ignore
+.hg
+.svn
+.CVS
+intermediate
+publish
+.idea
+
+# Laravel 4
+/bootstrap/compiled.php
+/vendor
+composer.phar
+composer.lock
+
+# Build Stuff
+build/api/*
+build/code-browser/*
+build/coverage/*
+build/logs/*
+build/pdepend/*
+cache.properties
+
+# Package files to ignore
+/public/packages/
+
