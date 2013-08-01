@@ -13,4 +13,8 @@ class Problem extends Ardent {
 		return $this->belongsTo('Contest');
 	}
 
+	public function solutions() {
+		return $this->hasMany('Solution');
+	}
+
 }
