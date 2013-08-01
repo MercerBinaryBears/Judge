@@ -43,6 +43,7 @@ publish
 /vendor
 composer.phar
 composer.lock
+/app/database/*.sqlite
 
 # Build Stuff
 build/api/*
