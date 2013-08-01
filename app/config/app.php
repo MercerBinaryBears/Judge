@@ -118,6 +118,7 @@ return array(
 		'Cartalyst\Sentry\SentryServiceProvider',
 		'DaveJamesMiller\Boris\BorisServiceProvider',
 		'Frozennode\Administrator\AdministratorServiceProvider',
+		'Way\Generators\GeneratorsServiceProvider',
 
 	),
 
