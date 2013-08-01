@@ -21,14 +21,14 @@ return array(
 	 *
 	 * @type string
 	 */
-	'model_config_path' => app('path') . '/config/administrator',
+	'model_config_path' => app('path') . '/config/packages/frozennode/administrator',
 
 	/**
 	 * The path to your settings config directory
 	 *
 	 * @type string
 	 */
-	'settings_config_path' => app('path') . '/config/administrator/settings',
+	'settings_config_path' => app('path') . '/config/packages/frozennode/administrator/settings',
 
 	/**
 	 * The menu structure of the site. For models, you should either supply the name of a model config file or an array of names of model config
@@ -48,7 +48,9 @@ return array(
 	 *		'Settings' => array('settings.site', 'settings.ecommerce', 'settings.social'),
 	 *	)
 	 */
-	'menu' => array(),
+	'menu' => array(
+		'users'
+		),
 
 	/**
 	 * The permission option is the highest-level authentication check that lets you define a closure that should return true if the current user
@@ -58,7 +60,8 @@ return array(
 	 */
 	'permission'=> function()
 	{
-		return Auth::check();
+		//return Auth::check();
+		return true;
 	},
 
 	/**
@@ -81,7 +84,7 @@ return array(
 	 *
 	 * @type string
 	 */
-	'home_page' => '',
+	'home_page' => 'users',
 
 	/**
 	 * The login path is the path where Administrator will send the user if they fail a permission check
