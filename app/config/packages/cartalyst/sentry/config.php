@@ -47,7 +47,7 @@ return array(
 	*/
 
 	'hasher' => 'native',
-  
+
 	/*
 	|--------------------------------------------------------------------------
 	| Cookie
@@ -58,7 +58,7 @@ return array(
 	*/
 
 	'cookie' => array(
-    
+
 		/*
 		|--------------------------------------------------------------------------
 		| Default Cookie Key
@@ -69,9 +69,9 @@ return array(
 		| Supported: string
 		|
 		*/
-  
-		'key' => 'cartalyst_sentry',  
-  
+
+		'key' => 'cartalyst_sentry',
+
  	),
 
 	/*
@@ -133,7 +133,7 @@ return array(
 		|
 		*/
 
-		'login_attribute' => 'email',
+		'login_attribute' => 'username',
 
 	),
 
