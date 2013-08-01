@@ -2,8 +2,18 @@
 <html>
 	<head>
 		<title>Judge</title>
+		@section('scripts')
+		@show
+		@section('styles')
+		@show
 	</head>
 	<body>
-		@include('partials.login')
+		<div class='login'>
+			@include('partials.login')
+		</div>
+		<div id='content'>
+			@section('content')
+			@show
+		</div>
 	</body>
 </html>
