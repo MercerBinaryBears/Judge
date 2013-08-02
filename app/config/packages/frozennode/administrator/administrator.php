@@ -49,7 +49,8 @@ return array(
 	 *	)
 	 */
 	'menu' => array(
-		'users'
+		'users',
+		'contests'
 		),
 
 	/**
@@ -84,14 +85,14 @@ return array(
 	 *
 	 * @type string
 	 */
-	'home_page' => 'users',
+	'home_page' => 'contests',
 
 	/**
 	 * The login path is the path where Administrator will send the user if they fail a permission check
 	 *
 	 * @type string
 	 */
-	'login_path' => 'user/login',
+	'login_path' => '/',
 
 	/**
 	 * The logout path is the path where Administrator will send the user when they click the logout link
