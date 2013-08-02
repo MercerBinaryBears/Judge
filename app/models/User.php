@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
+use \LaravelBook\Ardent\Ardent as Ardent;
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
+class User extends Ardent {
 
 	/**
 	 * The database table used by the model.
