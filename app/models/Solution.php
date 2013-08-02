@@ -16,4 +16,8 @@ class Solution extends Ardent {
 	public function user() {
 		return $this->belongsTo('User');
 	}
+
+	public function solution_state() {
+		return $this->belongsTo('SolutionState');
+	}
 }

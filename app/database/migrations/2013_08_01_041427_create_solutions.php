@@ -17,6 +17,8 @@ class CreateSolutions extends Migration {
 			$table->integer('user_id');
 			$table->text('solution_code');
 			$table->text('solution_language');
+			$table->text('solution_filename');
+			$table->text('solution_state_id');
 			$table->timestamps();
 		});
 	}
