@@ -1,8 +1,6 @@
 <?php
 
-use \LaravelBook\Ardent\Ardent as Ardent;
-
-class User extends Ardent {
+class User extends Base {
 
 	/**
 	 * The database table used by the model.

@@ -1,7 +1,6 @@
 <?php
-use \LaravelBook\Ardent\Ardent as Ardent;
 
-class Contest extends Ardent {
+class Contest extends Base {
 	public static $rules = array(
 		'name' => 'required',
 		'starts_at' => 'required',

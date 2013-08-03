@@ -1,7 +1,6 @@
 <?php
-use \LaravelBook\Ardent\Ardent as Ardent;
 
-class Solution extends Ardent {
+class Solution extends Base {
 	public static $rules = array(
 		'problem_id' => 'required',
 		'user_id' => 'required',
