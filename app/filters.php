@@ -35,14 +35,21 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	return Sentry::check();
 });
 
-
-Route::filter('auth.basic', function()
-{
-	return Auth::basic();
+Route::filter('admin', function(){
+	return Sentry::check() && Sentry::getUser()->admin;
 });
+
+Route::filter('judge', function(){
+	return Sentry::check() && Sentry::getUser()->judge;
+});
+
+Route::filter('team', function() {
+	return Sentry::chck() && Sentry::getUser()->team;
+});
+
 
 /*
 |--------------------------------------------------------------------------
