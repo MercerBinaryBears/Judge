@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
+use Cartalyst\Sentry\Hashing\NativeHasher;
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
+class User extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -41,6 +40,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public function solutions() {
 		return $this->hasMany('Solution');
+	}
+
+	/**
+	 * Hashes the password with the Sentry Hasher, so that the admin
+	 * also hashes the password when it saves, even though its not using
+	 * Sentry
+	 * @param string $value the unhashed password
+	 */
+	public function setPasswordAttribute($value) {
+		$hasher = new NativeHasher();
+		if ( empty($this->original['password']) || $value != $this->original['password'] ) {
+			$this->attributes['password'] = $hasher->hash($value);
+		}
 	}
 
 }

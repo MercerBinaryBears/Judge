@@ -1,6 +1,9 @@
 @if(Sentry::check())
 	Logged in as {{ Sentry::getUser()->username }}.
 	{{-- TODO: don't use this absolute path! --}}
+	@if(Sentry::getUser()->admin)
+		<a href="/admin">Admin</a>
+	@endif
 	<a href="/logout">Logout</a>
 @else
 	{{ Form::open(array('url'=>'/login')) }}

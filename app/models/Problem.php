@@ -1,7 +1,6 @@
 <?php
-use \LaravelBook\Ardent\Ardent as Ardent;
 
-class Problem extends Ardent {
+class Problem extends Base {
 	public static $rules = array(
 		'name' => 'required',
 		'contest_id' => 'required',
@@ -17,4 +16,16 @@ class Problem extends Ardent {
 		return $this->hasMany('Solution');
 	}
 
+	public function setJudgingInputAttribute($filename) {
+		$filename = "/tmp/$filename";
+		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
+		Log::debug("FILENAME: $filename, FILE CONTENTS:\n$file_contents");
+		$this->attributes['judging_input'] = $file_contents;
+	}
+
+	public function setJudgingOutputAttribute($filename) {
+		$filename = "/tmp/$filename";
+		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
+		$this->attributes['judging_output'] = $file_contents;
+	}
 }
