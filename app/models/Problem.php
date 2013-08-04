@@ -29,7 +29,7 @@ class Problem extends Base {
 		$this->attributes['judging_output'] = $file_contents;
 	}
 
-	public static function forCurrentContest() {
+	public function scopeForCurrentContest() {
 		$contests = Contest::current()->first();
 		return Problem::where('contest_id', $contests->id)->orderBy('created_at');
 	}

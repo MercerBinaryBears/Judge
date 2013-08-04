@@ -31,8 +31,13 @@ class Solution extends Base {
 		$this->attributes['solution_language'] = $ext;
 	}
 
-	public static function forCurrentContest() {
+	public function scopeForCurrentContest($query) {
 		$problems = Problem::forCurrentContest()->get();
-		return Solution::whereIn('problem_id', $problems->modelKeys())->orderBy('created_at');
+		return $query->whereIn('problem_id', $problems->modelKeys())->orderBy('created_at');
+	}
+
+	public function scopeForUnjudged($query) {
+		$unjudged_state = SolutionState::where('name','LIKE', '%Judging%');
+		return $query->where('solution_state_id', $unjudged_state->id);
 	}
 }
