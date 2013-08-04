@@ -51,7 +51,8 @@ return array(
 	'menu' => array(
 		'users',
 		'contests',
-		'problems'
+		'problems',
+		'solutions'
 		),
 
 	/**
