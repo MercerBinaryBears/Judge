@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class Solution extends Base {
 	public static $rules = array(
 		'problem_id' => 'required',
@@ -30,6 +32,20 @@ class Solution extends Base {
 		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
 		$this->attributes['solution_code'] = $file_contents;
 		$this->attributes['solution_language'] = $ext;
+	}
+
+	public function getCreatedAtAttribute($value) {
+		if(!is_numeric($value)) {
+			$value = strtotime($value);
+		}
+
+		$contest_start_time = $this->problem->contest->starts_at;
+		if(!is_numeric($contest_start_time)) {
+			$contest_start_time = strtotime($contest_start_time);
+		}
+		return Carbon::createFromTimestamp($value)
+			->diffForHumans(Carbon::createFromTimestamp($contest_start_time))
+			. ' contest start time';
 	}
 
 	public function scopeForCurrentContest($query) {
