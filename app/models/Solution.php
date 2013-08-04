@@ -53,8 +53,12 @@ class Solution extends Base {
 		return $query->whereIn('problem_id', $problems->modelKeys())->orderBy('created_at');
 	}
 
-	public function scopeForUnjudged($query) {
-		$unjudged_state = SolutionState::where('name','LIKE', '%Judging%');
+	public function scopeUnjudged($query) {
+		$unjudged_state = SolutionState::where('name','LIKE', '%Judging%')->first();
 		return $query->where('solution_state_id', $unjudged_state->id);
+	}
+
+	public function scopeUnclaimed($query) {
+		return $query->whereNull('claiming_judge');
 	}
 }

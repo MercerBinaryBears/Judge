@@ -4,13 +4,9 @@
 	<ul class="solutions">
 	@foreach($solutions as $solution)
 		<li>
-			Solution at {{ $solution->created_at }}
-			for {{ $solution->problem->name }}
-			by {{ $solution->user->username }}
-			{{-- Add a judge claim button --}}
+			Solution {{$solution->created_at}} for {{$solution->problem->name}} by {{$solution->user->username}} <br/>
+			<a href="/judge/solutions/{{$solution->id}}/edit">Claim</a>
 		</li>
 	@endforeach
 	</ul>
-	<div class="solution_form">
-	</div>
 @stop
