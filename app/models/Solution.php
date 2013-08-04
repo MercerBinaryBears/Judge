@@ -25,6 +25,7 @@ class Solution extends Base {
 	 * @param string $filename
 	 */
 	public function setSolutionCodeAttribute($filename) {
+		$filename = "/tmp/$filename";
 		// parse file and store file contents rather than filename
 		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
 		$this->attributes['solution_code'] = $file_contents;
