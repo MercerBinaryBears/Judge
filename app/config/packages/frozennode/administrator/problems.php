@@ -31,12 +31,12 @@ return array(
 		'judging_input' => array(
 			'title' => 'Judging Input',
 			'type' => 'file',
-			'location' => '/tmp', // TODO: figure out if /dev/null works here?
+			'location' => '/tmp',
 			),
 		'judging_output' => array(
 			'title' => 'Judging Output',
 			'type' => 'file',
-			'location' => '/tmp', // TODO: figure out if /dev/null works here?
+			'location' => '/tmp',
 			)
 		)
 	);

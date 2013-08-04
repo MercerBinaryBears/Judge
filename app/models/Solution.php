@@ -19,4 +19,15 @@ class Solution extends Base {
 	public function solution_state() {
 		return $this->belongsTo('SolutionState');
 	}
+
+	/**
+	 * Parse filename and store file contents into solution code
+	 * @param string $filename
+	 */
+	public function setSolutionCodeAttribute($filename) {
+		// parse file and store file contents rather than filename
+		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
+		$this->attributes['solution_code'] = $file_contents;
+		$this->attributes['solution_language'] = $ext;
+	}
 }
