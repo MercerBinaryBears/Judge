@@ -30,4 +30,9 @@ class Solution extends Base {
 		$this->attributes['solution_code'] = $file_contents;
 		$this->attributes['solution_language'] = $ext;
 	}
+
+	public static function forCurrentContest() {
+		$problems = Problem::forCurrentContest()->get();
+		return Solution::whereIn('problem_id', $problems->modelKeys())->orderBy('created_at');
+	}
 }

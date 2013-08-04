@@ -9,4 +9,9 @@ class Contest extends Base {
 	public function problems() {
 		return $this->hasMany('Problem');
 	}
+
+	public static function current() {
+		return self::where('starts_at', '<=', date('Y-m-d H:i:s', strtotime('now')))
+			->orderBy('starts_at', 'desc');
+	}
 }
