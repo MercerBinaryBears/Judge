@@ -15,12 +15,18 @@ class Base extends Ardent {
 	 * @param $original_name The original name of the file. If not provided,
 	 * The function will assume that it's the tmp_path's file name
 	 */
-	public function unpackFile($tmp_path, $delete = false, $original_name = null) {
+	public static function unpackFile($tmp_path, $delete = false, $original_name = null) {
 		if($original_name == null) {
 			$original_name = $tmp_path;
 		}
 		$split_name = explode('.', $original_name);
 		$extension = array_pop($split_name);
+
+		// check that the file is even there
+		if(!file_exists($tmp_path)) {
+			return array($original_name, $extension, null, $tmp_path);
+		}
+
 		$file_contents = file_get_contents($tmp_path);
 		if($delete) {
 			unlink($tmp_path);
