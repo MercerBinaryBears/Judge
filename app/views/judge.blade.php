@@ -1,14 +1,16 @@
 @extends('layout')
 
 @section('content')
-	<div class="submissions">
-	@foreach($submissions as $submission)
-		Submission at {{ $submission->created_at }}
-		for {{ $submission->problem->name }}
-		by {{ $submission->user->username }}
-		{{-- Add a judge claim button --}}
+	<ul class="solutions">
+	@foreach($solutions as $solution)
+		<li>
+			Solution at {{ $solution->created_at }}
+			for {{ $solution->problem->name }}
+			by {{ $solution->user->username }}
+			{{-- Add a judge claim button --}}
+		</li>
 	@endforeach
-	</div>
-	<div class="submission_form">
+	</ul>
+	<div class="solution_form">
 	</div>
 @stop
