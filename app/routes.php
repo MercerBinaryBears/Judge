@@ -5,6 +5,9 @@ Route::get('/', 'HomeController@index');
 Route::get('/portal', 'HomeController@portal');
 Route::get('/scoreboard', 'HomeController@scoreboard');
 
+// judge routes
+Route::get('/judge', 'JudgeController@index');
+
 /*
 	User routes
 */
