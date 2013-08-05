@@ -7,7 +7,7 @@ class SolutionController extends BaseController {
 	}
 
 	public function judgeIndex() {
-		return View::make('judge')
+		return View::make('solutions_judge')
 			->with('solutions', Solution::forCurrentContest()->unjudged()->unclaimed()->get());
 	}
 
@@ -67,10 +67,14 @@ class SolutionController extends BaseController {
 	 */
 	public function update($id)
 	{
+		$unjudged_state = SolutionState::where('name','LIKE', '%judging%')->first();
+
 		// TODO: Validate
 		$s = Solution::find($id);
-		$s->solution_state_id = Input::get('solution_state_id');
-		$s->save();
+		if($s->claiming_judge_id == null && $s->solution_state_id == $unjudged_state->id) {
+			$s->solution_state_id = Input::get('solution_state_id');
+			$s->save();
+		}
 
 		// TODO: Use named routes
 		return Redirect::to('/judge');
