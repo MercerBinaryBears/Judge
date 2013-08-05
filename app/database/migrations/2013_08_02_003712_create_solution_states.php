@@ -43,6 +43,10 @@ class CreateSolutionStates extends Migration {
 			'name'=>'Compile Error',
 			'is_correct'=>false,
 			));
+		DB::table('solution_states')->insert(array(
+			'name'=>'Judging',
+			'is_correct'=>false,
+			));
 
 	}
 

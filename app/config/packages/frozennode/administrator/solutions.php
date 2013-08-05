@@ -22,7 +22,12 @@ return array(
 			'title' => 'Solution State',
 			'relationship' => 'solution_state',
 			'select' => '(:table).name'
-			)
+			),
+		'claiming_judge' => array(
+			'title' => 'Claiming Judge',
+			'relationship' => 'claiming_judge',
+			'select' => '(:table).username',
+			),
 
 		),
 	'edit_fields' => array(
@@ -30,6 +35,11 @@ return array(
 			'title' => 'Solution State',
 			'type' => 'relationship',
 			'name_field' => 'name'
+			),
+		'claiming_judge' => array(
+			'title' => 'Claiming Judge',
+			'type' => 'relationship',
+			'name_field' => 'username',
 			)
 		)
 	);

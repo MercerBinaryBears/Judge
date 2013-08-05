@@ -35,14 +35,36 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	return Sentry::check();
 });
 
-
-Route::filter('auth.basic', function()
-{
-	return Auth::basic();
+Route::filter('admin', function(){
+	if(!Sentry::check()) {
+		return Redirect::to('/');
+	}
+	else if(!Sentry::getUser()->admin) {
+		return Redirect::to('/');
+	}
 });
+
+Route::filter('judge', function(){
+	if(!Sentry::check()) {
+		return Redirect::to('/');
+	}
+	else if(!Sentry::getUser()->judge && !Sentry::getUser()->admin) {
+		return Redirect::to('/');
+	}
+});
+
+Route::filter('team', function() {
+	if(!Sentry::check()) {
+		return Redirect::to('/');
+	}
+	else if(!Sentry::getUser()->team && !Sentry::getUser()->admin) {
+		return Redirect::to('/');
+	}
+});
+
 
 /*
 |--------------------------------------------------------------------------

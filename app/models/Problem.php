@@ -28,4 +28,9 @@ class Problem extends Base {
 		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
 		$this->attributes['judging_output'] = $file_contents;
 	}
+
+	public function scopeForCurrentContest() {
+		$contests = Contest::current()->first();
+		return Problem::where('contest_id', $contests->id)->orderBy('created_at');
+	}
 }
