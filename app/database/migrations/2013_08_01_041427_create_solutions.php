@@ -19,7 +19,7 @@ class CreateSolutions extends Migration {
 			$table->text('solution_language');
 			$table->text('solution_filename');
 			$table->text('solution_state_id');
-			$table->integer('claiming_judge')->nullable();
+			$table->integer('claiming_judge_id')->nullable();
 			$table->timestamps();
 		});
 	}

@@ -22,6 +22,10 @@ class Solution extends Base {
 		return $this->belongsTo('SolutionState');
 	}
 
+	public function claiming_judge() {
+		return $this->belongsTo('User', 'claiming_judge_id');
+	}
+
 	/**
 	 * Parse filename and store file contents into solution code
 	 * @param string $filename
