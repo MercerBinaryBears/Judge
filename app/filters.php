@@ -39,15 +39,30 @@ Route::filter('auth', function()
 });
 
 Route::filter('admin', function(){
-	return Sentry::check() && Sentry::getUser()->admin;
+	if(!Sentry::check()) {
+		return Redirect::to('/');
+	}
+	else if(!Sentry::getUser()->admin) {
+		return Redirect::to('/');
+	}
 });
 
 Route::filter('judge', function(){
-	return Sentry::check() && Sentry::getUser()->judge;
+	if(!Sentry::check()) {
+		return Redirect::to('/');
+	}
+	else if(!Sentry::getUser()->judge && !Sentry::getUser()->admin) {
+		return Redirect::to('/');
+	}
 });
 
 Route::filter('team', function() {
-	return Sentry::chck() && Sentry::getUser()->team;
+	if(!Sentry::check()) {
+		return Redirect::to('/');
+	}
+	else if(!Sentry::getUser()->team && !Sentry::getUser()->admin) {
+		return Redirect::to('/');
+	}
 });
 
 
