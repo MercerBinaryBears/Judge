@@ -29,6 +29,7 @@ class SolutionController extends BaseController {
 	 */
 	public function edit($id)
 	{
+		// TODO: this will be moved to a route filter
 		if(!Sentry::check()) {
 			App::abort(403);
 		}
@@ -40,10 +41,12 @@ class SolutionController extends BaseController {
 		// check that the solution isn't claimed already, and
 		// make the current judge claim it...
 		$solution = Solution::find($id);
-		if($solution->claiming_judge != null) {
+		if($solution->claiming_judge_id != null) {
+			// TODO: Session flash that problem has been claimed by Judge X
 			return Redirect::to('/judge');
 		}
-		$solution->claiming_judge = $user->id;
+		$solution->claiming_judge_id = $user->id;
+		$solution->save();
 
 		$solution_states = array();
 		foreach(SolutionState::all() as $solution_state) {
@@ -64,5 +67,12 @@ class SolutionController extends BaseController {
 	 */
 	public function update($id)
 	{
+		// TODO: Validate
+		$s = Solution::find($id);
+		$s->solution_state_id = Input::get('solution_state_id');
+		$s->save();
+
+		// TODO: Use named routes
+		return Redirect::to('/judge');
 	}
 }

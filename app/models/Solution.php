@@ -63,6 +63,6 @@ class Solution extends Base {
 	}
 
 	public function scopeUnclaimed($query) {
-		return $query->whereNull('claiming_judge');
+		return $query->whereNull('claiming_judge_id');
 	}
 }
