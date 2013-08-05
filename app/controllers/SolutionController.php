@@ -7,7 +7,7 @@ class SolutionController extends BaseController {
 	}
 
 	public function judgeIndex() {
-		return View::make('judge')
+		return View::make('solutions_judge')
 			->with('solutions', Solution::forCurrentContest()->unjudged()->unclaimed()->get());
 	}
 
