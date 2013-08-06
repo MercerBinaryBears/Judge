@@ -44,9 +44,6 @@ class JudgeTest extends TestCase {
 
 	public function testAllowOnlyOneClaimer()
 	{
-		// TODO: use named route here
-		$url = "/judge/solutions/" . $this->solution->id . "/edit";
-
 		// make sure the solution has no claimer
 		$this->updateSolution();
 		$this->assertNull($this->solution->claiming_judge_id, 'A judge has already claimed this problem');
@@ -54,15 +51,15 @@ class JudgeTest extends TestCase {
 
 		// login as judge 1 and claim the submission
 		Sentry::login($this->judge1, false);
-		$this->call('GET', $url);
+		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertResponseOk();
 		$this->updateSolution();
 		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge did not successfully claim this problem');
 
 		// login as judge 2 and attempt to claim again
 		Sentry::login($this->judge2, false);
-		$this->call('GET', $url);
-		$this->assertRedirectedTo('/judge');
+		$this->route('GET', 'edit_solution', array($this->solution->id));
+		$this->assertRedirectedToRoute('judge_index');
 		$this->updateSolution();
 		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge was able to claim already claimed problem');
 	}
@@ -71,9 +68,7 @@ class JudgeTest extends TestCase {
 		$parameters = array(
 			'solution_state_id' => $solution_state_id,
 			);
-		// TODO: use a named route
-		$url = "/judge/solutions/" . $this->solution->id . "/edit";
-		$this->call('POST', $url, $parameters);
+		$this->route('POST', 'update_solution', array($this->solution->id), $parameters);
 	}
 
 	public function testAllowOnlyOneEditter() {

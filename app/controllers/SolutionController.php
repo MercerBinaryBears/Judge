@@ -43,7 +43,7 @@ class SolutionController extends BaseController {
 		$solution = Solution::find($id);
 		if($solution->claiming_judge_id != null) {
 			// TODO: Session flash that problem has been claimed by Judge X
-			return Redirect::to('/judge');
+			return Redirect::route('judge_index');
 		}
 		$solution->claiming_judge_id = $user->id;
 		$solution->save();
@@ -77,6 +77,6 @@ class SolutionController extends BaseController {
 		}
 
 		// TODO: Use named routes
-		return Redirect::to('/judge');
+		return Redirect::route('judge_index');
 	}
 }
