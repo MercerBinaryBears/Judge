@@ -29,7 +29,7 @@ class UserController extends BaseController {
 			Session::flash('login_message', 'Invalid login');
 		}
 
-		return Redirect::to('/')->withInput(Input::except('password'));
+		return Redirect::route('index')->withInput(Input::except('password'));
 	}
 
 	/**
@@ -38,7 +38,7 @@ class UserController extends BaseController {
 	public function logout()
 	{
 		Sentry::logout();
-		return Redirect::to('/');
+		return Redirect::route('index');
 	}
 
 }
