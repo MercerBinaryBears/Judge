@@ -6,9 +6,9 @@
 	<li>
 		Solution submitted at {{ $solution->created_at }}
 		for {{ $solution->problem->name }} <br/>
-		State: {{ $solution->solution_state->name}}
+		State: {{ $solution->solutionState->name}}
 		@if($solution->claiming_judge_id != null)
-			Judged by {{$solution->claiming_judge->username}}
+			Judged by {{$solution->claimingJudge->username}}
 		@endif
 	</li>
 	@endforeach

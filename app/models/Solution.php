@@ -7,7 +7,8 @@ class Solution extends Base {
 		'problem_id' => 'required',
 		'user_id' => 'required',
 		'solution_code' => 'required',
-		'solution_language' => 'required'
+		'solution_language' => 'required',
+		'solution_state_id' => 'required',
 		);
 
 	public function problem() {
@@ -18,11 +19,11 @@ class Solution extends Base {
 		return $this->belongsTo('User');
 	}
 
-	public function solution_state() {
+	public function solutionState() {
 		return $this->belongsTo('SolutionState');
 	}
 
-	public function claiming_judge() {
+	public function claimingJudge() {
 		return $this->belongsTo('User', 'claiming_judge_id');
 	}
 
