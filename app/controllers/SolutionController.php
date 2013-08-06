@@ -3,7 +3,8 @@
 class SolutionController extends BaseController {
 
 	public function teamIndex() {
-		return "HEY";
+		return View::make('solutions_team')
+			->with('solutions', Solution::forCurrentContest()->where('user_id', Sentry::getUser()->id)->get());
 	}
 
 	public function judgeIndex() {

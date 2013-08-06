@@ -8,7 +8,7 @@
 	@endif
 	@if(Sentry::getUser()->team || Sentry::getUser()->admin)
 		{{-- TODO: Link to Team route--}}
-		{{ link_to_route('index', 'Team', array(), array()) }}
+		{{ link_to_route('team_index', 'Team', array(), array()) }}
 	@endif
 	<a href="/logout">Logout</a>
 @else

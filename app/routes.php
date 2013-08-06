@@ -11,6 +11,11 @@ Route::group(array('before'=>'judge'), function(){
 	Route::post('/judge/solutions/{id}/edit', array('as'=>'update_solution', 'uses'=>'SolutionController@update'));
 });
 
+// team routes
+Route::group(array('before'=>'team'), function(){
+	Route::get('/team', array('as'=>'team_index', 'uses'=>'SolutionController@teamIndex'));
+});
+
 /*
 	User routes
 */
