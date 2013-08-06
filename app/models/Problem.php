@@ -31,6 +31,9 @@ class Problem extends Base {
 
 	public function scopeForCurrentContest() {
 		$contests = Contest::current()->first();
+		if($contests == null) {
+			return Problem::where('id', null);
+		}
 		return Problem::where('contest_id', $contests->id)->orderBy('created_at');
 	}
 }
