@@ -1,8 +1,7 @@
-{{-- TODO: get URL --}}
-{{ Form::open(array('url'=>'', 'files'=>true)) }}
-{{ Form::label('problem', 'Submit a solution to') }}
-{{-- TODO: get problem list (for current contest) --}}
-{{ Form::select('problem', array())}}
-{{ Form::file()}}
+{{ Form::open(array('route'=>'store_solution', 'files'=>true)) }}
+{{ Form::label('problem_id', 'Submit a solution to') }}
+{{ Form::select('problem_id', $problems)}}
+<br/>
+{{ Form::file('solution_code') }}
 {{ Form::submit('Submit')}}
 {{ Form::close() }}

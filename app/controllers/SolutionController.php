@@ -3,8 +3,13 @@
 class SolutionController extends BaseController {
 
 	public function teamIndex() {
+		$problems = array();
+		foreach(Problem::forCurrentContest()->get() as $problem) {
+			$problems[$problem->id] = $problem->name;
+		}
 		return View::make('solutions_team')
-			->with('solutions', Solution::forCurrentContest()->where('user_id', Sentry::getUser()->id)->get());
+			->with('solutions', Solution::forCurrentContest()->where('user_id', Sentry::getUser()->id)->get())
+			->with('problems', $problems);
 	}
 
 	public function judgeIndex() {
@@ -19,7 +24,8 @@ class SolutionController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		var_dump(Input::all());
+		return;
 	}
 
 	/**

@@ -13,4 +13,6 @@
 	</li>
 	@endforeach
 </ul>
+
+@include('forms.create_solution')
 @stop
