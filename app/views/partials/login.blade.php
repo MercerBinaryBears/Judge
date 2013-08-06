@@ -1,14 +1,14 @@
 @if(Sentry::check())
 	Logged in as {{ Sentry::getUser()->username }}.
-	{{-- TODO: don't use this absolute path! --}}
 	@if(Sentry::getUser()->admin)
-		<a href="/admin">Admin</a>
-		<a href="/judge">Judge</a>
-		<a href="/team">Team</a>
-	@elseif(Sentry::getUser()->judge)
-		<a href="/judge">Judge</a>
-	@elseif(Sentry::getUser()->team)
-		<a href="/team">Team</a>
+		{{ link_to_route('admin_dashboard', 'Admin', array(), array()) }}
+	@endif
+	@if(Sentry::getUser()->judge || Sentry::getUser()->admin)
+		{{ link_to_route('judge_index', 'Judge', array(), array())}}
+	@endif
+	@if(Sentry::getUser()->team || Sentry::getUser()->admin)
+		{{-- TODO: Link to Team route--}}
+		{{ link_to_route('index', 'Team', array(), array()) }}
 	@endif
 	<a href="/logout">Logout</a>
 @else
