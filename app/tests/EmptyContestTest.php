@@ -9,7 +9,7 @@ class EmptyContestTest extends TestCase {
 		// TODO: make this test more robust, by not relying on the database seed
 		$this->contest = Contest::current()->first();
 		$this->old_starts_at = $this->contest->starts_at;
-		$this->contest->starts_at = strtotime('now +1 days');
+		$this->contest->starts_at = date('Y-m-d h:i:s', strtotime('now +1 days'));
 		$this->contest->save();
 	}
 
@@ -24,6 +24,15 @@ class EmptyContestTest extends TestCase {
 
 	public function testCurrentContestFailGracefully()
 	{
-		Contest::current();
+		$this->assertCount(0, Contest::current()->get());
+	}
+
+	public function testCurrentProblemsFailGracefully()
+	{
+		Problem::forCurrentContest()->get();
+	}
+
+	public function testCurrentSolutionsFailGracefully() {
+		Solution::forCurrentContest()->get();
 	}
 }
