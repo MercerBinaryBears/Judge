@@ -8,11 +8,7 @@ HTML::macro('flash', function() {
 		}
 		else {
 			$html .= "<ul>";
-
-			// TODO: convert this to an implode for concise-ness and readability
-			foreach($error->all('<li>:message</li>') as $html_error) {
-				$html .= $html_error;
-			}
+			$html .= implode('', $error->all('<li>:message</li>'));
 			$html .= "</ul>";
 		}
 	}
