@@ -17,16 +17,16 @@ class UserController extends BaseController {
 			Sentry::authenticate($creds);
 		}
 		catch(Cartalyst\Sentry\Users\LoginRequiredException $e) {
-			Session::flash('login_message', 'You must provide a login');
+			Session::flash('error', 'You must provide a login');
 		}
 		catch(Cartalyst\Sentry\Users\PasswordRequiredException $e) {
-			Session::flash('login_message', 'You must provide a password');
+			Session::flash('error', 'You must provide a password');
 		}
 		catch(Cartalyst\Sentry\Users\WrongPasswordException $e) {
-			Session::flash('login_message', 'Invalid login');
+			Session::flash('error', 'Invalid login');
 		}
 		catch(Cartalyst\Sentry\Users\UserNotFoundException $e) {
-			Session::flash('login_message', 'Invalid login');
+			Session::flash('error', 'Invalid login');
 		}
 
 		return Redirect::route('index')->withInput(Input::except('password'));
