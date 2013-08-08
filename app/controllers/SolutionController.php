@@ -52,13 +52,13 @@ class SolutionController extends BaseController {
 			// TODO: Session flash that problem has been claimed by Judge X
 			return Redirect::route('judge_index');
 		}
-		$solution->claiming_judge_id = $user->id;
+		$solution->claiming_judge_id = Sentry::getUser()->id;
 		$solution->save();
 
 		// return the form
 		return View::make('forms.edit_solution')
 			->with('solution', $solution)
-			->with('solution_states', SolutionStates::lists('name','id'));
+			->with('solution_states', SolutionState::lists('name','id'));
 	}
 
 	/**
