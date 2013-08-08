@@ -34,4 +34,22 @@ class Base extends Ardent {
 
 		return array($original_name, $extension, $file_contents, $tmp_path);
 	}
+
+	/**
+	 * take an attribute name $attribute='solution_code'
+	 * Get the full path name from Input::file($attribute)->getRealPath()
+	 * Assign that to the passed attribute. Assign the original extension to a passed
+	 * variable: $extension_attribute, as well as the client name: $original_filename_attribute
+	 * Extract the extension split into a single testable method.
+	 * Make sure to delete the uploaded file after reading
+	 */
+	public function readFile($file_contents_attribute, $original_filename_attribute, $extension_attribute) {
+		$file = Input::file($file_contents_attribute);
+
+		$this->$file_contents_attribute = file_get_contents($file->getRealPath());
+
+		$this->$original_filename_attribute = $file->getClientOriginalName();
+
+		$this->$extension_attribute = $file->getExtension();
+	}
 }

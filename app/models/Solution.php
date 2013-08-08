@@ -11,6 +11,8 @@ class Solution extends Base {
 		'solution_state_id' => 'required',
 		);
 
+	protected $fillable = array('problem_id', 'user_id', 'solution_code', 'solution_language', 'solution_state_id');
+
 	public function problem() {
 		return $this->belongsTo('Problem');
 	}
