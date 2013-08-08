@@ -4,12 +4,10 @@ class SolutionController extends BaseController {
 
 	public function teamIndex() {
 		$problems = array();
-		foreach(Problem::forCurrentContest()->get() as $problem) {
-			$problems[$problem->id] = $problem->name;
-		}
+
 		return View::make('solutions_team')
 			->with('solutions', Solution::forCurrentContest()->where('user_id', Sentry::getUser()->id)->get())
-			->with('problems', $problems);
+			->with('problems', Problem::lists('name', 'id'));
 	}
 
 	public function judgeIndex() {
@@ -33,9 +31,10 @@ class SolutionController extends BaseController {
 		// process upload
 		$solution->processUpload('solution_code', 'solution_code', 'solution_filename', 'solution_language');
 		$solution->save();
-		var_dump($solution);
-		var_dump($solution->errors());
-		return;
+
+		// TODO: Session flash
+
+		return Redirect::route('team_index');
 	}
 
 	/**
@@ -59,7 +58,7 @@ class SolutionController extends BaseController {
 		// return the form
 		return View::make('forms.edit_solution')
 			->with('solution', $solution)
-			->with('solution_states', SolutionStates::list('name','id'));
+			->with('solution_states', SolutionStates::lists('name','id'));
 	}
 
 	/**
