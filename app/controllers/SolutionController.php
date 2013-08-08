@@ -28,7 +28,6 @@ class SolutionController extends BaseController {
 		$solution->problem_id = Input::get('problem_id');
 		$solution->user_id = Sentry::getUser()->id;
 		$solution->solution_state_id = $solution_state_id;
-		// TODO: make this function perform some error checking...
 		$solution->processUpload('solution_code', 'solution_code', 'solution_filename', 'solution_language');
 		if(!$solution->save()) {
 			Session::flash('error', $solution->errors());
@@ -74,7 +73,6 @@ class SolutionController extends BaseController {
 	{
 		$unjudged_state = SolutionState::pending();
 
-		// TODO: Validate
 		$s = Solution::find($id);
 		if($s->claiming_judge_id == null && $s->solution_state_id == $unjudged_state->id) {
 			$s->solution_state_id = Input::get('solution_state_id');
