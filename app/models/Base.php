@@ -6,6 +6,9 @@ use \LaravelBook\Ardent\Ardent as Ardent;
 class Base extends Ardent {
 	public function processUpload($input_field, $path_attribute, $original_name_attribute, $extension_attribute) {
 		$file = Input::file($input_field);
+		if($file == null) {
+			return false;
+		}
 
 		// fill out the fields
 		$this->$path_attribute = $this->generateRandomPath();
@@ -19,6 +22,8 @@ class Base extends Ardent {
 
 		// now move the file for safe keeping
 		$file->move(storage_path() . "/$path_attribute/", $this->$path_attribute);
+
+		return true;
 	}
 
 	protected function generateRandomPath($length=64) {
