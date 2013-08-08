@@ -24,7 +24,17 @@ class SolutionController extends BaseController {
 	 */
 	public function store()
 	{
-		var_dump(Input::all());
+		$solution_state_id = SolutionState::where('name','LIKE','%judging%')->first()->id;
+
+		$solution = new Solution();
+		$solution->problem_id = Input::get('problem_id');
+		$solution->user_id = Sentry::getUser()->id;
+		$solution->solution_state_id = $solution_state_id;
+		// process upload
+		$solution->processUpload('solution_code', 'solution_code', 'solution_filename', 'solution_language');
+		$solution->save();
+		var_dump($solution);
+		var_dump($solution->errors());
 		return;
 	}
 
