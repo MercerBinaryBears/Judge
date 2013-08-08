@@ -28,11 +28,11 @@ class SolutionController extends BaseController {
 		$solution->problem_id = Input::get('problem_id');
 		$solution->user_id = Sentry::getUser()->id;
 		$solution->solution_state_id = $solution_state_id;
-		// process upload
+		// TODO: make this function perform some error checking...
 		$solution->processUpload('solution_code', 'solution_code', 'solution_filename', 'solution_language');
-		$solution->save();
-
-		// TODO: Session flash
+		if(!$solution->save()) {
+			Session::flash('error', $solution->errors());
+		}
 
 		return Redirect::route('team_index');
 	}
@@ -49,11 +49,14 @@ class SolutionController extends BaseController {
 		// make the current judge claim it...
 		$solution = Solution::find($id);
 		if($solution->claiming_judge_id != null) {
-			// TODO: Session flash that problem has been claimed by Judge X
+			Session::flash('error', 'That solution has already been claimed by ' . $solution->claiming_judge->username);
 			return Redirect::route('judge_index');
 		}
 		$solution->claiming_judge_id = Sentry::getUser()->id;
-		$solution->save();
+		if(!$solution->save()) {
+			Session::flash('error', $solution->errors());
+			$solution->claiming_judge_id = null;
+		}
 
 		// return the form
 		return View::make('forms.edit_solution')
@@ -75,7 +78,9 @@ class SolutionController extends BaseController {
 		$s = Solution::find($id);
 		if($s->claiming_judge_id == null && $s->solution_state_id == $unjudged_state->id) {
 			$s->solution_state_id = Input::get('solution_state_id');
-			$s->save();
+			if(!$s->save()) {
+				Session::flash('error', $s->errors());
+			}
 		}
 
 		return Redirect::route('judge_index');

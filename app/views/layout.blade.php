@@ -11,6 +11,7 @@
 		<div class='login'>
 			@include('partials.login')
 		</div>
+		{{ HTML::flash() }}
 		<div id='content'>
 			@section('content')
 			@show

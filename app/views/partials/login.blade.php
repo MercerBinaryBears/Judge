@@ -17,6 +17,5 @@
 	{{ Form::label('password', 'Password') }}
 	{{ Form::password('password') }}
 	{{ Form::submit('Login') }} <br/>
-	{{ Session::get('login_message') }}
 	{{ Form::close() }}
 @endif
