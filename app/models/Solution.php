@@ -7,8 +7,11 @@ class Solution extends Base {
 		'problem_id' => 'required',
 		'user_id' => 'required',
 		'solution_code' => 'required',
-		'solution_language' => 'required'
+		'solution_language' => 'required',
+		'solution_state_id' => 'required',
 		);
+
+	protected $fillable = array('problem_id', 'user_id', 'solution_code', 'solution_language', 'solution_state_id');
 
 	public function problem() {
 		return $this->belongsTo('Problem');
@@ -18,24 +21,12 @@ class Solution extends Base {
 		return $this->belongsTo('User');
 	}
 
-	public function solution_state() {
+	public function solutionState() {
 		return $this->belongsTo('SolutionState');
 	}
 
-	public function claiming_judge() {
+	public function claimingJudge() {
 		return $this->belongsTo('User', 'claiming_judge_id');
-	}
-
-	/**
-	 * Parse filename and store file contents into solution code
-	 * @param string $filename
-	 */
-	public function setSolutionCodeAttribute($filename) {
-		$filename = "/tmp/$filename";
-		// parse file and store file contents rather than filename
-		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
-		$this->attributes['solution_code'] = $file_contents;
-		$this->attributes['solution_language'] = $ext;
 	}
 
 	public function getCreatedAtAttribute($value) {
@@ -58,7 +49,7 @@ class Solution extends Base {
 	}
 
 	public function scopeUnjudged($query) {
-		$unjudged_state = SolutionState::where('name','LIKE', '%Judging%')->first();
+		$unjudged_state = SolutionState::pending();
 		return $query->where('solution_state_id', $unjudged_state->id);
 	}
 

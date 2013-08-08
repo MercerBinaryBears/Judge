@@ -31,12 +31,12 @@ return array(
 		'judging_input' => array(
 			'title' => 'Judging Input',
 			'type' => 'file',
-			'location' => '/tmp',
+			'location' => storage_path() . "/judging_input/",
 			),
 		'judging_output' => array(
 			'title' => 'Judging Output',
 			'type' => 'file',
-			'location' => '/tmp',
+			'location' => storage_path() . "/judging_output/",
 			)
 		)
 	);

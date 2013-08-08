@@ -37,7 +37,7 @@ class TempContestTableSeeder extends Seeder {
 			return $model;
 		}
 		else {
-			throw new Exception($message);
+			throw new Exception($message . ' ' . $model->errors()->toJson());
 		}
 	}
 
@@ -76,13 +76,14 @@ class TempContestTableSeeder extends Seeder {
 
 	private function createSolution($team, $problem) {
 		$this->writeTmp('test.py', 'Hello World');
-		$judging = SolutionState::where('name', 'LIKE', '%Judging%')->first();
+		$judging = SolutionState::pending();
 
 		$solution = new Solution();
 		$solution->user_id = $team->id;
 		$solution->problem_id = $problem->id;
 		$solution->solution_filename = 'test.py';
 		$solution->solution_code = 'test.py';
+		$solution->solution_language = 'py';
 		$solution->solution_state_id = $judging->id;
 		return $this->saveOrErr($solution, 'Invalid Solution');
 	}

@@ -15,6 +15,7 @@ class CreateSolutionStates extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->boolean('is_correct');
+			$table->boolean('pending')->default(0);
 			$table->timestamps();
 		});
 
@@ -46,6 +47,7 @@ class CreateSolutionStates extends Migration {
 		DB::table('solution_states')->insert(array(
 			'name'=>'Judging',
 			'is_correct'=>false,
+			'pending'=>true,
 			));
 
 	}

@@ -20,23 +20,23 @@ return array(
 			),
 		'solution_state' => array(
 			'title' => 'Solution State',
-			'relationship' => 'solution_state',
+			'relationship' => 'solutionState',
 			'select' => '(:table).name'
 			),
 		'claiming_judge' => array(
 			'title' => 'Claiming Judge',
-			'relationship' => 'claiming_judge',
+			'relationship' => 'claimingJudge',
 			'select' => '(:table).username',
 			),
 
 		),
 	'edit_fields' => array(
-		'solution_state' => array(
+		'solutionState' => array(
 			'title' => 'Solution State',
 			'type' => 'relationship',
 			'name_field' => 'name'
 			),
-		'claiming_judge' => array(
+		'claimingJudge' => array(
 			'title' => 'Claiming Judge',
 			'type' => 'relationship',
 			'name_field' => 'username',

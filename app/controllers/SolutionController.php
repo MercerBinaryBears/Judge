@@ -3,7 +3,11 @@
 class SolutionController extends BaseController {
 
 	public function teamIndex() {
-		return "HEY";
+		$problems = array();
+
+		return View::make('solutions_team')
+			->with('solutions', Solution::forCurrentContest()->where('user_id', Sentry::getUser()->id)->get())
+			->with('problems', Problem::lists('name', 'id'));
 	}
 
 	public function judgeIndex() {
@@ -18,7 +22,19 @@ class SolutionController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$solution_state_id = SolutionState::pending()->id;
+
+		$solution = new Solution();
+		$solution->problem_id = Input::get('problem_id');
+		$solution->user_id = Sentry::getUser()->id;
+		$solution->solution_state_id = $solution_state_id;
+		// process upload
+		$solution->processUpload('solution_code', 'solution_code', 'solution_filename', 'solution_language');
+		$solution->save();
+
+		// TODO: Session flash
+
+		return Redirect::route('team_index');
 	}
 
 	/**
@@ -29,15 +45,6 @@ class SolutionController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		// TODO: this will be moved to a route filter
-		if(!Sentry::check()) {
-			App::abort(403);
-		}
-		$user = Sentry::getUser();
-		if(!$user->judge && !$user->admin) {
-			App::abort(403);
-		}
-
 		// check that the solution isn't claimed already, and
 		// make the current judge claim it...
 		$solution = Solution::find($id);
@@ -48,15 +55,10 @@ class SolutionController extends BaseController {
 		$solution->claiming_judge_id = $user->id;
 		$solution->save();
 
-		$solution_states = array();
-		foreach(SolutionState::all() as $solution_state) {
-			$solution_states[$solution_state->id] = $solution_state->name;
-		}
-
 		// return the form
 		return View::make('forms.edit_solution')
 			->with('solution', $solution)
-			->with('solution_states', $solution_states);
+			->with('solution_states', SolutionStates::lists('name','id'));
 	}
 
 	/**
@@ -67,7 +69,7 @@ class SolutionController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$unjudged_state = SolutionState::where('name','LIKE', '%judging%')->first();
+		$unjudged_state = SolutionState::pending();
 
 		// TODO: Validate
 		$s = Solution::find($id);
@@ -76,7 +78,6 @@ class SolutionController extends BaseController {
 			$s->save();
 		}
 
-		// TODO: Use named routes
 		return Redirect::route('judge_index');
 	}
 }
