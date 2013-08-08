@@ -49,7 +49,7 @@ class Solution extends Base {
 	}
 
 	public function scopeUnjudged($query) {
-		$unjudged_state = SolutionState::where('name','LIKE', '%Judging%')->first();
+		$unjudged_state = SolutionState::pending();
 		return $query->where('solution_state_id', $unjudged_state->id);
 	}
 

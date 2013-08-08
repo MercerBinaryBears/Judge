@@ -76,7 +76,7 @@ class TempContestTableSeeder extends Seeder {
 
 	private function createSolution($team, $problem) {
 		$this->writeTmp('test.py', 'Hello World');
-		$judging = SolutionState::where('name', 'LIKE', '%Judging%')->first();
+		$judging = SolutionState::pending();
 
 		$solution = new Solution();
 		$solution->user_id = $team->id;

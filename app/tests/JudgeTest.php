@@ -15,7 +15,7 @@ class JudgeTest extends TestCase {
 		// TODO: Make this more robust instead of ASSUMING!
 		$this->solution = Solution::firstOrFail();
 		// update the state to non-judged...
-		$solution_state = SolutionState::where('name', 'LIKE', '%judging%')->first();
+		$solution_state = SolutionState::pending();
 		$this->solution->solution_state_id = $solution_state->id;
 		$this->solution->claiming_judge_id = null;
 		$this->solution->save();

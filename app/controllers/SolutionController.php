@@ -24,7 +24,7 @@ class SolutionController extends BaseController {
 	 */
 	public function store()
 	{
-		$solution_state_id = SolutionState::where('name','LIKE','%judging%')->first()->id;
+		$solution_state_id = SolutionState::pending()->id;
 
 		$solution = new Solution();
 		$solution->problem_id = Input::get('problem_id');
@@ -84,7 +84,7 @@ class SolutionController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$unjudged_state = SolutionState::where('name','LIKE', '%judging%')->first();
+		$unjudged_state = SolutionState::pending();
 
 		// TODO: Validate
 		$s = Solution::find($id);
