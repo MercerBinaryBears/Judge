@@ -43,13 +43,17 @@ class Base extends Ardent {
 	 * Extract the extension split into a single testable method.
 	 * Make sure to delete the uploaded file after reading
 	 */
-	public function readFile($file_contents_attribute, $original_filename_attribute, $extension_attribute) {
+	public function readFile($file_contents_attribute, $original_filename_attribute = null, $extension_attribute = null) {
 		$file = Input::file($file_contents_attribute);
 
 		$this->$file_contents_attribute = file_get_contents($file->getRealPath());
 
-		$this->$original_filename_attribute = $file->getClientOriginalName();
+		if($original_filename_attribute != null) {
+			$this->$original_filename_attribute = $file->getClientOriginalName();
+		}
 
-		$this->$extension_attribute = $file->getExtension();
+		if($extension_attribute != null) {
+			$this->$extension_attribute = $file->getExtension();
+		}
 	}
 }
