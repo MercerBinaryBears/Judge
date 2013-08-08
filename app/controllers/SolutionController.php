@@ -78,7 +78,6 @@ class SolutionController extends BaseController {
 			$s->save();
 		}
 
-		// TODO: Use named routes
 		return Redirect::route('judge_index');
 	}
 }

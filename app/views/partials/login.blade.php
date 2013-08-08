@@ -7,7 +7,6 @@
 		{{ link_to_route('judge_index', 'Judge', array(), array())}}
 	@endif
 	@if(Sentry::getUser()->team || Sentry::getUser()->admin)
-		{{-- TODO: Link to Team route--}}
 		{{ link_to_route('team_index', 'Team', array(), array()) }}
 	@endif
 	<a href="/logout">Logout</a>
