@@ -55,10 +55,11 @@ class ReadFileTest extends TestCase {
 		$b = new Base();
 		$b->readFile($c, $o, $e);
 
-		// make sure that the model has the correct contents
+		// make sure that the model has the correct contents, and the file wasn't deleted
 		$this->assertEquals(static::$contents, $b->$c, "File contents were not copied into model: " . $b->$c);
 		$this->assertEquals($this->getFullOriginalFilename(), $b->$o, "Original filename did not persist");
 		$this->assertEquals(static::$extension, $b->$e, "Extension was not persisted");
+		$this->assertFileExists($this->getFullTmpFilename());
 	}
 
 	public function testNullableFields() {
@@ -71,6 +72,20 @@ class ReadFileTest extends TestCase {
 
 		// make sure that the model has the correct contents
 		$this->assertEquals(static::$contents, $b->$c, "File contents were not copied into model: " . $b->$c);
+		$this->assertFileExists($this->getFullTmpFilename());
+	}
+
+	public function testDelete() {
+		// assign some variables, since we'll need them for reflection
+		$c = static::$file_contents_attribute;
+
+		// build the model and read. make sure that this still doesn't err
+		$b = new Base();
+		$b->readFile($c, null, null, true);
+
+		// make sure that the model has the correct contents
+		$this->assertEquals(static::$contents, $b->$c, "File contents were not copied into model: " . $b->$c);
+		$this->assertFileNotExists($this->getFullTmpFilename());
 	}
 
 
