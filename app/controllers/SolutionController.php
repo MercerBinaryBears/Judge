@@ -46,15 +46,6 @@ class SolutionController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		// TODO: this will be moved to a route filter
-		if(!Sentry::check()) {
-			App::abort(403);
-		}
-		$user = Sentry::getUser();
-		if(!$user->judge && !$user->admin) {
-			App::abort(403);
-		}
-
 		// check that the solution isn't claimed already, and
 		// make the current judge claim it...
 		$solution = Solution::find($id);
@@ -65,15 +56,10 @@ class SolutionController extends BaseController {
 		$solution->claiming_judge_id = $user->id;
 		$solution->save();
 
-		$solution_states = array();
-		foreach(SolutionState::all() as $solution_state) {
-			$solution_states[$solution_state->id] = $solution_state->name;
-		}
-
 		// return the form
 		return View::make('forms.edit_solution')
 			->with('solution', $solution)
-			->with('solution_states', $solution_states);
+			->with('solution_states', SolutionStates::list('name','id'));
 	}
 
 	/**
