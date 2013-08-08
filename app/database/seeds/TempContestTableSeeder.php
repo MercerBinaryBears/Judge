@@ -37,7 +37,7 @@ class TempContestTableSeeder extends Seeder {
 			return $model;
 		}
 		else {
-			throw new Exception($message);
+			throw new Exception($message . ' ' . $model->errors()->toJson());
 		}
 	}
 
@@ -83,6 +83,7 @@ class TempContestTableSeeder extends Seeder {
 		$solution->problem_id = $problem->id;
 		$solution->solution_filename = 'test.py';
 		$solution->solution_code = 'test.py';
+		$solution->solution_language = 'py';
 		$solution->solution_state_id = $judging->id;
 		return $this->saveOrErr($solution, 'Invalid Solution');
 	}

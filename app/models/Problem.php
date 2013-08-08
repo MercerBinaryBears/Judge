@@ -16,18 +16,20 @@ class Problem extends Base {
 		return $this->hasMany('Solution');
 	}
 
-	public function setJudgingInputAttribute($filename) {
-		$filename = "/tmp/$filename";
-		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
-		Log::debug("FILENAME: $filename, FILE CONTENTS:\n$file_contents");
-		$this->attributes['judging_input'] = $file_contents;
-	}
+	// public function setJudgingInputAttribute($filename) {
+	// 	$this->readFile('judging_input', null, null);
+	// 	// $filename = "/tmp/$filename";
+	// 	// list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
+	// 	// Log::debug("FILENAME: $filename, FILE CONTENTS:\n$file_contents");
+	// 	// $this->attributes['judging_input'] = $file_contents;
+	// }
 
-	public function setJudgingOutputAttribute($filename) {
-		$filename = "/tmp/$filename";
-		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
-		$this->attributes['judging_output'] = $file_contents;
-	}
+	// public function setJudgingOutputAttribute($filename) {
+	// 	$this->readFile('judging_output', null, null);
+	// 	// $filename = "/tmp/$filename";
+	// 	// list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
+	// 	// $this->attributes['judging_output'] = $file_contents;
+	// }
 
 	public function scopeForCurrentContest() {
 		$contests = Contest::current()->first();

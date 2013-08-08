@@ -29,18 +29,6 @@ class Solution extends Base {
 		return $this->belongsTo('User', 'claiming_judge_id');
 	}
 
-	/**
-	 * Parse filename and store file contents into solution code
-	 * @param string $filename
-	 */
-	public function setSolutionCodeAttribute($filename) {
-		$filename = "/tmp/$filename";
-		// parse file and store file contents rather than filename
-		list($original, $ext, $file_contents, $tmp_path) = Base::unpackFile($filename, true);
-		$this->attributes['solution_code'] = $file_contents;
-		$this->attributes['solution_language'] = $ext;
-	}
-
 	public function getCreatedAtAttribute($value) {
 		if(!is_numeric($value)) {
 			$value = strtotime($value);
