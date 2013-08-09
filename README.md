@@ -1,4 +1,4 @@
-Steps to set it up:
+Steps to set up Judge on your machine:
 
 1. Make sure you have PHP 5.4 with PDO and SQlite enabled.
 2. Have [Composer](getcomposer.org) installed and in your PATH.
