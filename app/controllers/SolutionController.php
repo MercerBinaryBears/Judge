@@ -68,10 +68,12 @@ class SolutionController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		// check that no judge has claimed the solution.
+		$user_id = Sentry::getUser()->id;
+
+		// check that either no judge has claimed the solution, or the current user has
 		// If the solution is claimed, redirect back with an error message
 		$solution = Solution::find($id);
-		if($solution->claiming_judge_id != null) {
+		if($solution->claiming_judge_id != null && $solution->claiming_judge_id != $user_id) {
 			Session::flash('error', 'That solution has already been claimed by ' . $solution->claiming_judge->username);
 			return Redirect::route('judge_index');
 		}
@@ -99,15 +101,13 @@ class SolutionController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$unjudged_state = SolutionState::pending();
 		$s = Solution::find($id);
 		$judge_id = Sentry::getUser()->id;
 
-		// Check that this current judge has claimed the problem and that the problem
-		// isn't judged already.
+		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but
 		// malicious input could cause it.
-		if($s->claiming_judge_id == $judge_id && $s->solution_state_id == $unjudged_state->id) {
+		if($s->claiming_judge_id == $judge_id) {
 			$s->solution_state_id = Input::get('solution_state_id');
 			if(!$s->save()) {
 				Session::flash('error', $s->errors());

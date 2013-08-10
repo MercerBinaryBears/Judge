@@ -14,11 +14,11 @@ class JudgeTest extends TestCase {
 		// which we assume to be a seed value anyways
 		// TODO: Make this more robust instead of ASSUMING!
 		$this->solution = Solution::firstOrFail();
+
 		// update the state to non-judged...
-		$solution_state = SolutionState::pending();
-		$this->solution->solution_state_id = $solution_state->id;
-		$this->solution->claiming_judge_id = null;
-		$this->solution->save();
+		$this->resetSolution();
+		$this->assertNull($this->solution->claiming_judge_id, 'A judge has already claimed this problem, although we reset it!');
+		$this->assertEquals(SolutionState::pending()->id, $this->solution->solution_state_id, 'Problem is not in a pending state');
 	}
 
 	public function tearDown() {
@@ -27,6 +27,12 @@ class JudgeTest extends TestCase {
 		DB::table('users')->where('username', 'LIKE', 'judge%')->delete();
 	}
 
+	/**
+	 * Creates a temporary judge
+	 *
+	 * @param string $name The judge's username
+	 * @return User The judge user that was created
+	 */
 	private function createJudge($name) {
 		Sentry::getUserProvider()->create(array(
 			'username'=>$name,
@@ -38,32 +44,29 @@ class JudgeTest extends TestCase {
 		return Sentry::getUserProvider()->findByLogin($name);
 	}
 
-	private function updateSolution() {
+	/**
+	 * Re-queries the current solution, to update the fields (if they've
+	 * been updated via a query)
+	 */
+	private function findSolution() {
 		$this->solution = Solution::find($this->solution->id);
 	}
 
-	public function testAllowOnlyOneClaimer()
-	{
-		// make sure the solution has no claimer
-		$this->updateSolution();
-		$this->assertNull($this->solution->claiming_judge_id, 'A judge has already claimed this problem');
-
-
-		// login as judge 1 and claim the submission
-		Sentry::login($this->judge1, false);
-		$this->route('GET', 'edit_solution', array($this->solution->id));
-		$this->assertResponseOk();
-		$this->updateSolution();
-		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge did not successfully claim this problem');
-
-		// login as judge 2 and attempt to claim again
-		Sentry::login($this->judge2, false);
-		$this->route('GET', 'edit_solution', array($this->solution->id));
-		$this->assertRedirectedToRoute('judge_index');
-		$this->updateSolution();
-		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge was able to claim already claimed problem');
+	/**
+	 * Resets a solution back to its unjudged state, with no claiming judge
+	 */
+	private function resetSolution() {
+		$this->findSolution();
+		$this->solution->solution_state_id = SolutionState::pending()->id;
+		$this->solution->claiming_judge_id = null;
+		$this->solution->save();
+		$this->findSolution();
 	}
 
+	/**
+	 * Attempts to update the current solution to the passed solution state
+	 * id
+	 */
 	private function attemptUpdate($solution_state_id) {
 		$parameters = array(
 			'solution_state_id' => $solution_state_id,
@@ -71,9 +74,40 @@ class JudgeTest extends TestCase {
 		$this->route('POST', 'update_solution', array($this->solution->id), $parameters);
 	}
 
-	public function testAllowOnlyOneEditter() {
+	/**
+	 * Tests that once a single judge claims a problem, a second judge cannot claim it.
+	 */
+	public function testAllowOnlyOneClaimer()
+	{
+		// login as judge 1 and claim the submission
 		Sentry::login($this->judge1, false);
+		$this->route('GET', 'edit_solution', array($this->solution->id));
+		$this->assertResponseOk();
+		$this->findSolution();
+		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge did not successfully claim this problem');
+
+		// login as judge 2 and attempt to claim again
+		Sentry::login($this->judge2, false);
+		$this->route('GET', 'edit_solution', array($this->solution->id));
+		$this->assertRedirectedToRoute('judge_index');
+		$this->findSolution();
+		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge was able to claim already claimed problem');
+	}
+
+	/**
+	 * Tests that only the claiming judge can actually make an edit to a solution once he/she has claimed it
+	 */
+	public function testAllowOnlyOneEditter() {
+		// login and claim the problem
+		Sentry::login($this->judge1, false);
+		$this->solution->claiming_judge_id = $this->judge1->id;
+		$this->solution->save();
 		$this->attemptUpdate(1);
+
+		// assert that the update carried through
+		$this->findSolution();
+		$this->assertEquals(1, $this->solution->solution_state_id, "The Judge was unable to update a problem");
+
 		Sentry::login($this->judge2, false);
 		$this->attemptUpdate(2);
 
@@ -81,5 +115,26 @@ class JudgeTest extends TestCase {
 		$this->solution = Solution::find($this->solution->id);
 		$this->assertEquals(1, $this->solution->solution_state_id, "A Judge was able to update an already claimed problem");
 	}
+
+	/**
+	 * Tests that only the claiming judge for a problem can go back and edit it
+	 */
+	public function testAllowJudgeToReeditSolution() {
+		// login as judge 1 and claim the submission
+		Sentry::login($this->judge1, false);
+		$this->route('GET', 'edit_solution', array($this->solution->id));
+		$this->assertResponseOk();
+		$this->findSolution();
+		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge did not successfully claim this problem');
+
+		// now revisit that page, as the same judge and verify that I didn't get redirected
+		Sentry::login($this->judge1, false);
+		$this->route('GET', 'edit_solution', array($this->solution->id));
+		$this->assertResponseOk('Even though judge has claimed this problem, they still cannot edit it');
+	}
+
+	/**
+	 * In the future, we need to test that when a judge cancel's a problem, the claiming judge for a solution is set to null again
+	 */
 
 }
