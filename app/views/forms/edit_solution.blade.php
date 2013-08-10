@@ -6,6 +6,8 @@ Submitted by {{ $solution->user->username }} at {{ $solution->created_at }} <br/
 
 Submitted in {{$solution->solution_language}} <br/>
 
+Download {{ link_to_route('solution_package', 'Solution Package', array($solution->id), array('_target'=>'blank'))}}
+
 {{ Form::open(array('route'=>array("edit_solution", $solution->id))) }}
 {{ Form::label('solution_state_id', 'Solution State: ') }}
 {{ Form::select('solution_state_id', $solution_states)}}

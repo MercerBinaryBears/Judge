@@ -144,4 +144,96 @@ class SolutionController extends BaseController {
 
 		return Redirect::route('judge_index');
 	}
+
+	/**
+	 * Creates a download package for judges to judge a problem
+	 */
+	public function package($id) {
+		// get the requested solution
+		$solution = Solution::find($id);
+
+		/*
+		|-------------------------------------------------------------------------
+		| Build paths for each of the download components
+		|-------------------------------------------------------------------------
+		|
+		| 1) The actual solution code, in its original name the client provided
+		| 2) The judging input
+		| 3) The judging output
+		| 4) A judge helper script (to be written) that essentially automates the
+		|    build, checks for memory errors and exceptions
+		*/
+		$solution_real_path = $solution->getPathForResource('solution_code');
+		$judging_input_real_path = $solution->problem->getPathForResource('judging_input');
+		$judging_output_real_path = $solution->problem->getPathForResource('judging_output');
+		// $judge_script = 'A STATIC PATH';
+
+
+		// the path for a zip is built off of the solution id and a timestamp
+		$zip_path = "/tmp/solution_" . $solution->id . "_" . time();
+
+
+		// attempt to create the zip file
+		$zip_file = new ZipArchive();
+		$open_result = $zip_file->open($zip_path, ZIPARCHIVE::CREATE);
+		if($open_result !== true) {
+			return "Could not start the zip file at $zip_path, " . $this->ZipStatusString($open_result);
+		}
+
+		// now, add the files to the archive
+		$add_result = $zip_file->addFile($solution_real_path, $solution->solution_filename);
+		if($add_result !== true) {
+			return "Could not add the zip file at $solution_real_path, " . $this->ZipStatusString($add_result);
+		}
+		$add_result = $zip_file->addFile($judging_input_real_path, 'judge.in');
+		if($add_result !== true) {
+			return "Could not add the zip file at $solution_real_path, " . $this->ZipStatusString($add_result);
+		}
+		$add_result = $zip_file->addFile($judging_output_real_path, 'judge.out');
+		if($add_result !== true) {
+			return "Could not add the zip file at $solution_real_path, " . $this->ZipStatusString($add_result);
+		}
+
+		// $zip_file->addFile($judge_script, 'judge');
+		$close_result = $zip_file->close();
+		if($close_result !== true) {
+			return "Could not close the zip file at $zip_path, " . $this->ZipStatusString($close_result);
+		}
+
+		// download the zip file
+		return Response::download($zip_path);
+	}
+
+	private function ZipStatusString( $status )
+	{
+		switch( (int) $status )
+		{
+			case ZipArchive::ER_OK           : return 'N No error';
+			case ZipArchive::ER_MULTIDISK    : return 'N Multi-disk zip archives not supported';
+			case ZipArchive::ER_RENAME       : return 'S Renaming temporary file failed';
+			case ZipArchive::ER_CLOSE        : return 'S Closing zip archive failed';
+			case ZipArchive::ER_SEEK         : return 'S Seek error';
+			case ZipArchive::ER_READ         : return 'S Read error';
+			case ZipArchive::ER_WRITE        : return 'S Write error';
+			case ZipArchive::ER_CRC          : return 'N CRC error';
+			case ZipArchive::ER_ZIPCLOSED    : return 'N Containing zip archive was closed';
+			case ZipArchive::ER_NOENT        : return 'N No such file';
+			case ZipArchive::ER_EXISTS       : return 'N File already exists';
+			case ZipArchive::ER_OPEN         : return 'S Can\'t open file';
+			case ZipArchive::ER_TMPOPEN      : return 'S Failure to create temporary file';
+			case ZipArchive::ER_ZLIB         : return 'Z Zlib error';
+			case ZipArchive::ER_MEMORY       : return 'N Malloc failure';
+			case ZipArchive::ER_CHANGED      : return 'N Entry has been changed';
+			case ZipArchive::ER_COMPNOTSUPP  : return 'N Compression method not supported';
+			case ZipArchive::ER_EOF          : return 'N Premature EOF';
+			case ZipArchive::ER_INVAL        : return 'N Invalid argument';
+			case ZipArchive::ER_NOZIP        : return 'N Not a zip archive';
+			case ZipArchive::ER_INTERNAL     : return 'N Internal error';
+			case ZipArchive::ER_INCONS       : return 'N Zip archive inconsistent';
+			case ZipArchive::ER_REMOVE       : return 'S Can\'t remove file';
+			case ZipArchive::ER_DELETED      : return 'N Entry has been deleted';
+
+			default: return sprintf('Unknown status %s', $status );
+		}
+	}
 }

@@ -11,6 +11,7 @@ Route::group(array('before'=>'judge'), function(){
 	Route::get('/judge/solutions/{id}/edit', array('as'=>'edit_solution', 'uses'=>'SolutionController@edit'));
 	Route::post('/judge/solutions/{id}/edit', array('as'=>'update_solution', 'uses'=>'SolutionController@update'));
 	Route::post('/judge/solutions/{id}/unclaim', array('as'=>'unclaim_solution', 'uses'=>'SolutionController@unclaim'));
+	Route::get('/judge/solutions/{id}/package', array('as'=>'solution_package', 'uses'=>'SolutionController@package'));
 });
 
 // team routes

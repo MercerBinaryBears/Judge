@@ -26,8 +26,8 @@ class TempContestTableSeeder extends Seeder {
 		$this->createSolution($team1, $problem2);
 	}
 
-	private function writeTmp($path='test.py', $contents='Hello world') {
-		$fh = fopen("/tmp/$path", "w");
+	private function writeTmp($filename='test.py', $path='/tmp/', $contents='Hello world') {
+		$fh = fopen($path . '/' . $filename, "w");
 		fwrite($fh, $contents);
 		fclose($fh);
 	}
@@ -56,10 +56,13 @@ class TempContestTableSeeder extends Seeder {
 		$problem->contest_id = $contest->id;
 
 		// judging data
-		$this->writeTmp();
-		$problem->judging_input = 'test.py';
-		$this->writeTmp();
-		$problem->judging_output = 'test.py';
+		$judging_input_filename = $problem->generateRandomString();
+		$this->writeTmp($judging_input_filename, storage_path() . "/" . 'judging_input/', 'INPUT');
+		$problem->judging_input = $judging_input_filename;
+
+		$judging_output_filename = $problem->generateRandomString();
+		$this->writeTmp($judging_output_filename, storage_path() . "/" . 'judging_output/', 'OUTPUT');
+		$problem->judging_output = $judging_output_filename;
 
 		return $this->saveOrErr($problem, 'Invalid Problem');
 	}
@@ -75,14 +78,17 @@ class TempContestTableSeeder extends Seeder {
 	}
 
 	private function createSolution($team, $problem) {
-		$this->writeTmp('test.py', 'Hello World');
 		$judging = SolutionState::pending();
 
 		$solution = new Solution();
+
+		// write the solution code to a file
+		$solution->solution_code = $solution->generateRandomString();
+		$this->writeTmp($solution->solution_code, storage_path() . '/solution_code/', "print 'Hello World'");
+
 		$solution->user_id = $team->id;
 		$solution->problem_id = $problem->id;
 		$solution->solution_filename = 'test.py';
-		$solution->solution_code = 'test.py';
 		$solution->solution_language = 'py';
 		$solution->solution_state_id = $judging->id;
 		return $this->saveOrErr($solution, 'Invalid Solution');
