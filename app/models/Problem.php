@@ -25,11 +25,11 @@ class Problem extends Base {
 	/**
 	 * Gets the problems for the current contest
 	 */
-	public function scopeForCurrentContest() {
+	public function scopeForCurrentContest($query) {
 		$contests = Contest::current()->first();
 		if($contests == null) {
 			return Problem::where('id', null);
 		}
-		return Problem::where('contest_id', $contests->id)->orderBy('created_at');
+		return $query->where('contest_id', $contests->id)->orderBy('created_at');
 	}
 }
