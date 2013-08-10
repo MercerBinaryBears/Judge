@@ -9,11 +9,13 @@ class UserController extends BaseController {
 	public function login()
 	{
 		$creds = array(
-			'username' => Input::get('username', 'NOBODY'),
-			'password' => Input::get('password', 'NOBODY')
+			'username' => Input::get('username'),
+			'password' => Input::get('password')
 			);
 
 		try {
+			// Attempt authentication via Sentry. If it fails, it throws
+			// a number of errors, which we catch here.
 			Sentry::authenticate($creds);
 		}
 		catch(Cartalyst\Sentry\Users\LoginRequiredException $e) {

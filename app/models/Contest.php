@@ -1,15 +1,27 @@
 <?php
 
 class Contest extends Base {
+	/**
+	 * Validation rules for a contest
+	 */
 	public static $rules = array(
 		'name' => 'required',
 		'starts_at' => 'required',
 		);
 
+	/**
+	 * Gets the problems associated with a contest
+	 */
 	public function problems() {
 		return $this->hasMany('Problem');
 	}
 
+	/**
+	 * A scope for the contest table that provides only
+	 * The "current" contests, i.e. ones that have already started
+	 * Perhaps in the future, we should also check the end time, and make
+	 * a contest inactive if its been x seconds after the end time.
+	 */
 	public function scopeCurrent($query) {
 		return $query->where('starts_at', '<=', date('Y-m-d H:i:s', strtotime('now')))
 			->orderBy('starts_at', 'desc');

@@ -27,9 +27,7 @@ App::after(function($request, $response)
 | Authentication Filters
 |--------------------------------------------------------------------------
 |
-| The following filters are used to verify that the user of the current
-| session is logged into this application. The "basic" filter easily
-| integrates HTTP Basic authentication for quick, simple checking.
+| Filters to determine if a user is a judge, team, admin, or not logged in
 |
 */
 
@@ -65,22 +63,6 @@ Route::filter('team', function() {
 	}
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| Guest Filter
-|--------------------------------------------------------------------------
-|
-| The "guest" filter is the counterpart of the authentication filters as
-| it simply checks that the current user is not logged in. A redirect
-| response will be issued if they are, which you may freely change.
-|
-*/
-
-Route::filter('guest', function()
-{
-	if (Auth::check()) return Redirect::to('/');
-});
 
 /*
 |--------------------------------------------------------------------------

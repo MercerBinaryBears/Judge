@@ -2,6 +2,11 @@
 
 class SolutionController extends BaseController {
 
+	/**
+	 * The index page for a team. Displays their current submitted problems,
+	 * the current state of those problems, and a form for submitting a new
+	 * problem
+	 */
 	public function teamIndex() {
 		$problems = array();
 
@@ -10,13 +15,17 @@ class SolutionController extends BaseController {
 			->with('problems', Problem::lists('name', 'id'));
 	}
 
+	/**
+	 * The index for a judge. Display the current unjudged problems, and allows
+	 * the judge to claim that problem.
+	 */
 	public function judgeIndex() {
 		return View::make('solutions_judge')
 			->with('solutions', Solution::forCurrentContest()->unjudged()->unclaimed()->get());
 	}
 
 	/**
-	 * Saves an uploaded submission
+	 * Saves a team's uploaded submission. Only accessable by teams
 	 *
 	 * @return Response
 	 */
@@ -25,10 +34,22 @@ class SolutionController extends BaseController {
 		$solution_state_id = SolutionState::pending()->id;
 
 		$solution = new Solution();
+
+		// populate with form fields
 		$solution->problem_id = Input::get('problem_id');
 		$solution->user_id = Sentry::getUser()->id;
 		$solution->solution_state_id = $solution_state_id;
+
+		/*
+		| Take the uploaded file, save it to a permanent path, reading the file
+		| from Input::file('solution_code'), saving the path to
+		| $solution->solution_code, the client's name for the file in
+		| $solution->solution_filename, and the file extension in $solution->language
+		*/
 		$solution->processUpload('solution_code', 'solution_code', 'solution_filename', 'solution_language');
+
+		// Save, (attempting validation). If validation fails, we show the errors before saving.
+		// Otherwise, the team will see the file in their list of submitted problems
 		if(!$solution->save()) {
 			Session::flash('error', $solution->errors());
 		}
@@ -37,34 +58,41 @@ class SolutionController extends BaseController {
 	}
 
 	/**
-	 * Shows the update form for a submission, also forces a judge
-	 * to claim the submission
+	 * Shows the update form for a submission (only viewable by judges), also
+	 * forces a judge to "claim" the submission, so no other judge can edit
+	 * it. If a judge visits an already claimed problem, they should be
+	 * redirected to the judgeIndex page.
+	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function edit($id)
 	{
-		// check that the solution isn't claimed already, and
-		// make the current judge claim it...
+		// check that no judge has claimed the solution.
+		// If the solution is claimed, redirect back with an error message
 		$solution = Solution::find($id);
 		if($solution->claiming_judge_id != null) {
 			Session::flash('error', 'That solution has already been claimed by ' . $solution->claiming_judge->username);
 			return Redirect::route('judge_index');
 		}
+
+		// No one has claimed the file, so the current judge claims it.
+		// we update the record. If the save failed we flash the error
+		// and redirect to the judge index
 		$solution->claiming_judge_id = Sentry::getUser()->id;
 		if(!$solution->save()) {
 			Session::flash('error', $solution->errors());
-			$solution->claiming_judge_id = null;
+			return Redirect::route('judge_index');
 		}
 
-		// return the form
+		// All saved well, show the judge the form for them to judge
 		return View::make('forms.edit_solution')
 			->with('solution', $solution)
 			->with('solution_states', SolutionState::lists('name','id'));
 	}
 
 	/**
-	 * Updates the status of a submission
+	 * Updates the status of a submission, only allowed by judges
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -72,9 +100,14 @@ class SolutionController extends BaseController {
 	public function update($id)
 	{
 		$unjudged_state = SolutionState::pending();
-
 		$s = Solution::find($id);
-		if($s->claiming_judge_id == null && $s->solution_state_id == $unjudged_state->id) {
+		$judge_id = Sentry::getUser()->id;
+
+		// Check that this current judge has claimed the problem and that the problem
+		// isn't judged already.
+		// Check validation on save, and report errors if any. There shouldn't be, but
+		// malicious input could cause it.
+		if($s->claiming_judge_id == $judge_id && $s->solution_state_id == $unjudged_state->id) {
 			$s->solution_state_id = Input::get('solution_state_id');
 			if(!$s->save()) {
 				Session::flash('error', $s->errors());
