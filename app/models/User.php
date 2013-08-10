@@ -38,6 +38,9 @@ class User extends Base {
 		return $this->password;
 	}
 
+	/**
+	 * Gets all of the solutions submitted by a user
+	 */
 	public function solutions() {
 		return $this->hasMany('Solution');
 	}
