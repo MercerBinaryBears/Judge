@@ -21,7 +21,8 @@ class SolutionController extends BaseController {
 	 */
 	public function judgeIndex() {
 		return View::make('solutions_judge')
-			->with('solutions', Solution::forCurrentContest()->unjudged()->unclaimed()->get());
+			->with('unjudged_solutions', Solution::forCurrentContest()->unjudged()->unclaimed()->get())
+			->with('claimed_solutions', Solution::forCurrentContest()->where('claiming_judge_id', Sentry::getUser()->id)->get());
 	}
 
 	/**
