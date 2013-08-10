@@ -134,7 +134,29 @@ class JudgeTest extends TestCase {
 	}
 
 	/**
-	 * In the future, we need to test that when a judge cancel's a problem, the claiming judge for a solution is set to null again
+	 * Test that when a judge cancels a problem, the claiming judge for a solution is set to null again
+	 * Also, make sure that only the claiming judge can edit this problem
 	 */
+	public function testUnclaimSolution() {
+		// Login as judge 1 and claim the solution
+		Sentry::login($this->judge1, false);
+		$this->route('GET', 'edit_solution', array($this->solution->id));
+
+		// Now login as judge 2 and attempt to unclaim on behalf of 1
+		Sentry::login($this->judge2, false);
+		$this->route('POST', 'unclaim_solution', array($this->solution->id));
+
+		// check that the claiming judge is still judge 1
+		$this->findSolution();
+		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, "Judge 2 succesfully unclaimed judge 1 from the solution");
+
+		// now let judge 1 unclaim
+		Sentry::login($this->judge1, false);
+		$this->route('POST', 'unclaim_solution', array($this->solution->id));
+
+		// verify that there is now no claiming judge
+		$this->findSolution();
+		$this->assertNull($this->solution->claiming_judge_id, "Judge 1 did not successfully unclaim his problem");
+	}
 
 }

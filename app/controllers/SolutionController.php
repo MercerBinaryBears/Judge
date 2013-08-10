@@ -120,4 +120,27 @@ class SolutionController extends BaseController {
 
 		return Redirect::route('judge_index');
 	}
+
+	/**
+	 * Unclaims a solution if the current user had claimed that solution
+	 *
+	 * @param int $id The id of the solution to unclaim
+	 */
+	public function unclaim($id) {
+		$s = Solution::find($id);
+		$judge_id = Sentry::getUser()->id;
+
+		if($s->claiming_judge_id == $judge_id) {
+			// the user is the claiming judge, he can edit this solution
+			$s->claiming_judge_id = null;
+			if(!$s->save()) {
+				Session::flash('error', $s->errors());
+			}
+		}
+		else {
+			Session::flash('error', 'You are not the claiming judge for this problem');
+		}
+
+		return Redirect::route('judge_index');
+	}
 }

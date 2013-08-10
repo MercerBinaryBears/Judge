@@ -10,6 +10,7 @@ Route::group(array('before'=>'judge'), function(){
 	// means we have more validation to do in that route...
 	Route::get('/judge/solutions/{id}/edit', array('as'=>'edit_solution', 'uses'=>'SolutionController@edit'));
 	Route::post('/judge/solutions/{id}/edit', array('as'=>'update_solution', 'uses'=>'SolutionController@update'));
+	Route::post('/judge/solutions/{id}/unclaim', array('as'=>'unclaim_solution', 'uses'=>'SolutionController@unclaim'));
 });
 
 // team routes
