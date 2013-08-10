@@ -113,6 +113,9 @@ class SolutionController extends BaseController {
 				Session::flash('error', $s->errors());
 			}
 		}
+		else {
+			Session::flash('error', 'You are not the claiming judge for this problem any more');
+		}
 
 		return Redirect::route('judge_index');
 	}
