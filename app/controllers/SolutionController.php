@@ -133,6 +133,7 @@ class SolutionController extends BaseController {
 		if($s->claiming_judge_id == $judge_id) {
 			// the user is the claiming judge, he can edit this solution
 			$s->claiming_judge_id = null;
+			$s->solution_state_id = SolutionState::pending()->id;
 			if(!$s->save()) {
 				Session::flash('error', $s->errors());
 			}
