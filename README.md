@@ -6,3 +6,4 @@ Steps to set up Judge on your machine:
 4. Run ```php artisan asset:publish```
 5. Run ```php artisan migrate```
 6. Run ```php artisan db:seed```
+7. Run ```php artisan serve``` to start the server.
