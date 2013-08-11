@@ -16,6 +16,13 @@ class Contest extends Base {
 		return $this->hasMany('Problem');
 	}
 
+    /**
+     * Gets the users associated with a contest
+     */
+    public function users() {
+        return $this->hasMany('User');
+    }
+
 	/**
 	 * A scope for the contest table that provides only
 	 * The "current" contests, i.e. ones that have already started

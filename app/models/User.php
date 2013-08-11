@@ -38,6 +38,13 @@ class User extends Base {
 		return $this->password;
 	}
 
+    /**
+     * Gets all of the contests that a user is participating in
+     */
+    public function contests() {
+        return $this->belongsToMany('Contest');
+    }
+
 	/**
 	 * Gets all of the solutions submitted by a user
 	 */
