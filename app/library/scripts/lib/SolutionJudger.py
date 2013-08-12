@@ -1,4 +1,5 @@
 class SolutionJudger(object):
+	'''Judges a passed solution by autodetecting the language and loading the correct language judging class'''
 
 	def __init__(self, filename=None, languageJudgeClass=None):
 		# Make sure that a file is actual provided to the class
@@ -15,9 +16,10 @@ class SolutionJudger(object):
 
 	def _autoloadLanguageJudge(self, filename):
 		'''
-		Returns an Python Class Object
+		Given a filename, attempts to autoload the LanguageJudge subclass that parses this language
 		'''
-		# build the class name from the extension
+
+		# build the class name from the extension, by title casing: PyJudge, CJudge, CppJudge, JavaJudge, RubyJudge, and so on
 		extension = filename.split('.')[-1]
 		languageJudgeClassName = extension.capitalize() + 'Judge'
 
