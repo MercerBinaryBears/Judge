@@ -16,7 +16,7 @@ class CreateContestUserJoinTable extends Migration {
             $table->integer('user_id');
             $table->integer('contest_id');
             $table->timestamps();
-        )};
+        });
 	}
 
 	/**
