@@ -10,5 +10,15 @@ if len(sys.argv) < 2 :
 	print usage()
 	sys.exit(0)
 
-filename = sys.argv[1]
-judger = SolutionJudger(filename)
+# initialize
+judger = SolutionJudger(filename=sys.argv[1], debug=True)
+
+
+# attempt compile
+compile_status, compile_output = judger.compile()
+
+# attempt run
+run_status, run_output = judger.run(input_file='judge.in', output_file='team.out')
+
+# check the diff
+diff_status, diff_output = judger.diff('judge.out')
