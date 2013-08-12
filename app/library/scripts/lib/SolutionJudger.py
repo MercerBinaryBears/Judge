@@ -69,7 +69,7 @@ class SolutionJudger(object):
 
 		status, output = commands.getstatusoutput(run_command)
 
-		return status, output
+		return status==0, output
 
 	def diff(self, expected_output_file='/dev/null', program_output_file=None):
 		'''Checks the output of a program with the correct output, returns a tuple with a boolean match, and the diff output'''
@@ -80,6 +80,6 @@ class SolutionJudger(object):
 		if self.debug:
 			print "Comparing program output {0} and judging output {1}".format(self.program_output_file, expected_output_file)
 
-		status, output = commands.getstatusoutput('diff {0} {1}')
+		status, output = commands.getstatusoutput('diff {0} {1}'.format(self.program_output_file, expected_output_file))
 
-		return (output == output, output)
+		return (output == '', output)
