@@ -8,15 +8,16 @@ class TempContestTableSeeder extends Seeder {
 	public function run()
 	{
 		// the contest
-		$contest = $this->createContest();
+		$contest1 = $this->createContest();
+        $contest2 = $this->createContest();
 
 		// problems
-		$problem1 = $this->createProblem('Problem 1', $contest);
-		$problem2 = $this->createProblem('Problem 2', $contest);
+		$problem1 = $this->createProblem('Problem 1', $contest1);
+		$problem2 = $this->createProblem('Problem 2', $contest1);
 
 		// users
-		$team1 = $this->createTeam('Team 1', $contest);
-		$team2 = $this->createTeam('Team 2', $contest);
+		$team1 = $this->createTeam('Team 1', array($contest1->id, $contest2->id));
+		$team2 = $this->createTeam('Team 2', array($contest1->id, $contest2->id));
 
 		// some solutions
 		$this->createSolution($team1, $problem1);
@@ -67,14 +68,15 @@ class TempContestTableSeeder extends Seeder {
 		return $this->saveOrErr($problem, 'Invalid Problem');
 	}
 
-	private function createTeam($username = 'Team A', $contest) {
+	private function createTeam($username = 'Team A', array $contest_ids) {
 		$user = new User();
 		$user->username = $username;
 		$user->password = 'secret';
-        $user->contest_id = $contest->id;
 		$user->admin = false;
 		$user->judge = false;
 		$user->team = true;
+
+        $user->contests()->sync($contest_ids);
 		return $this->saveOrErr($user, 'Invalid User');
 	}
 

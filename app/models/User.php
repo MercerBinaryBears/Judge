@@ -42,7 +42,7 @@ class User extends Base {
      * Gets all of the contests that a user is participating in
      */
     public function contests() {
-        return $this->belongsToMany('Contest');
+        return $this->belongsToMany('Contest')->withPivot('contest_user');
     }
 
 	/**

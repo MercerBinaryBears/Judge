@@ -20,7 +20,7 @@ class Contest extends Base {
      * Gets the users associated with a contest
      */
     public function users() {
-        return $this->belongsToMany('User');
+        return $this->belongsToMany('User')->withPivot('contest_user');
     }
 
 	/**

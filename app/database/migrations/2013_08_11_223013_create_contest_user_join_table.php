@@ -16,6 +16,10 @@ class CreateContestUserJoinTable extends Migration {
             $table->integer('user_id');
             $table->integer('contest_id');
             $table->timestamps();
+
+            // Set foreign key relationship between users and contests
+            $table->foreign('user_id')->references('id')->on('contests')->on_delete('cascade')->on_update('cascade');
+            $table->foreign('contest_id')->references('id')->on('users')->on_delete('cascade')->on_update('cascade');
         });
 	}
 
