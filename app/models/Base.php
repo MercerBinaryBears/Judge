@@ -6,7 +6,7 @@ use \LaravelBook\Ardent\Ardent as Ardent;
 class Base extends Ardent {
 
 	/**
-	 * A method for processing uploads. Reads an uploaded and assigns class properties automatically
+	 * A method for processing uploads. Reads an uploaded and assigns class properties automagically
 	 *
 	 * @param string $input_field The input field name that points to the uploaded file
 	 * @param string $path_attribute The name of the model's attribute to store the file's new location on disk
