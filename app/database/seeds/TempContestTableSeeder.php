@@ -9,7 +9,7 @@ class TempContestTableSeeder extends Seeder {
 	{
 		// the contest
 		$contest1 = $this->createContest();
-        $contest2 = $this->createContest();
+		$contest2 = $this->createContest();
 
 		// problems
 		$problem1 = $this->createProblem('Problem 1', $contest1);
