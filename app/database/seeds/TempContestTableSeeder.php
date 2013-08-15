@@ -75,8 +75,7 @@ class TempContestTableSeeder extends Seeder {
 		$user->admin = false;
 		$user->judge = false;
 		$user->team = true;
-
-        $user->contests()->sync($contest_ids);
+		$user->contests()->sync($contest_ids);
 		return $this->saveOrErr($user, 'Invalid User');
 	}
 
