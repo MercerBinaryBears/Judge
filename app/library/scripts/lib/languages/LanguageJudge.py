@@ -24,3 +24,5 @@ class LanguageJudge(object):
 	def getRunCommand(self):
 		'''Build the shell command that runs a program in this language (reading from stdin, printing to stdout)'''
 		return ''
+
+	# TODO: add cleanup method
