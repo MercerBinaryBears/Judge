@@ -1,3 +1,4 @@
+import os
 import commands
 import importlib
 
@@ -56,7 +57,7 @@ class SolutionJudger(object):
 
 		return (did_succeed, output)
 
-	def run(self, input_file='/dev/null', output_file='/dev/null'):
+	def run(self, input_file='judge.in', output_file='team.out'):
 		'''Runs the compiled output from the passed file on the passed input file, redirected in the output file, returning the status code'''
 
 		run_command = "{0} < {1} > {2}".format(self.judger.getRunCommand(), input_file, output_file)
@@ -71,7 +72,7 @@ class SolutionJudger(object):
 
 		return status==0, output
 
-	def diff(self, expected_output_file='/dev/null', program_output_file=None):
+	def diff(self, expected_output_file='judge.out', program_output_file='team.out'):
 		'''Checks the output of a program with the correct output, returns a tuple with a boolean match, and the diff output'''
 
 		if program_output_file != None:
@@ -83,3 +84,8 @@ class SolutionJudger(object):
 		status, output = commands.getstatusoutput('diff {0} {1}'.format(self.program_output_file, expected_output_file))
 
 		return (output == '', output)
+
+	def cleanup(self):
+		'''Cleans up any left over files'''
+		os.remove('team.out')
+		self.judger.cleanup();

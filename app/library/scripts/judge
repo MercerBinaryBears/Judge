@@ -20,15 +20,17 @@ if not compile_status:
 	sys.exit(1)
 
 # attempt run
-run_status, run_output = judger.run(input_file='judge.in', output_file='team.out')
+run_status, run_output = judger.run()
 if not run_status:
 	print "Run failed: {0}".format(run_output)
 	sys.exit(2)
 
 # check the diff
-diff_status, diff_output = judger.diff('judge.out')
+diff_status, diff_output = judger.diff()
 if not diff_status:
 	print "Diff failed: {0}".format(diff_output)
 	sys.exit(3)
+
+judger.cleanup()
 
 print "Correct"

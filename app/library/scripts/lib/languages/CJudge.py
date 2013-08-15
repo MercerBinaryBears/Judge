@@ -1,3 +1,4 @@
+import os
 from LanguageJudge import LanguageJudge
 
 class CJudge(LanguageJudge):
@@ -9,3 +10,6 @@ class CJudge(LanguageJudge):
 
 	def getRunCommand(self):
 		return "a.out"
+
+	def cleanup(self):
+		os.remove("a.out");

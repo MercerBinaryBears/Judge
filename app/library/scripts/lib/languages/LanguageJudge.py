@@ -25,4 +25,7 @@ class LanguageJudge(object):
 		'''Build the shell command that runs a program in this language (reading from stdin, printing to stdout)'''
 		return ''
 
-	# TODO: add cleanup method
+	@abstractmethod
+	def cleanup(self):
+		'''Deletes any temporary files created in the process of judging'''
+		return None
