@@ -16,7 +16,7 @@ class CreateSolutions extends Migration {
 			$table->integer('problem_id');
 			$table->integer('user_id');
 			$table->text('solution_code');
-			$table->text('solution_language');
+			$table->integer('language_id');
 			$table->text('solution_filename');
 			$table->text('solution_state_id');
 			$table->integer('claiming_judge_id')->nullable();

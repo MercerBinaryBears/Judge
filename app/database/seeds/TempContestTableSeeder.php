@@ -19,12 +19,15 @@ class TempContestTableSeeder extends Seeder {
 		$team1 = $this->createTeam('Team 1', array($contest1->id, $contest2->id));
 		$team2 = $this->createTeam('Team 2', array($contest1->id, $contest2->id));
 
+		// solution language
+		$language = Language::where('name','Python')->first();
+
 		// some solutions
-		$this->createSolution($team1, $problem1);
-		$this->createSolution($team1, $problem2);
-		$this->createSolution($team1, $problem1);
-		$this->createSolution($team2, $problem2);
-		$this->createSolution($team1, $problem2);
+		$this->createSolution($team1, $problem1, $language);
+		$this->createSolution($team1, $problem2, $language);
+		$this->createSolution($team1, $problem1, $language);
+		$this->createSolution($team2, $problem2, $language);
+		$this->createSolution($team1, $problem2, $language);
 	}
 
 	private function writeTmp($filename='test.py', $path='/tmp/', $contents='Hello world') {
@@ -79,7 +82,7 @@ class TempContestTableSeeder extends Seeder {
 		return $this->saveOrErr($user, 'Invalid User');
 	}
 
-	private function createSolution($team, $problem) {
+	private function createSolution($team, $problem, $language) {
 		$judging = SolutionState::pending();
 
 		$solution = new Solution();
@@ -91,7 +94,7 @@ class TempContestTableSeeder extends Seeder {
 		$solution->user_id = $team->id;
 		$solution->problem_id = $problem->id;
 		$solution->solution_filename = 'test.py';
-		$solution->solution_language = 'py';
+		$solution->language_id = $language->id;
 		$solution->solution_state_id = $judging->id;
 		return $this->saveOrErr($solution, 'Invalid Solution');
 	}

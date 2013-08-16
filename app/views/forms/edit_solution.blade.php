@@ -4,7 +4,7 @@
 Solution for {{ $solution->problem->name }} <br/>
 Submitted by {{ $solution->user->username }} at {{ $solution->created_at }} <br/>
 
-Submitted in {{$solution->solution_language}} <br/>
+Submitted in {{$solution->language->name}} <br/>
 
 Download {{ link_to_route('solution_package', 'Solution Package', array($solution->id), array('_target'=>'blank'))}}
 
