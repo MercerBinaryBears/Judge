@@ -52,7 +52,8 @@ return array(
 		'users',
 		'contests',
 		'problems',
-		'solutions'
+		'solutions',
+		'languages',
 		),
 
 	/**
