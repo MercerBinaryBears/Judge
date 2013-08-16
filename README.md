@@ -1,7 +1,7 @@
 Steps to set up Judge on your machine:
 
 1. Make sure you have PHP 5.4 with PDO and SQlite enabled.
-2. Have [Composer](getcomposer.org) installed and in your PATH.
+2. Have [Composer](http://getcomposer.org) installed and in your PATH.
 3. Run ```composer install``` 
 4. Run ```php artisan asset:publish```
 5. Run ```php artisan migrate```

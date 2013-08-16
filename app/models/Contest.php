@@ -16,12 +16,12 @@ class Contest extends Base {
 		return $this->hasMany('Problem');
 	}
 
-    /**
-     * Gets the users associated with a contest
-     */
-    public function users() {
-        return $this->belongsToMany('User');
-    }
+	/**
+	 * Gets the users associated with a contest
+	 */
+	public function users() {
+		return $this->belongsToMany('User')->withPivot('contest_user');
+	}
 
 	/**
 	 * A scope for the contest table that provides only
