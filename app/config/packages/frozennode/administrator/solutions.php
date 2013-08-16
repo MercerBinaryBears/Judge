@@ -28,6 +28,11 @@ return array(
 			'relationship' => 'claimingJudge',
 			'select' => '(:table).username',
 			),
+		'language' => array(
+			'title' => 'Language',
+			'relationship' => 'language',
+			'select' => '(:table).name',
+			),
 
 		),
 	'edit_fields' => array(

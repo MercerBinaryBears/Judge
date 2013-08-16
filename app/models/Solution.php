@@ -10,7 +10,7 @@ class Solution extends Base {
 		'problem_id' => 'required',
 		'user_id' => 'required',
 		'solution_code' => 'required',
-		'solution_language' => 'required',
+		'language_id' => 'required',
 		'solution_state_id' => 'required',
 		);
 
@@ -46,6 +46,13 @@ class Solution extends Base {
 	 */
 	public function claimingJudge() {
 		return $this->belongsTo('User', 'claiming_judge_id');
+	}
+
+	/**
+	 * Gets the language this problem was submitted in
+	 */
+	public function language() {
+		return $this->belongsTo('Language');
 	}
 
 	/**
