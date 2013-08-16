@@ -1,0 +1,5 @@
+# ignore compiled files and test output
+*.py[cod]
+.coverage
+.tox
+nosetestsxml

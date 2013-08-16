@@ -1,0 +1,36 @@
+#!/usr/bin/python
+
+import sys
+from lib.SolutionJudger import SolutionJudger
+
+def usage():
+	return "FILENAME needed"
+
+if len(sys.argv) < 2 :
+	print usage()
+	sys.exit(0)
+
+# initialize
+judger = SolutionJudger(filename=sys.argv[1], debug=True)
+
+# attempt compile
+compile_status, compile_output = judger.compile()
+if not compile_status:
+	print "Compile failed: {0}".format(compile_output)
+	sys.exit(1)
+
+# attempt run
+run_status, run_output = judger.run()
+if not run_status:
+	print "Run failed: {0}".format(run_output)
+	sys.exit(2)
+
+# check the diff
+diff_status, diff_output = judger.diff()
+if not diff_status:
+	print "Diff failed: {0}".format(diff_output)
+	sys.exit(3)
+
+judger.cleanup()
+
+print "Correct"
