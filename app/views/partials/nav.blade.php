@@ -16,15 +16,17 @@
 		</ul>
 	@else
 		{{ Form::open(array('url'=>'/login', 'class'=>'navbar-form pull-left')) }}
-			<div class='input-prepend'>
+			<span class='input-prepend'>
 				<span class='add-on'><i class='icon-user'></i></span>
 				{{ Form::text('username', Input::old('username'), array('placeholder'=>'Username')) }}
-			</div>
-			<div class='input-prepend'>
+			</span>
+			<span class='input-prepend'>
 				<span class='add-on'><i class='icon-lock'></i></span>
 				{{ Form::password('password', array('placeholder'=>'Password')) }}
-			</div>
-			{{ Form::submit('Login', array('class'=>'btn')) }}
+			</span>
+			<span class='input-prepend'>
+				{{ Form::submit('Login', array('class'=>'btn')) }}
+			</span>
 		{{ Form::close() }}
 	@endif
 	</div>

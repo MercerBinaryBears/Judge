@@ -35,7 +35,7 @@
 					<dt>Judged as</dt>
 					<dd>{{ $solution->solution_state->name }}</dd>
 					<dt></dt>
-					<dd>{{ link_to_route('edit_solution', 'Claim', array('id'=>$solution->id), array()) }}</dd>
+					<dd>{{ link_to_route('edit_solution', 'Edit', array('id'=>$solution->id), array()) }}</dd>
 				</dl>
 			</li>
 		@endforeach
