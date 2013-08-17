@@ -11,8 +11,7 @@ class UpdateForeignKeyInProblemsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('problems', function($table)
-		{
+		Schema::table('problems', function($table) {
 			$table->dropForeign('posts_contest_id_foreign');
 			$table->foreign('contest_id')->references('id')->on('contests');
 		});
@@ -25,8 +24,7 @@ class UpdateForeignKeyInProblemsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('problems', function($table)
-		{
+		Schema::table('problems', function($table) {
 			$table->dropForeign('posts_contest_id_foreign');
 			$table->foreign('contest_id')->references('contests')->on('id');
 		});
