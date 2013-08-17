@@ -10,13 +10,23 @@
 		@show
 	</head>
 	<body>
-		<div class='login'>
-			@include('partials.login')
-		</div>
-		{{ HTML::flash() }}
-		<div id='content'>
-			@section('content')
-			@show
+		<div class='container'>
+			<div class='row'>
+				<div class='logo span12'>
+					<img src='asdfa' alt='img'/>
+					<h1>Logo Here</h1>
+				</div>
+			<div class='row'>
+				<div class='login span12'>
+					@include('partials.login')
+				</div>
+			</div>
+			</div>
+			{{ HTML::flash() }}
+			<div id='content' class='row'>
+				@section('content')
+				@show
+			</div>
 		</div>
 	</body>
 </html>

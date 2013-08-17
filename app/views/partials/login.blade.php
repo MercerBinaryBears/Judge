@@ -12,10 +12,10 @@
 	<a href="/logout">Logout</a>
 @else
 	{{ Form::open(array('url'=>'/login')) }}
-	{{ Form::label('username','Username') }}
-	{{ Form::text('username', Input::old('username')) }}
-	{{ Form::label('password', 'Password') }}
-	{{ Form::password('password') }}
-	{{ Form::submit('Login') }} <br/>
+		{{ Form::label('username','Username') }}
+		{{ Form::text('username', Input::old('username')) }}
+		{{ Form::label('password', 'Password') }}
+		{{ Form::password('password') }}
+		{{ Form::submit('Login') }}
 	{{ Form::close() }}
 @endif
