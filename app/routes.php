@@ -26,3 +26,13 @@ Route::group(array('before'=>'team'), function(){
 // Authentication routes
 Route::post('/login', array('as'=>'login', 'uses'=>'UserController@login'));
 Route::get('/logout', array('as'=>'logout', 'uses'=>'UserController@logout'));
+
+// API Routes
+Route::group(array('before'=>'apiAuth'), function(){
+
+	// a ping pong route to verify api access
+	Route::get('api/ping', function(){
+		return 'pong';
+	});
+
+});
