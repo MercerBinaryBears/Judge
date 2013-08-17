@@ -3,18 +3,30 @@
 	<head>
 		<title>Judge</title>
 		@section('scripts')
+			<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 		@show
 		@section('styles')
+			<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 		@show
 	</head>
 	<body>
-		<div class='login'>
-			@include('partials.login')
-		</div>
-		{{ HTML::flash() }}
-		<div id='content'>
-			@section('content')
-			@show
+		<div class='container'>
+			<div class='row'>
+				<div class='logo span2'>
+					<img src='asdfa' alt='img'/>
+				</div>
+				<div class='span10'>
+					<h1>Logo Here</h1>
+				</div>
+			</div>
+			<div class='row'>
+				@include('partials.nav')
+			</div>
+			{{ HTML::flash() }}
+			<div id='content' class='row'>
+				@section('content')
+				@show
+			</div>
 		</div>
 	</body>
 </html>
