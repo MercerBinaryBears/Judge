@@ -12,15 +12,15 @@
 	<body>
 		<div class='container'>
 			<div class='row'>
-				<div class='logo span12'>
+				<div class='logo span2'>
 					<img src='asdfa' alt='img'/>
+				</div>
+				<div class='span10'>
 					<h1>Logo Here</h1>
 				</div>
-			<div class='row'>
-				<div class='login span12'>
-					@include('partials.login')
-				</div>
 			</div>
+			<div class='row'>
+				@include('partials.nav')
 			</div>
 			{{ HTML::flash() }}
 			<div id='content' class='row'>
