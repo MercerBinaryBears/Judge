@@ -162,13 +162,12 @@ class SolutionController extends BaseController {
 		| 1) The actual solution code, in its original name the client provided
 		| 2) The judging input
 		| 3) The judging output
-		| 4) A judge helper script (to be written) that essentially automates the
+		| 4) A judge helper script that essentially automates the
 		|    build, checks for memory errors and exceptions
 		*/
 		$solution_real_path = $solution->getPathForResource('solution_code');
 		$judging_input_real_path = $solution->problem->getPathForResource('judging_input');
 		$judging_output_real_path = $solution->problem->getPathForResource('judging_output');
-		// $judge_script = 'A STATIC PATH';
 
 
 		// the path for a zip is built off of the solution id and a timestamp
@@ -177,6 +176,9 @@ class SolutionController extends BaseController {
 
 		// attempt to create the zip file
 		$zip_file = new ZipArchive();
+
+		// TODO: Generalize these calls
+
 		$open_result = $zip_file->open($zip_path, ZIPARCHIVE::CREATE);
 		if($open_result !== true) {
 			return "Could not start the zip file at $zip_path, " . $this->ZipStatusString($open_result);
@@ -196,7 +198,9 @@ class SolutionController extends BaseController {
 			return "Could not add the zip file at $solution_real_path, " . $this->ZipStatusString($add_result);
 		}
 
-		// $zip_file->addFile($judge_script, 'judge');
+		// recursively add the judging scripts
+		$this->addJudgeScripts($zip_file);
+
 		$close_result = $zip_file->close();
 		if($close_result !== true) {
 			return "Could not close the zip file at $zip_path, " . $this->ZipStatusString($close_result);
@@ -236,6 +240,33 @@ class SolutionController extends BaseController {
 			case ZipArchive::ER_DELETED      : return 'N Entry has been deleted';
 
 			default: return sprintf('Unknown status %s', $status );
+		}
+	}
+
+	/**
+	 * Adds the correct directory structure for the judge scripts. In the future,
+	 * the judge will not have to download this everytime, but instead run it as
+	 * an installed script, which will dynamically pull down from the serve.
+	 */
+	private function addJudgeScripts($zip_file) {
+		// the judge scripts' root directory
+		$root_path = app_path() . "/library/scripts/";
+
+		// add the main script
+		$zip_file->addFile("$root_path/judge", "judge");
+
+		// add the folder structure
+		$zip_file->addEmptyDir('lib');
+		$zip_file->addEmptyDir('lib/languages');
+
+		// add lib files
+		foreach(glob($root_path . "/lib/*.py") as $full_path) {
+			$zip_file->addFile($full_path, 'lib/' . basename($full_path));
+		}
+
+		// add language judgers
+		foreach(glob($root_path . "/lib/languages/*.py") as $full_path) {
+			$zip_file->addFile($full_path, 'lib/languages/' . basename($full_path));
 		}
 	}
 }
