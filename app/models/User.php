@@ -58,20 +58,21 @@ class User extends Base {
 	 * 
 	 * @return array the array with index: problem_id and value: score
 	 */
-	public function score {
+	public function score() {
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
 		$incorrect_state_id = SolutionState::where('is_correct', false)->where('pending', false)->first()->id;
 		$this_id = $this->id;
 		$scores = array();
-		foreach( ($contest = Contest::current())->problems as $problem ) {
+
+		foreach( Contest::current()->problems as $problem ) {
 
     			// check that they actually solved it
-    			if( ($solutions = Solution::where('problem_id', $problem->id)->where('user_id', $this_id) )
-            			->where('solution_state_id', $solved_state_id)->get()->count() > 0) {
+			$solutions = Solution::where('problem_id', $problem->id)->where('user_id', $this_id);
+    			if( Solution::where('solution_state_id', $solved_state_id)->get()->count() > 0 ) {
 
-				// add 20 points for each incorrect submission and 1 for each minute since contest start
+				// calculate score
 				$incorrect_subs = $solutions->where(solution_state_id, $incorrect_state_id)->get()->count();
-        			$scores[$problem->id] = ($incorrect_subs * 20) + $contest->starts_at->Carbon::diffInMinutes();
+        			$scores[$problem->id] = ($incorrect_subs * 20) + Contest::current()->starts_at->diffInMinutes();
     			}
 		}
 		return $scores;
