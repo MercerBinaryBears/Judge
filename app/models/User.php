@@ -52,6 +52,31 @@ class User extends Base {
 		return $this->hasMany('Solution');
 	}
 
+	/** 
+	 * Scores the solutions submitted by a user
+	 * for each contest it's participating in
+	 * 
+	 * @return array the array with index: problem_id and value: score
+	 */
+	public function score {
+		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
+		$incorrect_state_id = SolutionState::where('is_correct', false)->where('pending', false)->first()->id;
+		$this_id = $this->id;
+		$scores = array();
+		foreach( ($contest = Contest::current())->problems as $problem ) {
+
+    			// check that they actually solved it
+    			if( ($solutions = Solution::where('problem_id', $problem->id)->where('user_id', $this_id) )
+            			->where('solution_state_id', $solved_state_id)->get()->count() > 0) {
+
+				// add 20 points for each incorrect submission and 1 for each minute since contest start
+				$incorrect_subs = $solutions->where(solution_state_id, $incorrect_state_id)->get()->count();
+        			$scores[$problem->id] = ($incorrect_subs * 20) + $contest->starts_at->Carbon::diffInMinutes();
+    			}
+		}
+		return $scores;
+	}
+
 	/**
 	 * Hashes the password with the Sentry Hasher, so that the admin
 	 * also hashes the password when it saves, even though its not using
