@@ -28,11 +28,14 @@ Route::post('/login', array('as'=>'login', 'uses'=>'UserController@login'));
 Route::get('/logout', array('as'=>'logout', 'uses'=>'UserController@logout'));
 
 // API Routes
-Route::group(array('before'=>'apiAuth'), function(){
+Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 
 	// a ping pong route to verify api access
-	Route::get('api/ping', function(){
+	Route::get('ping', function(){
 		return 'pong';
 	});
+
+	// provide solution types
+	Route::get('solutionStates', array('uses'=>'ApiController@getSolutionStates'));
 
 });
