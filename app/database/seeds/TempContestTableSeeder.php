@@ -71,7 +71,7 @@ class TempContestTableSeeder extends Seeder {
 		return $this->saveOrErr($problem, 'Invalid Problem');
 	}
 
-	private function createTeam($username = 'Team A', array $contest_ids) {
+	private function createTeam($username, array $contest_ids) {
 		$user = new User();
 		$user->username = $username;
 		$user->password = 'secret';
