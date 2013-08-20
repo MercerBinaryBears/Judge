@@ -60,19 +60,12 @@ class User extends Base {
 	 */
 	public function score() {
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
-		$incorrect_state_id = SolutionState::where('is_correct', false)->where('pending', false)->first()->id;
 		$this_id = $this->id;
 		$scores = array();
-
 		foreach( Contest::current()->problems as $problem ) {
-
-    			// check that they actually solved it
 			$solutions = Solution::where('problem_id', $problem->id)->where('user_id', $this_id);
     			if( Solution::where('solution_state_id', $solved_state_id)->get()->count() > 0 ) {
-
-				// calculate score
-				$incorrect_subs = $solutions->where(solution_state_id, $incorrect_state_id)->get()->count();
-        			$scores[$problem->id] = ($incorrect_subs * 20) + Contest::current()->starts_at->diffInMinutes();
+        			$scores[$problem->id] = ($solutions->count() - 1) * 20 + Contest::current()->starts_at->diffInMinutes();
     			}
 		}
 		return $scores;
