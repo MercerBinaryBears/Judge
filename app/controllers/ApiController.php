@@ -13,8 +13,7 @@ class ApiController extends BaseController {
 	 * API function to claim and retrieve a problem
 	 */
 	public function getSolution($id) {
-		$user = User::where('api_key', '=', Input::get('api_key'))->firstOrFail();
-		$user_id = $user->id;
+		$user_id = Sentry::getUser()->id;
 
 		// check that either no judge has claimed the solution, or the current user has
 		// If the solution is claimed, redirect back with an error message
