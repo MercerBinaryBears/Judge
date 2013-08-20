@@ -14,6 +14,8 @@ class TempContestTableSeeder extends Seeder {
 		// problems
 		$problem1 = $this->createProblem('Problem 1', $contest1);
 		$problem2 = $this->createProblem('Problem 2', $contest1);
+		$problemA = $this->createProblem('Problem A', $contest2);
+		$problemB = $this->createProblem('Problem B', $contest2);
 
 		// users
 		$team1 = $this->createTeam('Team 1', array($contest1->id, $contest2->id));
