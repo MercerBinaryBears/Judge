@@ -38,4 +38,7 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	// provide solution types
 	Route::get('solutionStates', array('uses'=>'ApiController@getSolutionStates'));
 
+	// claiming of solutions
+	Route::get('claim/{id}', array('uses'=>'ApiController@getSolution'));
+
 });
