@@ -32,4 +32,28 @@ class ApiController extends BaseController {
 
 		return $solution;
 	}
+
+	/**
+	 * API function to unclaim a problem
+	 */
+	public function unclaim($id) {
+		$s = Solution::find($id);
+		$judge_id = Sentry::getUser()->id;
+
+		if($s->claiming_judge_id == $judge_id) {
+			// the user is the claiming judge, he can edit this solution
+			$s->claiming_judge_id = null;
+			$s->solution_state_id = SolutionState::pending()->id;
+			if(!$s->save()) {
+				App::abort(400, $s->errors());
+			}
+		}
+		else {
+			App::abort(403, 'You are not the claiming judge for this problem');
+		}
+
+		return json_encode(array(
+			'status' => 'success'
+			));
+	}
 }

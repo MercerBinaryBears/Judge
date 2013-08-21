@@ -41,4 +41,7 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	// claiming of solutions
 	Route::get('claim/{id}', array('uses'=>'ApiController@getSolution'));
 
+	// unclaim solutions
+	Route::get('unclaim/{id}', array('uses'=>'ApiController@unclaim'));
+
 });
