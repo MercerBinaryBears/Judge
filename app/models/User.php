@@ -56,7 +56,7 @@ class User extends Base {
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
 		if( $num_solutions = Solution::where('problem_id', $problem->id)
 			->where('user_id', $user->id)
-			->where('solved_state_id', $solved_state_id)->get()->count() > 0 ) {
+			->where('solution_state_id', $solved_state_id)->get()->count() > 0 ) {
 			$points += ($num_solutions - 1) * 20 + Contest::current()->starts_at->diffInMinutes();
 		}
 		return $points;
