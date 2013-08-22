@@ -22,8 +22,8 @@ class TempContestTableSeeder extends Seeder {
 		$team2 = $this->createTeam('Team 2', array($contest1->id, $contest2->id));
 
 		// attach users to their contests
-		$this->attachToContests($team1, array($contest1->id, $contest2->id));
-		$this->attachToContests($team2, array($contest1->id, $contest2->id));
+		$this->attachToContests($team1, array($contest1, $contest2));
+		$this->attachToContests($team2, array($contest1, $contest2));
 
 		// solution language
 		$language = Language::where('name','Python')->first();
@@ -51,9 +51,9 @@ class TempContestTableSeeder extends Seeder {
 		}
 	}
 
-	private function attachToContests($user, array $contest_ids) {
-		foreach($contest_ids as $contest_id) {
-			Contest::find($contest_id)->users()->attach($user);
+	private function attachToContests($user, array $contests) {
+		foreach($contests as $contest) {
+			$contest->users()->attach($user);
 		}
 	}
 
