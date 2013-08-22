@@ -39,16 +39,18 @@ class User extends Base {
 	}
 
 	/**
-	 * Gets all of the contests that a user is participating in
+	 * Gets the contests that a user is participating in.
 	 */
 	public function contests() {
 		return $this->belongsToMany('Contest');
 	}
 
 	/**
-	 * Scores the user's solution for this problem
+	 * Scores the user's solution for this problem.
+	 * 20 pts added for each incorrect solution, plus 1 pt
+	 * for each additional minute since contest start time.
 	 *
-	 * @param p the problem to score
+	 * @param problem $problem the problem to score
 	 * @return int the number of points
 	 */
 	public function pointsForProblem($problem) {
@@ -63,7 +65,7 @@ class User extends Base {
 	}
 
 	/**
-	 * Gets all of the solutions submitted by a user
+	 * Gets all of the solutions submitted by a user.
 	 */
 	public function solutions() {
 		return $this->hasMany('Solution');
