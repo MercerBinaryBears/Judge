@@ -21,6 +21,10 @@ class TempContestTableSeeder extends Seeder {
 		$team1 = $this->createTeam('Team 1', array($contest1->id, $contest2->id));
 		$team2 = $this->createTeam('Team 2', array($contest1->id, $contest2->id));
 
+		// attach users to their contests
+		$this->attachToContests($team1, array($contest1->id, $contest2->id));
+		$this->attachToContests($team2, array($contest1->id, $contest2->id));
+
 		// solution language
 		$language = Language::where('name','Python')->first();
 
@@ -44,6 +48,12 @@ class TempContestTableSeeder extends Seeder {
 		}
 		else {
 			throw new Exception($message . ' ' . $model->errors()->toJson());
+		}
+	}
+
+	private function attachToContests($user, array $contest_ids) {
+		foreach($contest_ids as $contest_id) {
+			Contest::find($contest_id)->users()->attach($user);
 		}
 	}
 
@@ -81,6 +91,7 @@ class TempContestTableSeeder extends Seeder {
 		$user->judge = false;
 		$user->team = true;
 		$user->contests()->sync($contest_ids);
+	
 		return $this->saveOrErr($user, 'Invalid User');
 	}
 
