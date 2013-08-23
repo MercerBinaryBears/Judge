@@ -11,6 +11,9 @@ return array(
 		'username' => array(
 			'title' => 'User'
 			),
+		'api_key' => array(
+			'title' => 'API Key'
+			),
 		'admin' => array(
 			'title' => 'Is Admin'
 			),

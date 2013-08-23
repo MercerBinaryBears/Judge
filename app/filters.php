@@ -63,6 +63,38 @@ Route::filter('team', function() {
 	}
 });
 
+/*
+|-------------------------------------------------------------------------
+| API Authentication
+|-------------------------------------------------------------------------
+|
+| Determines if a user should have API access or not
+|
+*/
+Route::filter('apiAuth', function() {
+
+	// if the user did not provide an api key, kick them out
+	if(!Input::has('api_key')) {
+		App::abort(401, 'No API key provided');
+	}
+
+	// find the user with that API key
+	$user = User::where('api_key', '=', Input::get('api_key'))->first();
+
+	// check that we found a user
+	if($user == null) {
+		App::abort(401, 'Invalid API key');
+	}
+
+	// lastly, check that they are a judge or admin
+	if(!$user->admin && !$user->judge) {
+		App::abort(401, 'No Permission');
+	}
+
+	// otherwise, we let them through
+	Sentry::login(Sentry::getUserProvider()->findById($user->id), false);
+});
+
 
 /*
 |--------------------------------------------------------------------------

@@ -52,6 +52,18 @@ Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+
+	/*
+	 * If the request is an api request, we return JSON data.
+	 * Otherwise, we return nothing and let the standard page show
+	 */
+	if(Request::segment(1) == 'api') {
+		return json_encode(array(
+			'error' => true,
+			'code' => $code,
+			'message' => $exception->getMessage(),
+			));
+	}
 });
 
 /*

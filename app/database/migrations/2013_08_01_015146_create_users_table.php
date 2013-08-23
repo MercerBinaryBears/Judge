@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration {
 			$table->increments('id');
 			$table->string('username');
 			$table->string('password');
+			$table->string('api_key');
 			$table->timestamp('last_login')->nullable();
 			$table->string('persist_code')->nullable();
 			$table->boolean('activated')->default(1);
@@ -28,6 +29,7 @@ class CreateUsersTable extends Migration {
 		Sentry::getUserProvider()->create(array(
 			'username'=>'admin',
 			'password'=>'admin',
+			'api_key'=>User::generateApiKey(),
 			'admin'=>true,
 			'judge'=>false,
 			'team'=>false,
