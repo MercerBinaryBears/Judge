@@ -44,4 +44,7 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	// unclaim solutions
 	Route::get('unclaim/{id}', array('uses'=>'ApiController@unclaim'));
 
+	// update solutions
+	Route::post('{id}', array('uses'=>'ApiController@update'));
+
 });
