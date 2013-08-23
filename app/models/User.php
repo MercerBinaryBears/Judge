@@ -42,7 +42,24 @@ class User extends Base {
 	 * Gets all of the contests that a user is participating in
 	 */
 	public function contests() {
-		return $this->belongsToMany('Contest')->withPivot('contest_user');
+		return $this->belongsToMany('Contest');
+	}
+
+	/**
+	 * Scores the user's solution for this problem
+	 *
+	 * @param p the problem to score
+	 * @return int the number of points
+	 */
+	public function pointsForProblem($problem) {
+		$points = 0;
+		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
+		if( $num_solutions = Solution::where('problem_id', $problem->id)
+			->where('user_id', $user->id)
+			->where('solution_state_id', $solved_state_id)->get()->count() > 0 ) {
+			$points += ($num_solutions - 1) * 20 + Contest::current()->starts_at->diffInMinutes();
+		}
+		return $points;
 	}
 
 	/**
@@ -50,6 +67,20 @@ class User extends Base {
 	 */
 	public function solutions() {
 		return $this->hasMany('Solution');
+	}
+
+	/**
+	 * Scores the solutions submitted by a user for each
+	 * contest it's participating in.
+	 *
+	 * @return int the total number of points for this user
+	 */
+	public function totalPoints() {
+		$points = 0;
+		foreach(Contest::current()->problems as $problem) {
+			$points += $this->pointsForProblem($problem);
+		}
+		return $points;
 	}
 
 	/**
