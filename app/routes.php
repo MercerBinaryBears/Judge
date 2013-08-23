@@ -38,13 +38,17 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	// provide solution types
 	Route::get('solutionStates', array('uses'=>'ApiController@getSolutionStates'));
 
-	// claiming of solutions
-	Route::get('claim/{id}', array('uses'=>'ApiController@getSolution'));
+	// Solution API routes
+	Route::group(array('prefix'=>'solutions'), function(){
 
-	// unclaim solutions
-	Route::get('unclaim/{id}', array('uses'=>'ApiController@unclaim'));
+		// claiming of solutions
+		Route::get('{id}/claim', array('uses'=>'ApiController@getSolution'));
 
-	// update solutions
-	Route::post('{id}', array('uses'=>'ApiController@update'));
+		// unclaim solutions
+		Route::get('{id}/unclaim', array('uses'=>'ApiController@unclaim'));
 
+		// update solutions
+		Route::post('{id}', array('uses'=>'ApiController@update'));
+
+	});
 });
