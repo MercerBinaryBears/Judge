@@ -58,11 +58,15 @@ App::error(function(Exception $exception, $code)
 	 * Otherwise, we return nothing and let the standard page show
 	 */
 	if(Request::segment(1) == 'api') {
-		return json_encode(array(
-			'error' => true,
-			'code' => $code,
-			'message' => $exception->getMessage(),
-			));
+
+		$error_details = array();
+
+		if(Config::get('app.debug')) {
+			$error_details['line'] = $exception->getLine();
+			$error_details['file'] = $exception->getFile();
+		}
+
+		return Response::make(ApiController::formatJSend(false, $code, $exception->getMessage, $error_details), $code);
 	}
 });
 

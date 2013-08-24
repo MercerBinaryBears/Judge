@@ -21,22 +21,12 @@ class JudgeController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		$user_id = Sentry::getUser()->id;
-
-		// check that either no judge has claimed the solution, or the current user has
-		// If the solution is claimed, redirect back with an error message
+		// get the solution passed
 		$solution = Solution::find($id);
-		if($solution->claiming_judge_id != null && $solution->claiming_judge_id != $user_id) {
-			Session::flash('error', 'That solution has already been claimed by ' . $solution->claiming_judge->username);
-			return Redirect::route('judge_index');
-		}
 
-		// No one has claimed the file, so the current judge claims it.
-		// we update the record. If the save failed we flash the error
-		// and redirect to the judge index
-		$solution->claiming_judge_id = Sentry::getUser()->id;
-		if(!$solution->save()) {
-			Session::flash('error', $solution->errors());
+		// claim the problem, reporting errors if the user couldn't claim it
+		if(!$solution->claim()) {
+			Session::flash('error', 'You cannot claim that solution');
 			return Redirect::route('judge_index');
 		}
 
@@ -54,15 +44,14 @@ class JudgeController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$s = Solution::find($id);
-		$judge_id = Sentry::getUser()->id;
+		$solution = Solution::find($id);
 
 		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but
 		// malicious input could cause it.
-		if($s->claiming_judge_id == $judge_id) {
-			$s->solution_state_id = Input::get('solution_state_id');
-			if(!$s->save()) {
+		if($solution->ownedByCurrentUser()) {
+			$solution->solution_state_id = Input::get('solution_state_id');
+			if(!$solution->save()) {
 				Session::flash('error', $s->errors());
 			}
 		}
@@ -79,21 +68,11 @@ class JudgeController extends BaseController {
 	 * @param int $id The id of the solution to unclaim
 	 */
 	public function unclaim($id) {
-		$s = Solution::find($id);
-		$judge_id = Sentry::getUser()->id;
+		$solution = Solution::find($id);
 
-		if($s->claiming_judge_id == $judge_id) {
-			// the user is the claiming judge, he can edit this solution
-			$s->claiming_judge_id = null;
-			$s->solution_state_id = SolutionState::pending()->id;
-			if(!$s->save()) {
-				Session::flash('error', $s->errors());
-			}
-		}
-		else {
+		if(!$solution->unclaim()) {
 			Session::flash('error', 'You are not the claiming judge for this problem');
 		}
-
 		return Redirect::route('judge_index');
 	}
 

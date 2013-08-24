@@ -12,13 +12,12 @@ class ApiController extends BaseController {
 	/**
 	 * API function to claim and retrieve a problem
 	 */
-	public function getSolution($id) {
+	public function claim($id) {
 		$user_id = Sentry::getUser()->id;
 
-		// check that either no judge has claimed the solution, or the current user has
-		// If the solution is claimed, redirect back with an error message
+		// Attempt to claim, returning an error if it occurs
 		$solution = Solution::find($id);
-		if($solution->claiming_judge != null && $solution->claiming_judge->id != $user_id) {
+		if(!$solution->claim()) {
 			App::abort(403, 'That solution has already been claimed by ' . $solution->claiming_judge->username);
 		}
 
@@ -47,7 +46,7 @@ class ApiController extends BaseController {
 		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but
 		// malicious input could cause it.
-		if($s->claiming_judge_id == $judge_id) {
+		if($s->ownedByCurrentUser()) {
 			$s->solution_state_id = Input::get('solution_state_id');
 			if(!$s->save()) {
 				App::abort(400, $s->errors());
@@ -67,9 +66,8 @@ class ApiController extends BaseController {
 	 */
 	public function unclaim($id) {
 		$s = Solution::find($id);
-		$judge_id = Sentry::getUser()->id;
 
-		if($s->claiming_judge_id == $judge_id) {
+		if($s->ownedByCurrentUser()) {
 			// the user is the claiming judge, he can edit this solution
 			$s->claiming_judge_id = null;
 			$s->solution_state_id = SolutionState::pending()->id;
@@ -84,5 +82,24 @@ class ApiController extends BaseController {
 		return json_encode(array(
 			'status' => 'success'
 			));
+	}
+
+	/**
+	 * Formats an array in JSEND format
+	 *
+	 * @param bool $success If the response is a success
+	 * @param int $code The HTTP status code of the response. Defaults to 200
+	 * @param string $message The message to send to the user
+	 * @param array $data The data to send to the user
+	 */
+	public static function formatJSend($success=true, $code=200, $message='', $data=array()) {
+		return json_encode(
+			array(
+				'status' => $success ? 'success' : 'error',
+				'code' => $code,
+				'message' => $message,
+				'data' => $data
+				)
+			);
 	}
 }

@@ -95,4 +95,65 @@ class Solution extends Base {
 	public function scopeUnclaimed($query) {
 		return $query->whereNull('claiming_judge_id');
 	}
+
+	/**
+	 * Determines if the current user can alter a solution (claim it,
+	 * unclaim it, edit, or update it)
+	 */
+	public function canBeAltered() {
+		$user = Sentry::getUser();
+
+		// check if the user is logged in
+		if($user == null) {
+			return false;
+		}
+
+		// if the user is not a judge or an admin, they can't edit
+		if(!$user->judge && !$user->admin) {
+			return false;
+		}
+
+		return $this->claiming_judge_id == null || $this->ownedByCurrentUser();
+	}
+
+	/**
+	 * Checks if the current user owns this solution at this time
+	 */
+	public function ownedByCurrentUser() {
+		return $this->claiming_judge_id == Sentry::getUser()->id;
+	}
+
+	/**
+	 * Claims a problem for the current logged in user
+	 */
+	public function claim() {
+
+		// check that the user can alter the problem first
+		if(!$this->canBeAltered()) {
+			return false;
+		}
+
+		// the user can alter this problem, so update the claiming judge
+		$this->claiming_judge_id = Sentry::getUser()->id;
+
+		// make the update, and return the result
+		return $this->save();
+	}
+
+	/**
+	 * Unclaims a solution, if the judge has permission
+	 */
+	public function unclaim() {
+
+		// check that the judge has permission
+		if(!$this->canBeAltered()) {
+			return false;
+		}
+
+		// wipe the judge from the claiming judge
+		$this->claiming_judge_id = null;
+
+		// make the update and return the result
+		return $this->save();
+	}
 }
