@@ -66,7 +66,8 @@ App::error(function(Exception $exception, $code)
 			$error_details['file'] = $exception->getFile();
 		}
 
-		return Response::make(ApiController::formatJSend(false, $code, $exception->getMessage, $error_details), $code);
+		return Response::make(
+			ApiController::formatJSend($error_details, false, $code, $exception->getMessage()), $code);
 	}
 });
 

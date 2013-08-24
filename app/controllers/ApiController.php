@@ -6,7 +6,7 @@ class ApiController extends BaseController {
 	 * API function to get all SolutionTypes as an id:name pair
 	 */
 	public function getSolutionStates() {
-		return json_encode(SolutionState::all()->toArray());
+		return ApiController::formatJSend(SolutionState::all()->toArray());
 	}
 
 	/**
@@ -29,7 +29,7 @@ class ApiController extends BaseController {
 			App::abort(400, $solution->errors());
 		}
 
-		return $solution;
+		return ApiController::formatJSend(array('solution'=>$solution));
 	}
 
 	/**
@@ -56,9 +56,7 @@ class ApiController extends BaseController {
 			App::abort(403, 'You are not the claiming judge for this problem any more');
 		}
 
-		return json_encode(array(
-			'status' => 'success'
-			));
+		return ApiController::formatJSend();
 	}
 
 	/**
@@ -79,20 +77,18 @@ class ApiController extends BaseController {
 			App::abort(403, 'You are not the claiming judge for this problem');
 		}
 
-		return json_encode(array(
-			'status' => 'success'
-			));
+		return ApiController::formatJSend();
 	}
 
 	/**
 	 * Formats an array in JSEND format
 	 *
+	 * @param array $data The data to send to the user
 	 * @param bool $success If the response is a success
 	 * @param int $code The HTTP status code of the response. Defaults to 200
 	 * @param string $message The message to send to the user
-	 * @param array $data The data to send to the user
 	 */
-	public static function formatJSend($success=true, $code=200, $message='', $data=array()) {
+	public static function formatJSend($data=array(), $success=true, $code=200, $message='') {
 		return json_encode(
 			array(
 				'status' => $success ? 'success' : 'error',
