@@ -92,7 +92,8 @@ Route::filter('apiAuth', function() {
 	}
 
 	// otherwise, we let them through
-	Sentry::login(Sentry::getUserProvider()->findById($user->id), false);
+	$suser = Sentry::getUserProvider()->findById($user->id);
+	Sentry::login($suser, false);
 });
 
 
