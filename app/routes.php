@@ -36,19 +36,19 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	});
 
 	// provide solution types
-	Route::get('solutionStates', array('uses'=>'ApiController@getSolutionStates'));
+	Route::get('solutionStates', array('as'=>'', 'uses'=>'ApiController@getSolutionStates'));
 
 	// Solution API routes
 	Route::group(array('prefix'=>'solutions'), function(){
 
 		// claiming of solutions
-		Route::get('{id}/claim', array('uses'=>'ApiController@getSolution'));
+		Route::get('{id}/claim', array('as'=>'api_claim', 'uses'=>'ApiController@getSolution'));
 
 		// unclaim solutions
-		Route::get('{id}/unclaim', array('uses'=>'ApiController@unclaim'));
+		Route::get('{id}/unclaim', array('as'=>'api_unclaim', 'uses'=>'ApiController@unclaim'));
 
 		// update solutions
-		Route::post('{id}', array('uses'=>'ApiController@update'));
+		Route::post('{id}', array('as'=>'api_update', 'uses'=>'ApiController@update'));
 
 	});
 });
