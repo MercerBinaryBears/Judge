@@ -1,0 +1,4 @@
+#!/bin/bash
+artisan migrate:refresh
+artisan db:seed
+phpunit
