@@ -33,14 +33,14 @@ class JudgeTest extends TestCase {
 	 * @param string $name The judge's username
 	 * @return User The judge user that was created
 	 */
-	private function createJudge($name) {
-		Sentry::getUserProvider()->create(array(
-			'username'=>$name,
-			'password'=>'password',
-			'admin'=>false,
-			'judge'=>true,
-			'team'=>false,
-			));
+	protected function createJudge($name) {
+		$user = new User();
+		$user->username = $name;
+		$user->password = 'password';
+		$user->admin = false;
+		$user->judge = true;
+		$user->team = false;
+		$user->save();
 		return Sentry::getUserProvider()->findByLogin($name);
 	}
 
@@ -48,14 +48,14 @@ class JudgeTest extends TestCase {
 	 * Re-queries the current solution, to update the fields (if they've
 	 * been updated via a query)
 	 */
-	private function findSolution() {
+	protected function findSolution() {
 		$this->solution = Solution::find($this->solution->id);
 	}
 
 	/**
 	 * Resets a solution back to its unjudged state, with no claiming judge
 	 */
-	private function resetSolution() {
+	protected function resetSolution() {
 		$this->findSolution();
 		$this->solution->solution_state_id = SolutionState::pending()->id;
 		$this->solution->claiming_judge_id = null;
@@ -67,7 +67,7 @@ class JudgeTest extends TestCase {
 	 * Attempts to update the current solution to the passed solution state
 	 * id
 	 */
-	private function attemptUpdate($solution_state_id) {
+	protected function attemptUpdate($solution_state_id) {
 		$parameters = array(
 			'solution_state_id' => $solution_state_id,
 			);
