@@ -46,7 +46,7 @@ class ApiController extends BaseController {
 		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but
 		// malicious input could cause it.
-		if($s->claiming_judge_id == $judge_id) {
+		if($s->ownedByCurrentUser()) {
 			$s->solution_state_id = Input::get('solution_state_id');
 			if(!$s->save()) {
 				App::abort(400, $s->errors());
@@ -66,9 +66,8 @@ class ApiController extends BaseController {
 	 */
 	public function unclaim($id) {
 		$s = Solution::find($id);
-		$judge_id = Sentry::getUser()->id;
 
-		if($s->claiming_judge_id == $judge_id) {
+		if($s->ownedByCurrentUser()) {
 			// the user is the claiming judge, he can edit this solution
 			$s->claiming_judge_id = null;
 			$s->solution_state_id = SolutionState::pending()->id;

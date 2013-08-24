@@ -113,7 +113,14 @@ class Solution extends Base {
 			return false;
 		}
 
-		return $this->claiming_judge_id == null || $this->claiming_judge_id == $user->id;
+		return $this->claiming_judge_id == null || $this->ownedByCurrentUser();
+	}
+
+	/**
+	 * Checks if the current user owns this solution at this time
+	 */
+	public function ownedByCurrentUser() {
+		return $this->claiming_judge_id == Sentry::getUser()->id;
 	}
 
 	/**

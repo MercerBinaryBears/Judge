@@ -49,7 +49,7 @@ class JudgeController extends BaseController {
 		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but
 		// malicious input could cause it.
-		if($solution->canBeAltered()) {
+		if($solution->ownedByCurrentUser()) {
 			$solution->solution_state_id = Input::get('solution_state_id');
 			if(!$solution->save()) {
 				Session::flash('error', $s->errors());
