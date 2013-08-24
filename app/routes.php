@@ -31,9 +31,9 @@ Route::get('/logout', array('as'=>'logout', 'uses'=>'UserController@logout'));
 Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 
 	// a ping pong route to verify api access
-	Route::get('ping', function(){
+	Route::get('ping', array('as'=>'api_ping', function(){
 		return 'pong';
-	});
+	}));
 
 	// provide solution types
 	Route::get('solutionStates', array('as'=>'', 'uses'=>'ApiController@getSolutionStates'));
@@ -42,7 +42,7 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	Route::group(array('prefix'=>'solutions'), function(){
 
 		// claiming of solutions
-		Route::get('{id}/claim', array('as'=>'api_claim', 'uses'=>'ApiController@getSolution'));
+		Route::get('{id}/claim', array('as'=>'api_claim', 'uses'=>'ApiController@claim'));
 
 		// unclaim solutions
 		Route::get('{id}/unclaim', array('as'=>'api_unclaim', 'uses'=>'ApiController@unclaim'));
