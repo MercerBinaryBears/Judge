@@ -83,15 +83,11 @@ class JudgeTest extends TestCase {
 		Sentry::login($this->judge1, false);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertResponseOk();
-		$this->findSolution();
-		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge did not successfully claim this problem');
 
 		// login as judge 2 and attempt to claim again
 		Sentry::login($this->judge2, false);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertRedirectedToRoute('judge_index');
-		$this->findSolution();
-		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge was able to claim already claimed problem');
 	}
 
 	/**
@@ -124,8 +120,6 @@ class JudgeTest extends TestCase {
 		Sentry::login($this->judge1, false);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertResponseOk();
-		$this->findSolution();
-		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, 'Judge did not successfully claim this problem');
 
 		// now revisit that page, as the same judge and verify that I didn't get redirected
 		Sentry::login($this->judge1, false);
