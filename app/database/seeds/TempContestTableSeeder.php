@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon as Carbon;
+
 class TempContestTableSeeder extends Seeder {
 
 	/**
@@ -58,10 +60,12 @@ class TempContestTableSeeder extends Seeder {
 	}
 
 	private function createContest() {
+		$yesterday = Carbon::now()->subDay(1);
+
 		$contest = new Contest();
-		$contest->name = "Contest on " . date("H_m_s",strtotime('now'));
-		$contest->starts_at = strtotime('now');
-		$contest->ends_at = strtotime('now +3 days');
+		$contest->name = "Contest on " . $yesterday->format("Y-m-d");
+		$contest->starts_at = $yesterday->format("Y-m-d H:i:s");
+		$contest->ends_at = $yesterday->addDays(3)->format("Y-m-d H:i:s");
 		return $this->saveOrErr($contest, 'Invalid Contest');
 	}
 
@@ -91,7 +95,7 @@ class TempContestTableSeeder extends Seeder {
 		$user->judge = false;
 		$user->team = true;
 		$user->contests()->sync($contest_ids);
-	
+
 		return $this->saveOrErr($user, 'Invalid User');
 	}
 
