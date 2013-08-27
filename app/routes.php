@@ -32,7 +32,7 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 
 	// a ping pong route to verify api access
 	Route::get('ping', array('as'=>'api_ping', function(){
-		return 'pong';
+		return ApiController::formatJSend('pong');
 	}));
 
 	// provide solution types
