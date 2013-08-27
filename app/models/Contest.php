@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon as Carbon;
+
 class Contest extends Base {
 	/**
 	 * Validation rules for a contest
@@ -30,7 +32,7 @@ class Contest extends Base {
 	 * a contest inactive if its been x seconds after the end time.
 	 */
 	public function scopeCurrent($query) {
-		return $query->where('starts_at', '<=', date('Y-m-d H:i:s', strtotime('now')))
+		return $query->where('starts_at', '<=', Carbon::now()->format('Y-m-d H:i:s'))
 			->orderBy('starts_at', 'desc');
 	}
 }

@@ -1,21 +1,31 @@
 <?php
 
+use Carbon\Carbon as Carbon;
+
 class EmptyContestTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
 
-		// I'm assuming there is a single contest that is current, which may not be the case
-		// TODO: make this test more robust, by not relying on the database seed
+		// Update any active contests to be not-started
+		$this->old_start_times = array();
+		$this->contests = array();
+		foreach(Contest::current()->get() as $contest) {
+			$this->contests[] = $contest;
+			$this->old_start_times[] = $contest->starts_at;
+			$contest->starts_at = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+			$contest->save();
+		}
+
+		// I'm assuming that there actually is a contest. This may be too brittle
 		$this->contest = Contest::current()->first();
-		$this->old_starts_at = $this->contest->starts_at;
-		$this->contest->starts_at = date('Y-m-d h:i:s', strtotime('now +1 days'));
-		$this->contest->save();
 	}
 
 	public function tearDown() {
-		$this->contest->starts_at = $this->old_starts_at;
-		$this->contest->save();
+		for($i=0; $i<count($this->contests); $i++) {
+			$this->contests[$i]->starts_at = $this->old_start_times[$i];
+			$this->contests[$i]->save();
+		}
 	}
 
 	/*
@@ -24,7 +34,8 @@ class EmptyContestTest extends TestCase {
 
 	public function testCurrentContestFailGracefully()
 	{
-		$this->assertCount(0, Contest::current()->get());
+		$result = Contest::current()->get();
+		$this->assertTrue($result->count() == 0);
 	}
 
 	public function testCurrentProblemsFailGracefully()
