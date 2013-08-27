@@ -20,9 +20,6 @@ class ScoreTest extends TestCase {
 	}
 
 	public function tearDown() {
-		//User::find($this->team->id)->delete();
-		//Contest::find($this->contest->id)->delete();
-
 		DB::table('users')->where('username', 'LIKE', 'Team Test')->delete();
 		DB::table('contests')->where('name', 'LIKE', 'Contest Test')->delete();
 	}
@@ -57,7 +54,6 @@ class ScoreTest extends TestCase {
 		$yesterday = Carbon::now()->subDay(1);
 		$contest = new Contest();
 		$contest->name = $contest_name;
-		//$contest->name = "Contest on " . $yesterday->format("Y-m-d");
 		$contest->starts_at = $yesterday->format("Y-m-d H:i:s");
 		$contest->ends_at = $yesterday->addDays(3)->format("Y-m-d H:i:s");
 		$contest->save();
@@ -82,5 +78,4 @@ class ScoreTest extends TestCase {
 		$user->save();
 		return $user;
 	}
-
 }
