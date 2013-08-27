@@ -34,7 +34,9 @@ class ScoreTest extends TestCase {
 		$this->solution->solution_state_id = SolutionState::pending()->id;
 		$this->solution->created_at = Carbon::now()->subDay(1)->addHour();
 		$this->solution->user_id = $this->team->id;
+		$this->assertEquals($this->team->totalPoints($this->contest), 0);
 
+		$this->solution->solution_state_id = SolutionState::find(2)->id;
 		$this->assertEquals($this->team->totalPoints($this->contest), 0);
 	}
 
@@ -43,7 +45,7 @@ class ScoreTest extends TestCase {
 		$this->solution->is_correct = true;
 		$this->assertEquals($this->team->totalPoints($this->contest), 60);
 	}
-	
+
 	/**
 	 * Creates a temporary contest to test with
 	 *
