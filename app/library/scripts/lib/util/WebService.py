@@ -23,11 +23,22 @@ class WebService:
 
 	def get(self, url='', params={}):
 		url = self._prepareUrl(url, params)
-		stream =  urllib2.urlopen(url)
-		return self._prepareResult(stream.read())
+		s = ''
+		try:
+			stream =  urllib2.urlopen(url)
+			s = stream.read()
+		except urllib2.HTTPError as httpError:
+			s = httpError.read()
+		return self._prepareResult(s)
 
 	def post(self, url='', params={}):
 		url = self.baseUrl + url
 		params = dict(self.params.items() + params.items())
-		stream = urllib2.urlopen(url, params)
-		return self._prepareResult(stream.read())
+		s = ''
+		try:
+			stream =  urllib2.urlopen(url, params)
+			s = stream.read()
+		except urllib2.HTTPError as httpError:
+			s = httpError.read()
+
+		return self._prepareResult(s)
