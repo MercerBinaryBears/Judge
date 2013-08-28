@@ -1,6 +1,6 @@
 from lib.util.ConfigFile import ConfigFile
 from lib.util.WebService import WebService
-from lib.commands.Command import Command
+from lib.judge_commands.Command import Command
 
 class SetupCommand(Command):
 	def execute(self, arguments):
@@ -22,4 +22,9 @@ class SetupCommand(Command):
 				print "Couldn't Ping: " + e.message
 
 			# we were able to ping, so grab solution states and save
-			config_file.set('solution_states', ws.get('solutionStates'))
+			solution_states_result = ws.get('solutionStates')
+
+			if solution_states_result['code'] != 200:
+				print 'Failed getting Solution states: ' + str(solution_states_result['code'])
+
+			config_file.set('solution_states', solution_states_result['data'])

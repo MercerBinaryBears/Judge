@@ -1,6 +1,6 @@
 from lib.util.ConfigFile import ConfigFile
 from lib.util.WebService import WebService
-from lib.commands.Command import Command
+from lib.judge_commands.Command import Command
 import os
 
 class UnclaimCommand(Command):
