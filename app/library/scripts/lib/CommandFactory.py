@@ -5,6 +5,10 @@ class CommandFactory:
 	def build(argv):
 		'''Returns the class that processes the provided judge command'''
 
+		# if there was no argument, we cannot build a command, so just return
+		if len(argv) < 2:
+			return None
+
 		# build the actual class name
 		command_class = argv[1].strip().title() + 'Command'
 
