@@ -51,7 +51,7 @@ class ScoreTest extends TestCase {
 		$this->solution->created_at = (new Carbon($this->contest->starts_at))->addHour()->format('Y-m-d H:i:s');
 		$this->solution->save();
 
-		$this->assertEquals(60, $this->team->pointsForProblem(Problem::find(1)));
+		$this->assertEquals(60, $this->team->totalPoints($this->contest));
 	}
 
 	/**
