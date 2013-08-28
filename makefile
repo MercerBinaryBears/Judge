@@ -1,7 +1,10 @@
 
 
-all: public/judge_client.zip
+all: migrations public/judge_client.zip
 	pwd
+
+migrations:
+	php artisan migrate
 
 # Build the judging packages
 remove-pyc:
