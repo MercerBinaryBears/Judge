@@ -1,6 +1,7 @@
 <?php
 
 use Cartalyst\Sentry\Hashing\NativeHasher;
+use Carbon\Carbon as Carbon;
 
 class User extends Base {
 
@@ -56,10 +57,31 @@ class User extends Base {
 	public function pointsForProblem($problem) {
 		$points = 0;
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
-		if( $num_solutions = Solution::where('problem_id', $problem->id)
+
+		// the total number of submissions for this problem
+		$total_submissions = Solution::where('problem_id', $problem->id)
 			->where('user_id', $this->id)
-			->where('solution_state_id', $solved_state_id)->get()->count() > 0 ) {
-			$points += ($num_solutions - 1) * 20 + Contest::find($problem->contest_id)->starts_at->diffInMinutes();
+			->count();
+
+		// did they solve it
+		$did_solve = Solution::where('problem_id', $problem->id)
+			->where('user_id', $this->id)
+			->where('solution_state_id', $solved_state_id)
+			->count() > 0;
+
+		if( $did_solve ) {
+
+			$contest_start = new Carbon($problem->contest->starts_at);
+
+			$correct_start = Solution::where('problem_id', $problem->id)
+				->where('user_id', $this->id)
+				->where('solution_state_id', $solved_state_id)
+				->first()
+				->created_at;
+
+			$correct_start = new Carbon($correct_start);
+
+			$points += ($total_submissions - 1) * 20 + $contest_start->diffInMinutes(new Carbon($correct_start));
 		}
 		return $points;
 	}

@@ -12,14 +12,20 @@ class ScoreTest extends TestCase {
 		$this->team = $this->createTeam('Team Test', $this->contest->id);
 		$this->contest->users()->attach($this->team);
 
+		// attach first problem to contest
+		$this->problem = Problem::find(1);
+		$this->problem->contest_id = $this->contest->id;
+		$this->problem->save();
+
 		// get the solution we want to work with
 		// we'll just attempt with the first solution in the database,
 		// which we assume to be a seed value anyways
 		// TODO: Make this more robust instead of ASSUMING!
-		$this->solution = Solution::firstOrFail();
+		$this->solution = $this->createSolution($this->team, Problem::first());
 	}
 
 	public function tearDown() {
+		$this->solution->delete();
 		DB::table('users')->where('username', 'LIKE', 'Team Test')->delete();
 		DB::table('contests')->where('name', 'LIKE', 'Contest Test')->delete();
 	}
@@ -41,9 +47,11 @@ class ScoreTest extends TestCase {
 	}
 
 	public function testScoreIsAccurateUponCorrect() {
-		$this->solution->solution_state_id = SolutionState::first()->id;
-		$this->solution->is_correct = true;
-		$this->assertEquals($this->team->totalPoints($this->contest), 60);
+		$this->solution->solution_state_id = SolutionState::where('name', 'LIKE', '%correct%')->first()->id;
+		$this->solution->created_at = (new Carbon($this->contest->starts_at))->addHour()->format('Y-m-d H:i:s');
+		$this->solution->save();
+
+		$this->assertEquals(60, $this->team->pointsForProblem(Problem::find(1)));
 	}
 
 	/**
@@ -79,5 +87,23 @@ class ScoreTest extends TestCase {
 		$user->contests()->sync(array($contest_id));
 		$user->save();
 		return $user;
+	}
+
+	/**
+	 * Creates a test solution associated with a user
+	 *
+	 * @param User $user A user to attach
+	 * @param Problem $problem A problem to associate the solution with
+	 */
+	private function createSolution(User $user, Problem $problem) {
+		$solution = new Solution();
+		$solution->user_id = $user->id;
+		$solution->problem_id = $problem->id;
+		$solution->solution_code = 'asdfafds';
+		$solution->language_id = Language::first()->id;
+		$solution->solution_filename = 'hello.py';
+		$solution->solution_state_id = 7;
+		$solution->save();
+		return $solution;
 	}
 }
