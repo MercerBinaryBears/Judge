@@ -21,7 +21,7 @@ class WebService:
 	def _prepareResult(self, result='{}'):
 		return json.loads(result)
 
-	def get(self, url='', params={}):
+	def get(self, url='', params={}, raw=False):
 		url = self._prepareUrl(url, params)
 		s = ''
 		try:
@@ -29,9 +29,13 @@ class WebService:
 			s = stream.read()
 		except urllib2.HTTPError as httpError:
 			s = httpError.read()
-		return self._prepareResult(s)
 
-	def post(self, url='', params={}):
+		# parse as json if not a raw request
+		if not raw:
+			s = self._prepareResult(s)
+		return s
+
+	def post(self, url='', params={}, raw=False):
 		url = self.baseUrl + url
 		params = dict(self.params.items() + params.items())
 		s = ''
@@ -41,4 +45,7 @@ class WebService:
 		except urllib2.HTTPError as httpError:
 			s = httpError.read()
 
-		return self._prepareResult(s)
+		# parse as json if not a raw request
+		if not raw:
+			s = self._prepareResult(s)
+		return s

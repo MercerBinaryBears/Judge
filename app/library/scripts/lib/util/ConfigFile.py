@@ -29,6 +29,8 @@ class ConfigFile(object):
 		config_file_handle.close()
 
 	def get(self, key):
+		if key not in self.configs:
+			return None
 		return self.configs[key]
 
 	def set(self, key, value):
