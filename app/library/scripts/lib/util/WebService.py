@@ -40,7 +40,7 @@ class WebService:
 		params = dict(self.params.items() + params.items())
 		s = ''
 		try:
-			stream =  urllib2.urlopen(url, params)
+			stream =  urllib2.urlopen(url, urllib.urlencode(params))
 			s = stream.read()
 		except urllib2.HTTPError as httpError:
 			s = httpError.read()
