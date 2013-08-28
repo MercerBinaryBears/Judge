@@ -10,6 +10,15 @@ class ApiController extends BaseController {
 	}
 
 	/**
+	 * public function to get all unclaimed solutions
+	 */
+	public function show() {
+		return ApiController::formatJSend(
+			Solution::where('claiming_judge_id', '=', null)->get()->toArray()
+			);
+	}
+
+	/**
 	 * API function to claim and retrieve a problem
 	 */
 	public function claim($id) {

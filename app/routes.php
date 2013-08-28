@@ -41,6 +41,9 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 	// Solution API routes
 	Route::group(array('prefix'=>'solutions'), function(){
 
+		// a listing of all available solutions
+		Route::get('', array('as'=>'api_get', 'uses'=>'ApiController@show'));
+
 		// claiming of solutions
 		Route::get('{id}/claim', array('as'=>'api_claim', 'uses'=>'ApiController@claim'));
 
