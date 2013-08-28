@@ -25,8 +25,6 @@ class ClaimCommand(Command):
 				for solution in solutions['data']:
 					claim_results = ws.get('solutions/{0}/claim'.format(solution['id']) )
 
-					print claim_results
-
 					# check for a 200
 					if claim_results['code'] == 200:
 						break
