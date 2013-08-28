@@ -32,3 +32,7 @@ class PushCommand(Command):
 				return
 
 			print 'Success!'
+
+			# now, wipe the current solution and solution state
+			config_file.set('solution', None)
+			config_file.set('judge_result', None)
