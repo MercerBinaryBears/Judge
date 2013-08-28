@@ -90,6 +90,18 @@ class ApiController extends BaseController {
 	}
 
 	/**
+	 * Download route for packages
+	 * TODO: This is duplicate code from the judge controller, find a way to NOT duplicate
+	 */
+	public function package($id) {
+		$s = Solution::find($id);
+
+		$solution_package = new SolutionPackage($s);
+
+		return Response::download($solution_package->getPath());
+	}
+
+	/**
 	 * Formats an array in JSEND format
 	 *
 	 * @param array $data The data to send to the user

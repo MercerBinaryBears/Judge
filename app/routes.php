@@ -53,5 +53,8 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 		// update solutions
 		Route::post('{id}', array('as'=>'api_update', 'uses'=>'ApiController@update'));
 
+		// solution package
+		Route::get('{id}/package', array('as'=>'api_package', 'uses'=>'ApiController@package'));
+
 	});
 });

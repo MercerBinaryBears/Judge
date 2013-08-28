@@ -3,6 +3,12 @@
 import sys
 from lib.CommandFactory import CommandFactory
 
+def usage():
+	print 'Hello'
+
 command = CommandFactory.build(sys.argv)
+
+if command == None:
+	usage()
 
 command.execute(sys.argv)
