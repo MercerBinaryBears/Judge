@@ -87,5 +87,8 @@ class SolutionJudger(object):
 
 	def cleanup(self):
 		'''Cleans up any left over files'''
-		os.remove('team.out')
+		try:
+			os.remove('team.out')
+		except:
+			pass
 		self.judger.cleanup();

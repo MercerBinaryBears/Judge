@@ -32,7 +32,7 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 
 	// a ping pong route to verify api access
 	Route::get('ping', array('as'=>'api_ping', function(){
-		return 'pong';
+		return ApiController::formatJSend('pong');
 	}));
 
 	// provide solution types
@@ -40,6 +40,9 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 
 	// Solution API routes
 	Route::group(array('prefix'=>'solutions'), function(){
+
+		// a listing of all available solutions
+		Route::get('', array('as'=>'api_get', 'uses'=>'ApiController@show'));
 
 		// claiming of solutions
 		Route::get('{id}/claim', array('as'=>'api_claim', 'uses'=>'ApiController@claim'));
@@ -49,6 +52,9 @@ Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
 
 		// update solutions
 		Route::post('{id}', array('as'=>'api_update', 'uses'=>'ApiController@update'));
+
+		// solution package
+		Route::get('{id}/package', array('as'=>'api_package', 'uses'=>'ApiController@package'));
 
 	});
 });

@@ -10,6 +10,15 @@ class ApiController extends BaseController {
 	}
 
 	/**
+	 * public function to get all unclaimed solutions
+	 */
+	public function show() {
+		return ApiController::formatJSend(
+			Solution::where('claiming_judge_id', '=', null)->get()->toArray()
+			);
+	}
+
+	/**
 	 * API function to claim and retrieve a problem
 	 */
 	public function claim($id) {
@@ -78,6 +87,18 @@ class ApiController extends BaseController {
 		}
 
 		return ApiController::formatJSend();
+	}
+
+	/**
+	 * Download route for packages
+	 * TODO: This is duplicate code from the judge controller, find a way to NOT duplicate
+	 */
+	public function package($id) {
+		$s = Solution::find($id);
+
+		$solution_package = new SolutionPackage($s);
+
+		return Response::download($solution_package->getPath());
 	}
 
 	/**
