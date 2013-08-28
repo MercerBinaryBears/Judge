@@ -154,4 +154,39 @@ class User extends Base {
 			$user->api_key = User::generateApiKey();
 		});
 	}
+
+	/**
+	 * Provides a summary of the given contest for this user
+	 *
+	 * @param Contest $contest The contest to summarize
+	 * @return array The summary data
+	 */
+	public function contestSummary($contest) {
+		$summary = array();
+		
+		$summary['score'] = $this->totalPoints($contest);
+
+		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
+		$problems_solved = $this->solutions()
+					->where('solution_state_id', $solved_state_id)
+					->select('problems_id')
+					->distinct()
+					->count();
+		$summary['problems_solved'] = $problems_solved;
+
+		$summary['problem_info'] = array();
+
+		foreach($contest->problems as $problem) {
+			$ary = array();
+			$ary['points_for_problem'] = $this->pointsForProblem($problem);
+			$ary['num_submissions'] = $this->solutions()->where('problem_id', $problem->id)->count();
+
+			$summary['problem_info'][] = $ary;
+		}
+
+		
+
+		return $summary;		
+	}
+	
 }
