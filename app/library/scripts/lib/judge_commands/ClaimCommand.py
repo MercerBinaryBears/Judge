@@ -20,6 +20,10 @@ class ClaimCommand(Command):
 				# get all solutions
 				solutions = ws.get('solutions')
 
+				if len(solutions['data']) == 0:
+					print 'No solutions to claim. Check back later'
+					return
+
 				# loop over solutions, attempting to claim
 				claim_results = None
 				for solution in solutions['data']:

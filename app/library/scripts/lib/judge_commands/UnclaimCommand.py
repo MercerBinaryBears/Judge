@@ -33,3 +33,4 @@ class UnclaimCommand(Command):
 			# erase the config file
 			config_file.set('solution', None)
 			config_file.set('judge_result', None)
+			config_file.set('solution_package_files', None)

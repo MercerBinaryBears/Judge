@@ -1,6 +1,7 @@
 from lib.util.ConfigFile import ConfigFile
 from lib.util.WebService import WebService
 from lib.judge_commands.Command import Command
+import os
 
 class PushCommand(Command):
 	def execute(self, arguments):
@@ -33,6 +34,11 @@ class PushCommand(Command):
 
 			print 'Success!'
 
+			print 'Removing files... ',
+			for filename in config_file.get('solution_package_files'):
+				os.remove(filename)
+
 			# now, wipe the current solution and solution state
 			config_file.set('solution', None)
 			config_file.set('judge_result', None)
+			config_file.set('solution_package_files', None)
