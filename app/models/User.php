@@ -39,45 +39,48 @@ class User extends Base {
 	}
 
 	/**
-	 * Gets all of the contests that a user is participating in
+	 * Gets the contests that a user is participating in.
 	 */
 	public function contests() {
 		return $this->belongsToMany('Contest');
 	}
 
 	/**
-	 * Scores the user's solution for this problem
+	 * Scores the user's solution for this problem.
+	 * 20 pts added for each incorrect solution, plus 1 pt
+	 * for each additional minute since contest start time.
 	 *
-	 * @param p the problem to score
+	 * @param problem $problem the problem to score
 	 * @return int the number of points
 	 */
 	public function pointsForProblem($problem) {
 		$points = 0;
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
 		if( $num_solutions = Solution::where('problem_id', $problem->id)
-			->where('user_id', $user->id)
+			->where('user_id', $this->id)
 			->where('solution_state_id', $solved_state_id)->get()->count() > 0 ) {
-			$points += ($num_solutions - 1) * 20 + Contest::current()->starts_at->diffInMinutes();
+			$points += ($num_solutions - 1) * 20 + Contest::find($problem->contest_id)->starts_at->diffInMinutes();
 		}
 		return $points;
 	}
 
 	/**
-	 * Gets all of the solutions submitted by a user
+	 * Gets all of the solutions submitted by a user.
 	 */
 	public function solutions() {
 		return $this->hasMany('Solution');
 	}
 
 	/**
-	 * Scores the solutions submitted by a user for each
-	 * contest it's participating in.
+	 * Scores the solutions submitted by a user for a
+	 * given contest.
 	 *
+	 * @param contest $contest the contest to score points on
 	 * @return int the total number of points for this user
 	 */
-	public function totalPoints() {
+	public function totalPoints($contest) {
 		$points = 0;
-		foreach(Contest::current()->problems as $problem) {
+		foreach($contest->problems as $problem) {
 			$points += $this->pointsForProblem($problem);
 		}
 		return $points;

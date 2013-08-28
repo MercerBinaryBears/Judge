@@ -17,8 +17,10 @@ class EmptyContestTest extends TestCase {
 			$contest->save();
 		}
 
-		// I'm assuming that there actually is a contest. This may be too brittle
-		$this->contest = Contest::current()->first();
+		// Tests to make sure there actually is a current contest
+		if($currentContest = Contest::current()->first()) {
+			$this->contest = $currentContest;
+		}
 	}
 
 	public function tearDown() {

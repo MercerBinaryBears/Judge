@@ -7,6 +7,6 @@ class HomeController extends BaseController {
 	 * that auto-refreshes (we can do that part later)
 	 */
 	public function index() {
-		return View::make('index');
+		return View::make('index')->with('teams', array $teams);
 	}
 }
