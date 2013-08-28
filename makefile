@@ -1,7 +1,10 @@
 
 
-all: migrations public/judge_client.zip
-	pwd
+all: composer.lock migrations public/judge_client.zip
+
+composer.lock:
+	composer selfupdate
+	composer install
 
 migrations:
 	php artisan migrate
