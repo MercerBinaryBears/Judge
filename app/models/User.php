@@ -163,6 +163,8 @@ class User extends Base {
 	 */
 	public function contestSummary($contest) {
 		$summary = array();
+
+		$summary['username'] = $this->username;
 		
 		$summary['score'] = $this->totalPoints($contest);
 
@@ -172,6 +174,7 @@ class User extends Base {
 					->select('problems_id')
 					->distinct()
 					->count();
+
 		$summary['problems_solved'] = $problems_solved;
 
 		$summary['problem_info'] = array();
@@ -183,9 +186,6 @@ class User extends Base {
 
 			$summary['problem_info'][] = $ary;
 		}
-
-		
-
 		return $summary;		
 	}
 	
