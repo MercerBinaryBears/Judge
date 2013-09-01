@@ -41,7 +41,7 @@ class Base extends Ardent {
 		// We now move the file to the random path we generated.
 		// We'll store the file in the storage directory of the app, within a subdirectory prefixed
 		// by the $path_attribute. Perhaps there is a better way?
-		$file->move($this->getPathForResource($path_attribute));
+		$file->move($this->getDirectoryForResource($path_attribute), $path_attribute);
 
 		return true;
 	}
@@ -68,12 +68,12 @@ class Base extends Ardent {
 	}
 
 	/**
-	 * Builds the path name for a downloadable resource.
+	 * Builds the directory name for a downloadable resource.
 	 *
-	 * @param string $path_attribute The attribute on the model to build a download path for
-	 * @return string a fully qualified path for this resource
+	 * @param string $path_attribute The attribute on the model to build a download directory for
+	 * @return string a fully qualified directory for this resource
 	 */
-	public function getPathForResource($path_attribute) {
-		return storage_path() . "/$path_attribute/" . $this->$path_attribute;
+	public function getDirectoryForResource($path_attribute) {
+		return storage_path() . "/$path_attribute/";
 	}
 }
