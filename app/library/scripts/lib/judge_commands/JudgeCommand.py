@@ -14,13 +14,13 @@ class JudgeCommand(Command):
 			# get the solution states from the config file
 			solution_states = config_file.get('solution_states')
 			if solution_states == None:
-				print "You haven't setup your judging station yet. Please run 'judge setup'"
+				print("You haven't setup your judging station yet. Please run 'judge setup'")
 				return
 
 			# get the solution code file
 			files = config_file.get('solution_package_files')
 			if files == None:
-				print 'No Solution has been claimed'
+				print('No Solution has been claimed')
 				return
 
 			code_file = filter(lambda filename : not filename.endswith('in') and not filename.endswith('out'), files)[0]
@@ -31,7 +31,7 @@ class JudgeCommand(Command):
 			# check for compile errors
 			did_compile, output = judger.compile()
 			if not did_compile:
-				print "Compile error failed, setting judge result to be compile error"
+				print("Compile error failed, setting judge result to be compile error")
 				compile_error_state = self._firstSolutionStateMatch(solution_states, 'compile')
 				config_file.set('judge_result', compile_error_state['id'])
 				judger.cleanup()
@@ -40,7 +40,7 @@ class JudgeCommand(Command):
 			# run checking for runtime errors
 			did_run, output = judger.run()
 			if not did_run:
-				print "Run failed, setting judge result to be a runtime error"
+				print("Run failed, setting judge result to be a runtime error")
 				runtime_error_state = self._firstSolutionStateMatch(solution_states, 'runtime')
 				config_file.set('judge_result', runtime_error_state['id'])
 				judger.cleanup()
@@ -49,16 +49,16 @@ class JudgeCommand(Command):
 			# now run the diff
 			diff_match, output = judger.diff()
 			if not diff_match:
-				print '-'*80
-				print output
-				print '-'*80 + "\n\n"
-				print "Diff mismatch, setting judge result to be wrong answer. Override via the 'judge override' command"
+				print('-'*80)
+				print(output)
+				print('-'*80 + "\n\n")
+				print("Diff mismatch, setting judge result to be wrong answer. Override via the 'judge override' command")
 				wrong_error_state = self._firstSolutionStateMatch(solution_states, 'wrong')
 				config_file.set('judge_result', wrong_error_state['id'])
 				judger.cleanup()
 				return
 
-			print "Perfect match, judging correct"
+			print("Perfect match, judging correct")
 			correct_error_state = self._firstSolutionStateMatch(solution_states, 'correct')
 			config_file.set('judge_result', correct_error_state['id'])
 			judger.cleanup()

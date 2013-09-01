@@ -21,7 +21,7 @@ class ClaimCommand(Command):
 				solutions = ws.get('solutions')
 
 				if len(solutions['data']) == 0:
-					print 'No solutions to claim. Check back later'
+					print('No solutions to claim. Check back later')
 					return
 
 				# loop over solutions, attempting to claim
@@ -34,27 +34,27 @@ class ClaimCommand(Command):
 						break
 
 				# now save the state
-				print 'Claimed ' + solution['id']
+				print('Claimed ' + solution['id'])
 				config_file.set('solution', solution)
 			else:
-				print 'Already have a claimed solution: ' + solution['id']
+				print('Already have a claimed solution: ' + solution['id'])
 
 			# write solution package to a zip
-			print 'Downloading solution package... ',
+			print('Downloading solution package... ',)
 			solution_package_contents = ws.get('solutions/{0}/package'.format(solution['id']), raw=True)
 			solution_package = open('solution_package.zip', 'w+b')
 			solution_package.write(solution_package_contents)
 			solution_package.close()
 
 			# unzip to the working directory, writing the file names to the config file
-			print 'Unpacking Zip File... ',
+			print('Unpacking Zip File... ',)
 			solution_package = ZipFile('solution_package.zip', 'r')
 			config_file.set('solution_package_files', solution_package.namelist())
 			solution_package.extractall()
 			solution_package.close()
 
 			# remove the zip file, since we no longer need it
-			print 'Removing Zip... ',
+			print('Removing Zip... ',)
 			os.remove('solution_package.zip')
 
-			print 'Done!'
+			print('Done!')
