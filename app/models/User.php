@@ -20,6 +20,13 @@ class User extends Base {
 	protected $hidden = array('password');
 
 	/**
+	 * Enables soft deleting on the model.
+	 *
+	 * @var bool
+	 */
+	protected $softDelete = true;
+
+	/**
 	 * Get the unique identifier for the user.
 	 *
 	 * @return mixed

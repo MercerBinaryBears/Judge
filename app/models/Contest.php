@@ -12,6 +12,13 @@ class Contest extends Base {
 		);
 
 	/**
+	 * Enables soft deleting on the model.
+	 *
+	 * @var bool
+	 */
+	protected $softDelete = true;
+
+	/**
 	 * Gets the problems associated with a contest
 	 */
 	public function problems() {
