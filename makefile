@@ -24,6 +24,33 @@ remove-pyc:
 public/judge_client.zip: remove-pyc
 	cd app/library/scripts && zip -r ../../../public/judge_client.zip .
 
+
+# the production server, as per my ssh config file
+PRODUCTION_SERVER = Judge
+PARENT_DIR = ~/html
+DEPLOY_DIR = $(PARENT_DIR)/Judge
+
+deploy: backup-production clone-clean production-upload production-unpack production-migrate
+
+backup-production:
+	ssh $(PRODUCTION_SERVER) "[ -d $(DEPLOY_DIR) ] && mv $(DEPLOY_DIR) $(DEPLOY_DIR).old"
+
+# clone a clean copy of the file
+clone-clean:
+	cd /tmp && rm -rf Judge.zip Judge && git clone git@github.com:chipbell4/Judge && zip -r Judge.zip Judge
+
+production-upload:
+	scp /tmp/Judge.zip $(PRODUCTION_SERVER):$(PARENT_DIR)
+
+production-unpack:
+	ssh $(PRODUCTION_SERVER) "cd $(PARENT_DIR) && unzip Judge.zip && rm Judge.zip"
+
+production-migrate:
+	ssh $(PRODUCTION_SERVER) "cd $(DEPLOY_DIR) && cp $(DEPLOY_DIR).old/app/database/production.sqlite app/database/production.sqlite"
+
+production-bake:
+	ssh $(PRODUCTION_SERVER) "cd $(DEPLOY_DIR) && ~/bin/composer install && artisan migrate"
+
 clean:
 	rm -f public/judge_client.zip
 	rm -f tests
