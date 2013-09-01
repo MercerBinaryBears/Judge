@@ -23,11 +23,17 @@ return array(
 			'title' => 'Contest Name',
 			'type' => 'text'
 			),
+		'users' => array(
+			'title' => 'Users in Contest',
+			'type' => 'relationship',
+			'name_field' => 'username',
+			),
 		'starts_at' => array(
 			'title' => 'Starts At',
 			'type' => 'datetime'
 			),
 		'ends_at' => array(
+			'title' => 'Ends At',
 			'type' => 'datetime'
 			),
 		)
