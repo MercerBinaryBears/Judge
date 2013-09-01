@@ -180,13 +180,13 @@ class User extends Base {
 		$summary['problem_info'] = array();
 
 		foreach($contest->problems as $problem) {
-			$ary = array();
-			$ary['points_for_problem'] = $this->pointsForProblem($problem);
-			$ary['num_submissions'] = $this->solutions()->where('problem_id', $problem->id)->count();
+			$problem_info = array();
+			$problem_info['points_for_problem'] = $this->pointsForProblem($problem);
+			$problem_info['num_submissions'] = $this->solutions()->where('problem_id', $problem->id)->count();
 
-			$summary['problem_info'][] = $ary;
+			$summary['problem_info'][] = $problem_info;
 		}
-		return $summary;		
+		return $summary;
 	}
 	
 }
