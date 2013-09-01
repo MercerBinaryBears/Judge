@@ -16,16 +16,16 @@ class AddSoftDeletesToTables extends Migration {
 		});
 
 		Schema::table('contests', function($table) {
-        	$table->softDeletes();
+        		$table->softDeletes();
 		});
 
 		Schema::table('problems', function($table) {
-        	$table->softDeletes();
-        });
+        		$table->softDeletes();
+        	});
 
 		Schema::table('solutions', function($table) {
-            $table->softDeletes();
-        });
+            		$table->softDeletes();
+		});
 	}
 
 	/**
@@ -36,20 +36,20 @@ class AddSoftDeletesToTables extends Migration {
 	public function down()
 	{
 		Schema::table('users', function($table) {
-			$table->softDeletes()->false;
+			$table->dropColumn('deleted_at');
 		});
 
 		Schema::table('contests', function($table) {
-        	$table->softDeletes()->false;
+        		$table->dropColumn('deleted_at');
 		});
 
 		Schema::table('problems', function($table) {
-        	$table->softDeletes()->false;
-        });
+        		$table->dropColumn('deleted_at');
+        	});
 
 		Schema::table('solutions', function($table) {
-            $table->softDeletes()->false;
-        });
+            		$table->dropColumn('deleted_at');
+        	});
 	}
 
 }
