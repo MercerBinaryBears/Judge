@@ -30,7 +30,7 @@ PRODUCTION_SERVER = Judge
 PARENT_DIR = ~/html
 DEPLOY_DIR = $(PARENT_DIR)/Judge
 
-deploy: backup-production clone-clean production-upload production-unpack production-migrate
+deploy: backup-production clone-clean production-upload production-unpack production-migrate production-bake
 
 backup-production:
 	ssh $(PRODUCTION_SERVER) "[ -d $(DEPLOY_DIR) ] && mv $(DEPLOY_DIR) $(DEPLOY_DIR).old"
