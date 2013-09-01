@@ -20,5 +20,5 @@ class CommandFactory:
 			class_obj = getattr(module, command_class)
 			return class_obj()
 		except ImportError as ie:
-			print 'Attempted to import {3}, Could not find class {0}. Command {1} is invalid: {2}'.format(command_class, argv[1], ie, import_string)
+			print('Attempted to import {3}, Could not find class {0}. Command {1} is invalid: {2}'.format(command_class, argv[1], ie, import_string))
 			return None

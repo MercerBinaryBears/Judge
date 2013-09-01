@@ -34,8 +34,8 @@ class SolutionJudger(object):
 		languageJudgeModule = importlib.import_module("lib.languages.{0}".format(languageJudgeClassName))
 
 		if self.debug:
-			print 'Loaded module: ',
-			print languageJudgeModule
+			print('Loaded module: ',)
+			print(languageJudgeModule)
 
 		return getattr(languageJudgeModule, languageJudgeClassName)
 
@@ -43,13 +43,13 @@ class SolutionJudger(object):
 		'''Attempts to compile the passed file. Returns a tuple with the compile result, and output'''
 
 		if self.debug:
-			print 'Attempting to compile... ',
+			print('Attempting to compile... ',)
 
 		# get the status and output
 		status, output = commands.getstatusoutput(self.judger.getCompileString())
 
 		if self.debug:
-			print 'Status {0}\nOutput:\n{1}'.format(status, output)
+			print('Status {0}\nOutput:\n{1}'.format(status, output))
 
 
 		# check the result with the class. TODO: just use the status code instead!
@@ -63,7 +63,7 @@ class SolutionJudger(object):
 		run_command = "{0} < {1} > {2}".format(self.judger.getRunCommand(), input_file, output_file)
 
 		if self.debug:
-			print "Command to run is " + run_command
+			print("Command to run is " + run_command)
 
 		# assign this output file to variable, so when they run a diff, we don't have to pass it
 		self.program_output_file = output_file
@@ -79,7 +79,7 @@ class SolutionJudger(object):
 			self.program_output_file = program_output_file
 
 		if self.debug:
-			print "Comparing program output {0} and judging output {1}".format(self.program_output_file, expected_output_file)
+			print("Comparing program output {0} and judging output {1}".format(self.program_output_file, expected_output_file))
 
 		status, output = commands.getstatusoutput('diff {0} {1}'.format(self.program_output_file, expected_output_file))
 

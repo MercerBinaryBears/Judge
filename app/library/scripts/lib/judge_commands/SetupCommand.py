@@ -19,12 +19,12 @@ class SetupCommand(Command):
 			try:
 				ping_results =ws.get('ping')
 			except Exception as e:
-				print "Couldn't Ping: " + e.message
+				print("Couldn't Ping: " + e.message)
 
 			# we were able to ping, so grab solution states and save
 			solution_states_result = ws.get('solutionStates')
 
 			if solution_states_result['code'] != 200:
-				print 'Failed getting Solution states: ' + str(solution_states_result['code'])
+				print('Failed getting Solution states: ' + str(solution_states_result['code']))
 
 			config_file.set('solution_states', solution_states_result['data'])
