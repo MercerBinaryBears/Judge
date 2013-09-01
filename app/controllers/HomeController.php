@@ -11,9 +11,18 @@ class HomeController extends BaseController {
 
 		$current_contest = Contest::current()->first();
 
-		foreach($current_contest->users as $user) { 
+		if( !is_null($current_contest) ) {
 
-			$user_data[] = $user->contestSummary($current_contest);
+			foreach($current_contest->users as $user) { 
+
+				$user_data[] = $user->contestSummary($current_contest);
+			}
+
+		}
+
+		else {
+
+			return View::make('index')->with('user_data', array())->with('problems', array());
 		}
 
 		usort($user_data, function($user_1, $user_2) {
