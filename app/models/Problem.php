@@ -9,6 +9,13 @@ class Problem extends Base {
 		);
 
 	/**
+	 * Enables soft deleting on the model.
+	 *
+	 * @var bool
+	 */
+	protected $softDelete = true;
+
+	/**
 	 * Gets the contest that this problem belongs to
 	 */
 	public function contest() {

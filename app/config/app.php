@@ -116,7 +116,7 @@ return array(
 
 		// the ones I've added
 		'Cartalyst\Sentry\SentryServiceProvider',
-		'DaveJamesMiller\Boris\BorisServiceProvider',
+		//'DaveJamesMiller\Boris\BorisServiceProvider',
 		'Frozennode\Administrator\AdministratorServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 

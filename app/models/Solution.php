@@ -21,6 +21,13 @@ class Solution extends Base {
 	protected $fillable = array('problem_id', 'user_id', 'solution_code', 'solution_language', 'solution_state_id');
 
 	/**
+	 * Enables soft deleting on the model.
+	 *
+	 * @var bool
+	 */
+	protected $softDelete = true;
+
+	/**
 	 * Gets the problem that this solution solves
 	 */
 	public function problem() {
