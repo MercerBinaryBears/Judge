@@ -44,13 +44,24 @@ class PushNewProductionCommand extends RemoteCommand {
 			// Clone a fresh copy
 			'git clone git@github.com:chipbell4/Judge.git /tmp/Judge',
 
-			// Zip it up
+			// start working in that directoyr
+			'cd /tmp/Judge',
+
+			// download repositories
+			'~/bin/composer install',
+
+			// get ready to zip
 			'cd /tmp',
+
+			// Zip it up
 			'zip -r Judge.zip Judge',
 
 			);
 
-		exec(implode(' && ', $local_commands));
+		$result = shell_exec(implode(' && ', $local_commands));
+
+		$this->comment($result);
+		return;
 
 		// SCP it up to the directory
 		$this->scp('/tmp/Judge.zip', Config::get('deploy.dir') . 'Judge.zip');

@@ -58,6 +58,9 @@ class ProductionBackupCommand extends RemoteCommand {
 			// copy the production database out
 			"cp Judge.$timestamp/app/database/production.sqlite production.sqlite.$timestamp",
 
+			// also, keep track of the LAST database we had
+			"cp Judge.$timestamp/app/database/production.sqlite production.sqlite.last",
+
 			);
 
 		$this->ssh($commands);
