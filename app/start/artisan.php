@@ -12,3 +12,4 @@
 */
 
 Artisan::add(new ProductionBackupCommand);
+Artisan::add(new PushNewProductionCommand);

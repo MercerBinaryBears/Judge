@@ -32,7 +32,7 @@ class RemoteCommand extends Command {
 		exec($full_command);
 	}
 
-	protected function scp($source, $destination, $host) {
+	protected function scp($source, $destination, $host = null) {
 		/*
 		 * For ssh commands, default to the production machine
 		 */
