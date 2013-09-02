@@ -4,21 +4,21 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ProductionFinalizeCommand extends RemoteCommand {
+class DeployCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'deploy:migrate';
+	protected $name = 'deploy';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Updates composer packages, and migrates the production database';
+	protected $description = 'Deploys the website';
 
 	/**
 	 * Create a new command instance.
@@ -37,22 +37,10 @@ class ProductionFinalizeCommand extends RemoteCommand {
 	 */
 	public function fire()
 	{
-		$commands = array(
-			// change to the installation directory
-			"cd " . Config::get('deploy.dir') . "Judge",
-
-			// first copy the last migration database (or create an empty file)
-			"( cp ../production.sqlite.last app/database/production.sqlite || touch app/database/production.sqlite )",
-
-			// migrate
-			"./artisan migrate",
-
-			// publish assets for administrator
-			"./artisan asset:publish",
-
-			);
-
-		$this->ssh($commands);
+		// call all of our deploy commands
+		$this->call('deploy:backup');
+		$this->call('deploy:push');
+		$this->call('deploy:migrate');
 	}
 
 	/**
