@@ -13,3 +13,4 @@
 
 Artisan::add(new ProductionBackupCommand);
 Artisan::add(new PushNewProductionCommand);
+Artisan::add(new ProductionFinalizeCommand);

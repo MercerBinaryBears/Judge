@@ -60,9 +60,6 @@ class PushNewProductionCommand extends RemoteCommand {
 
 		$result = shell_exec(implode(' && ', $local_commands));
 
-		$this->comment($result);
-		return;
-
 		// SCP it up to the directory
 		$this->scp('/tmp/Judge.zip', Config::get('deploy.dir') . 'Judge.zip');
 
