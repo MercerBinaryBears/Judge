@@ -12,7 +12,7 @@
 			@if(Sentry::getUser()->team || Sentry::getUser()->admin)
 				<li> {{ link_to_route('team_index', 'Team', array(), array()) }} </li>
 			@endif
-			<li><a href="/logout">Logout</a></li>
+			<li>{{ link_to_route('logout', 'Logout') }}</li>
 		</ul>
 	@else
 		{{ Form::open(array('url'=>'/login', 'class'=>'navbar-form pull-left')) }}
