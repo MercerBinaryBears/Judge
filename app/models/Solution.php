@@ -108,7 +108,7 @@ class Solution extends Base {
 	 * unclaim it, edit, or update it)
 	 */
 	public function canBeAltered() {
-		$user = Sentry::getUser();
+		$user = Auth::user();
 
 		// check if the user is logged in
 		if($user == null) {
@@ -127,7 +127,7 @@ class Solution extends Base {
 	 * Checks if the current user owns this solution at this time
 	 */
 	public function ownedByCurrentUser() {
-		return $this->claiming_judge_id == Sentry::getUser()->id;
+		return $this->claiming_judge_id == Auth::user()->id;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Solution extends Base {
 		}
 
 		// the user can alter this problem, so update the claiming judge
-		$this->claiming_judge_id = Sentry::getUser()->id;
+		$this->claiming_judge_id = Auth::user()->id;
 
 		// make the update, and return the result
 		return $this->save();

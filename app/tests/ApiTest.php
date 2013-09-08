@@ -28,8 +28,6 @@ class ApiTest extends TestCase {
 	}
 
 	public function tearDown() {
-		// TODO: figure out a way to not have to use
-		// user_groups in Sentry, so we can just call $this->judge1->delete()
 		$this->judge1->delete();
 		$this->judge2->delete();
 

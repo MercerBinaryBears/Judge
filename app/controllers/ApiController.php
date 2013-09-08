@@ -22,7 +22,7 @@ class ApiController extends BaseController {
 	 * API function to claim and retrieve a problem
 	 */
 	public function claim($id) {
-		$user_id = Sentry::getUser()->id;
+		$user_id = Auth::user()->id;
 
 		// Attempt to claim, returning an error if it occurs
 		$solution = Solution::find($id);
@@ -50,7 +50,7 @@ class ApiController extends BaseController {
 	public function update($id)
 	{
 		$s = Solution::find($id);
-		$judge_id = Sentry::getUser()->id;
+		$judge_id = Auth::user()->id;
 
 		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but

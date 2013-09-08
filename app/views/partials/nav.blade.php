@@ -1,15 +1,15 @@
 <div class='navbar'>
 	<div class='navbar-inner'>
-	@if(Sentry::check())
-		<a class='brand'>{{ Sentry::getUser()->username }}</a>
+	@if(Auth::check())
+		<a class='brand'>{{ Auth::user()->username }}</a>
 		<ul class='nav'>
-			@if(Sentry::getUser()->admin)
+			@if(Auth::user()->admin)
 				<li> {{ link_to_route('admin_dashboard', 'Admin', array(), array()) }} </li>
 			@endif
-			@if(Sentry::getUser()->judge || Sentry::getUser()->admin)
+			@if(Auth::user()->judge || Auth::user()->admin)
 				<li> {{ link_to_route('judge_index', 'Judge', array(), array())}} </li>
 			@endif
-			@if(Sentry::getUser()->team || Sentry::getUser()->admin)
+			@if(Auth::user()->team || Auth::user()->admin)
 				<li> {{ link_to_route('team_index', 'Team', array(), array()) }} </li>
 			@endif
 			<li>{{ link_to_route('logout', 'Logout') }}</li>

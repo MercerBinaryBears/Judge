@@ -11,7 +11,7 @@ class TeamController extends BaseController {
 		$problems = array();
 
 		return View::make('solutions_team')
-			->with('solutions', Solution::forCurrentContest()->where('user_id', Sentry::getUser()->id)->get())
+			->with('solutions', Solution::forCurrentContest()->where('user_id', Auth::user()->id)->get())
 			->with('problems', Problem::lists('name', 'id'))
 			->with('languages', Language::orderBy('name')->lists('name', 'id'));
 	}
@@ -29,7 +29,7 @@ class TeamController extends BaseController {
 
 		// populate with form fields
 		$solution->problem_id = Input::get('problem_id');
-		$solution->user_id = Sentry::getUser()->id;
+		$solution->user_id = Auth::user()->id;
 		$solution->solution_state_id = $solution_state_id;
 		$solution->language_id = Input::get('language_id');
 

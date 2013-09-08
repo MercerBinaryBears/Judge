@@ -22,9 +22,8 @@ class JudgeTest extends TestCase {
 	}
 
 	public function tearDown() {
-		// TODO: figure out a way to not have to use
-		// user_groups in Sentry, so we can just call $this->judge1->delete()
-		DB::table('users')->where('username', 'LIKE', 'judge%')->delete();
+		$this->judge1->delete();
+		$this->judge2->delete();
 	}
 
 	/**
@@ -41,7 +40,7 @@ class JudgeTest extends TestCase {
 		$user->judge = true;
 		$user->team = false;
 		$user->save();
-		return Sentry::getUserProvider()->findByLogin($name);
+		return $user;
 	}
 
 	/**
@@ -80,12 +79,12 @@ class JudgeTest extends TestCase {
 	public function testAllowOnlyOneClaimer()
 	{
 		// login as judge 1 and claim the submission
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertResponseOk();
 
 		// login as judge 2 and attempt to claim again
-		Sentry::login($this->judge2, false);
+		Auth::login($this->judge2);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertRedirectedToRoute('judge_index');
 	}
@@ -95,7 +94,7 @@ class JudgeTest extends TestCase {
 	 */
 	public function testAllowOnlyOneEditter() {
 		// login and claim the problem
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->solution->claiming_judge_id = $this->judge1->id;
 		$this->solution->save();
 		$this->attemptUpdate(1);
@@ -104,7 +103,7 @@ class JudgeTest extends TestCase {
 		$this->findSolution();
 		$this->assertEquals(1, $this->solution->solution_state_id, "The Judge was unable to update a problem");
 
-		Sentry::login($this->judge2, false);
+		Auth::login($this->judge2);
 		$this->attemptUpdate(2);
 
 		// make sure the judge2's update didn't carry through
@@ -117,12 +116,12 @@ class JudgeTest extends TestCase {
 	 */
 	public function testAllowJudgeToReeditSolution() {
 		// login as judge 1 and claim the submission
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertResponseOk();
 
 		// now revisit that page, as the same judge and verify that I didn't get redirected
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 		$this->assertResponseOk('Even though judge has claimed this problem, they still cannot edit it');
 	}
@@ -133,11 +132,11 @@ class JudgeTest extends TestCase {
 	 */
 	public function testUnclaimSolution() {
 		// Login as judge 1 and claim the solution
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->route('GET', 'edit_solution', array($this->solution->id));
 
 		// Now login as judge 2 and attempt to unclaim on behalf of 1
-		Sentry::login($this->judge2, false);
+		Auth::login($this->judge2);
 		$this->route('POST', 'unclaim_solution', array($this->solution->id));
 
 		// check that the claiming judge is still judge 1
@@ -145,7 +144,7 @@ class JudgeTest extends TestCase {
 		$this->assertEquals($this->judge1->id, $this->solution->claiming_judge_id, "Judge 2 succesfully unclaimed judge 1 from the solution");
 
 		// now let judge 1 unclaim
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->route('POST', 'unclaim_solution', array($this->solution->id));
 
 		// verify that there is now no claiming judge

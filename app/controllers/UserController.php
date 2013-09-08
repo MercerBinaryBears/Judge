@@ -13,25 +13,15 @@ class UserController extends BaseController {
 			'password' => Input::get('password')
 			);
 
-		try {
-			// Attempt authentication via Sentry. If it fails, it throws
-			// a number of errors, which we catch here.
-			Sentry::authenticate($creds);
-		}
-		catch(Cartalyst\Sentry\Users\LoginRequiredException $e) {
-			Session::flash('error', 'You must provide a login');
-		}
-		catch(Cartalyst\Sentry\Users\PasswordRequiredException $e) {
-			Session::flash('error', 'You must provide a password');
-		}
-		catch(Cartalyst\Sentry\Users\WrongPasswordException $e) {
-			Session::flash('error', 'Invalid login');
-		}
-		catch(Cartalyst\Sentry\Users\UserNotFoundException $e) {
-			Session::flash('error', 'Invalid login');
+		Auth::attempt($creds, true);
+
+		if(Auth::check()) {
+			return Redirect::route('index');
 		}
 
-		return Redirect::route('index')->withInput(Input::except('password'));
+		else {
+			return Redirect::route('index')->withInput(Input::except('password'));
+		}
 	}
 
 	/**
@@ -39,7 +29,7 @@ class UserController extends BaseController {
 	 */
 	public function logout()
 	{
-		Sentry::logout();
+		Auth::logout();
 		return Redirect::route('index');
 	}
 
