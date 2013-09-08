@@ -1,7 +1,9 @@
 @extends('layout')
 
 @section('content')
-	API Key: {{ $api_key }}
+	<h4 class="well well-small">
+		Your API key is {{ $api_key }}
+	</h4>
 	<div class="span6">
 		<h3>Unjudged Solutions</h3>
 		<ul class="solutions unstyled">
