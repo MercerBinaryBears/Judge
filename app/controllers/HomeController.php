@@ -11,18 +11,13 @@ class HomeController extends BaseController {
 
 		$current_contest = Contest::current()->first();
 
-		if( !is_null($current_contest) ) {
-
-			foreach($current_contest->users as $user) { 
-
-				$user_data[] = $user->contestSummary($current_contest);
-			}
-
+		if(is_null($current_contest)) {
+			return View::make('index')->with('user_data', array())->with('problems', array());
 		}
 
-		else {
+		foreach($current_contest->users as $user) {
 
-			return View::make('index')->with('user_data', array())->with('problems', array());
+			$user_data[] = $user->contestSummary($current_contest);
 		}
 
 		usort($user_data, function($user_1, $user_2) {
@@ -32,7 +27,7 @@ class HomeController extends BaseController {
 				// Sort scores in ascending order
 				return $user_1['score'] - $user_2['score'];
 			}
-			
+
 			// Sort problems solved in descending order
 			return $user_2['problems_solved'] - $user_1['problems_solved'];
 		});

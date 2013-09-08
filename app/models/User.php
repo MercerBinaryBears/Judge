@@ -1,9 +1,9 @@
 <?php
 
-use Cartalyst\Sentry\Hashing\NativeHasher;
+use Illuminate\Auth\UserInterface as UserInterface;
 use Carbon\Carbon as Carbon;
 
-class User extends Base {
+class User extends Base implements UserInterface {
 
 	/**
 	 * The database table used by the model.
@@ -33,7 +33,7 @@ class User extends Base {
 	 */
 	public function getAuthIdentifier()
 	{
-		return $this->getKey();
+		return $this->id;
 	}
 
 	/**
@@ -116,19 +116,6 @@ class User extends Base {
 	}
 
 	/**
-	 * Hashes the password with the Sentry Hasher, so that the admin
-	 * also hashes the password when it saves, even though its not using
-	 * Sentry
-	 * @param string $value the unhashed password
-	 */
-	public function setPasswordAttribute($value) {
-		$hasher = new NativeHasher();
-		if ( empty($this->original['password']) || $value != $this->original['password'] ) {
-			$this->attributes['password'] = $hasher->hash($value);
-		}
-	}
-
-	/**
 	 * Generates a random API key for a user. VERY low chance of non-uniqueness
 	 *
 	 * @param The string length for the key. Default is 20
@@ -172,7 +159,7 @@ class User extends Base {
 		$summary = array();
 
 		$summary['username'] = $this->username;
-		
+
 		$summary['score'] = $this->totalPoints($contest);
 
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
@@ -195,5 +182,4 @@ class User extends Base {
 		}
 		return $summary;
 	}
-	
 }

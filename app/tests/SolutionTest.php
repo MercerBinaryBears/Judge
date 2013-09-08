@@ -22,9 +22,8 @@ class SolutionTest extends TestCase {
 	}
 
 	public function tearDown() {
-		// TODO: figure out a way to not have to use
-		// user_groups in Sentry, so we can just call $this->judge1->delete()
-		DB::table('users')->where('username', 'LIKE', 'judge%')->delete();
+		$this->judge1->delete();
+		$this->judge2->delete();
 	}
 
 	/**
@@ -34,14 +33,14 @@ class SolutionTest extends TestCase {
 	 * @return User The judge user that was created
 	 */
 	private function createJudge($name) {
-		Sentry::getUserProvider()->create(array(
-			'username'=>$name,
-			'password'=>'password',
-			'admin'=>false,
-			'judge'=>true,
-			'team'=>false,
-			));
-		return Sentry::getUserProvider()->findByLogin($name);
+		$u = new User();
+		$u->username = $name;
+		$u->password = 'password';
+		$u->admin = false;
+		$u->judge = true;
+		$u->team = false;
+		$u->save();
+		return $u;
 	}
 
 	/**
@@ -64,7 +63,7 @@ class SolutionTest extends TestCase {
 	}
 
 	public function testJudgeClaimsOnlyUnclaimedOrOwned() {
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 
 		// judge1 should be able to alter unclaimed
 		$this->assertTrue($this->solution->canBeAltered(), 'Judge cannot claim unclaimed problem');
@@ -76,7 +75,7 @@ class SolutionTest extends TestCase {
 		$this->assertTrue($this->solution->canBeAltered(), 'Judge cannot claim owned problem');
 
 		// judge2 should not be able to alter someone else's problem
-		Sentry::login($this->judge2, false);
+		Auth::login($this->judge2);
 		$this->assertFalse($this->solution->canBeAltered(), 'Judge can claim problem that is previously owned');
 	}
 
@@ -86,12 +85,12 @@ class SolutionTest extends TestCase {
 	public function testClaim()
 	{
 		// login as judge 1 and claim the submission
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->assertTrue($this->solution->claim(), 'Judge 1 could not claim an available problem');
 		$this->assertEquals($this->solution->claiming_judge_id, $this->judge1->id, 'Claiming did not update to judges id');
 
 		// login as judge 2 and attempt to claim again
-		Sentry::login($this->judge2, false);
+		Auth::login($this->judge2);
 		$this->assertFalse($this->solution->claim(), 'Judge 2 was able to claim an already claimed problem');
 		$this->assertEquals($this->solution->claiming_judge_id, $this->judge1->id, 'Claim changed judges id when it should not have');
 	}
@@ -102,16 +101,16 @@ class SolutionTest extends TestCase {
 	 */
 	public function testUnclaim() {
 		// Login as judge 1 and claim the solution
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->assertTrue($this->solution->claim(), 'Judge 1 could not claim unclaimed problem');
 
 		// Now login as judge 2 and attempt to unclaim on behalf of 1
-		Sentry::login($this->judge2, false);
+		Auth::login($this->judge2);
 		$this->assertFalse($this->solution->unclaim(), 'Judge 2 claimed problem that was already owned');
 		$this->assertEquals($this->solution->claiming_judge_id, $this->judge1->id, 'Judge 2 successfully unclaimed for Judge 1');
 
 		// now let judge 1 unclaim
-		Sentry::login($this->judge1, false);
+		Auth::login($this->judge1);
 		$this->assertTrue($this->solution->unclaim(), 'Judge 1 could not unclaim his problem');
 		$this->assertNull($this->solution->claiming_judge_id, "Judge 1 did not successfully unclaim his problem");
 	}

@@ -33,32 +33,32 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	return Sentry::check();
+	return Auth::check();
 });
 
 Route::filter('admin', function(){
-	if(!Sentry::check()) {
+	if(!Auth::check()) {
 		return Redirect::to('/');
 	}
-	else if(!Sentry::getUser()->admin) {
+	else if(!Auth::user()->admin) {
 		return Redirect::to('/');
 	}
 });
 
 Route::filter('judge', function(){
-	if(!Sentry::check()) {
+	if(!Auth::check()) {
 		return Redirect::to('/');
 	}
-	else if(!Sentry::getUser()->judge && !Sentry::getUser()->admin) {
+	else if(!Auth::user()->judge && !Auth::user()->admin) {
 		return Redirect::to('/');
 	}
 });
 
 Route::filter('team', function() {
-	if(!Sentry::check()) {
+	if(!Auth::check()) {
 		return Redirect::to('/');
 	}
-	else if(!Sentry::getUser()->team && !Sentry::getUser()->admin) {
+	else if(!Auth::user()->team && !Auth::user()->admin) {
 		return Redirect::to('/');
 	}
 });
@@ -92,8 +92,7 @@ Route::filter('apiAuth', function() {
 	}
 
 	// otherwise, we let them through
-	$suser = Sentry::getUserProvider()->findById($user->id);
-	Sentry::login($suser, false);
+	Auth::loginUsingId($user->id);
 });
 
 

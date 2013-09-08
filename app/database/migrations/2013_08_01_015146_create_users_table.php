@@ -13,27 +13,21 @@ class CreateUsersTable extends Migration {
 	{
 		Schema::create('users', function($table){
 			$table->increments('id');
-			$table->string('username');
-			$table->string('password');
+			$table->string('username', 32);
+			$table->string('password', 64);
 			$table->string('api_key');
-			$table->timestamp('last_login')->nullable();
-			$table->string('persist_code')->nullable();
-			$table->boolean('activated')->default(1);
-			$table->boolean('admin');
-			$table->boolean('judge');
-			$table->boolean('team');
+			$table->boolean('admin')->default(false);
+			$table->boolean('judge')->default(false);
+			$table->boolean('team')->default(false);
 			$table->timestamps();
 		});
 
 		// add the initial user, an admin
-		Sentry::getUserProvider()->create(array(
-			'username'=>'admin',
-			'password'=>'admin',
-			'api_key'=>User::generateApiKey(),
-			'admin'=>true,
-			'judge'=>false,
-			'team'=>false,
-			));
+		$u = new User();
+		$u->username = 'admin';
+		$u->password = Hash::make('admin');
+		$u->admin = true;
+		$u->save();
 	}
 
 	/**

@@ -64,8 +64,8 @@ return array(
 	 */
 	'permission'=> function()
 	{
-		if(Sentry::check()) {
-			$user = Sentry::getUser();
+		if(Auth::check()) {
+			$user = Auth::user();
 			return $user->admin;
 		}
 		return false;

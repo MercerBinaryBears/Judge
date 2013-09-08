@@ -7,8 +7,8 @@ class JudgeController extends BaseController {
 	public function index() {
 		return View::make('solutions_judge')
 			->with('unjudged_solutions', Solution::forCurrentContest()->unjudged()->unclaimed()->get())
-			->with('claimed_solutions', Solution::forCurrentContest()->where('claiming_judge_id', Sentry::getUser()->id)->get())
-			->with('api_key', User::find(Sentry::getUser()->id)->api_key);
+			->with('claimed_solutions', Solution::forCurrentContest()->where('claiming_judge_id', Auth::user()->id)->get())
+			->with('api_key', Auth::user()->api_key);
 	}
 
 	/**
