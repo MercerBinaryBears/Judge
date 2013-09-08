@@ -1,6 +1,6 @@
 import os
 import commands
-import importlib
+from lib.Autoloader import Autoloader
 
 class SolutionJudger(object):
 	'''Judges a passed solution by autodetecting the language and loading the correct language judging class'''
@@ -27,17 +27,16 @@ class SolutionJudger(object):
 
 		# build the class name from the extension, by title casing: PyJudge, CJudge, CppJudge, JavaJudge, RubyJudge, and so on
 		extension = filename.split('.')[-1]
-		languageJudgeClassName = extension.capitalize() + 'Judge'
 
-		# now, attempt to auto import it
-		# (via http://stackoverflow.com/questions/4821104)
-		languageJudgeModule = importlib.import_module("lib.languages.{0}".format(languageJudgeClassName))
+		class_name = extension.capitalize() + 'Judge'
+		module_name = "lib.languages.{0}".format(class_name)
 
 		if self.debug:
-			print('Loaded module: ',)
-			print(languageJudgeModule)
+			print('Loading module: ',)
+			print(class_name)
 
-		return getattr(languageJudgeModule, languageJudgeClassName)
+		return Autoloader.importClass(module_name, class_name)
+
 
 	def compile(self):
 		'''Attempts to compile the passed file. Returns a tuple with the compile result, and output'''
