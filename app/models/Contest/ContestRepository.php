@@ -1,6 +1,6 @@
 <?php
 
-interface ContestRepositoryInterface {
+interface ContestRepository {
 	/**
 	 * Returns all problems associated with the passed contest
 	 *

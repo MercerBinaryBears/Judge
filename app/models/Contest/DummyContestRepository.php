@@ -2,7 +2,7 @@
 
 uses Illuminate\Database\Eloquent\Collection as Collection;
 
-class DummyContestRepository implements EloquentContestRepository {
+class DummyContestRepository implements ContestRepository {
 
 	/**
 	 * Creates a dummy repository that always returns the passed arrays

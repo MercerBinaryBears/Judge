@@ -2,7 +2,7 @@
 
 use Carbon\Carbon as Carbon;
 
-class EloquentContestRepository implements ContestRepositoryInterface {
+class EloquentContestRepository implements ContestRepository {
 
 	public function problemsForContest(Contest $c) {
 		return $c->problems;
