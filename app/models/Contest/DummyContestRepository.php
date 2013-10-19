@@ -1,6 +1,6 @@
 <?php
 
-uses Illuminate\Database\Eloquent\Collection as Collection;
+use Illuminate\Database\Eloquent\Collection as Collection;
 
 class DummyContestRepository implements ContestRepository {
 

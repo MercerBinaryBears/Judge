@@ -9,7 +9,7 @@ class HomeController extends BaseController {
 	public function index() {
 		$user_data = array();
 
-		$current_contest = Contest::current()->first();
+		$current_contest = $this->contests->currentContests()->first();
 
 		if(is_null($current_contest)) {
 			return View::make('index')->with('user_data', array())->with('problems', array());
