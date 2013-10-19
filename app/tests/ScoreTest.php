@@ -54,6 +54,9 @@ class ScoreTest extends TestCase {
 		$this->assertEquals(60, $this->team->totalPoints($this->contest));
 	}
 
+	//public function testMultipleContestsDoNotAffectScore() {	
+	//}
+
 	/**
 	 * Creates a temporary contest to test with
 	 *

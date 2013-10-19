@@ -163,9 +163,13 @@ class User extends Base implements UserInterface {
 		$summary['score'] = $this->totalPoints($contest);
 
 		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
+
+		$problems_for_contest = $contest->problems()->lists('id');
+
 		$problems_solved = $this->solutions()
 					->where('solution_state_id', $solved_state_id)
-					->select('problems_id')
+					//->whereIn('problem_id', $problems_for_contest)
+					->select('problem_id')
 					->distinct()
 					->count();
 
