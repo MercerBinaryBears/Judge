@@ -12,7 +12,6 @@
 		"phpunit/phpunit": "3.*@dev",
 		"way/generators": "dev-master",
 		"mockery/mockery": "dev-master",
-		"davejamesmiller/laravel-boris": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
