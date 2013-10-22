@@ -115,7 +115,6 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		// the ones I've added
-		'Cartalyst\Sentry\SentryServiceProvider',
 		'DaveJamesMiller\Boris\BorisServiceProvider',
 		'Frozennode\Administrator\AdministratorServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
@@ -184,10 +183,6 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-
-		// the ones I've added
-		'Sentry' => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
-
 	),
 
 );
