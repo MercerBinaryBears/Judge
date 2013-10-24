@@ -162,18 +162,7 @@ class User extends Base implements UserInterface {
 
 		$summary['score'] = $this->totalPoints($contest);
 
-		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
-
-		$problems_for_contest = $contest->problems()->lists('id');
-
-		$problems_solved = $this->solutions()
-					->where('solution_state_id', $solved_state_id)
-					//->whereIn('problem_id', $problems_for_contest)
-					->select('problem_id')
-					->distinct()
-					->count();
-
-		$summary['problems_solved'] = $problems_solved;
+		$summary['problems_solved'] = $this->problemsSolved($contest);
 
 		$summary['problem_info'] = array();
 
@@ -185,5 +174,30 @@ class User extends Base implements UserInterface {
 			$summary['problem_info'][] = $problem_info;
 		}
 		return $summary;
+	}
+
+	/*
+	 * Calculates the number of problems solved for user in a provide
+	 * contest. If no contest is provided, defaults to the most recent current
+	 * contest.
+	 *
+	 * @param Contest $contest
+	 * @return int
+	 */
+	public function problemsSolved($contest = null) {
+		if($contest == null) {
+			$contest = Contest::current()->firstOrFail();
+		}
+
+		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
+		
+		$problem_ids = $contest->problems()->lists('id');
+
+		return $this->solutions()
+			->where('solution_state_id', $solved_state_id)
+			->whereIn('problem_ids', $problem_ids)
+			->select('problem_id')
+			->distinct()
+			->count();
 	}
 }
