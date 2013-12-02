@@ -2,10 +2,17 @@
 
 class BaseController extends Controller {
 
-	public function __construct(ContestRepository $contests, LanguageRepository $languages, ProblemRepository $problems) {
+	public function __construct(
+			ContestRepository $contests, 
+			LanguageRepository $languages, 
+			ProblemRepository $problems,
+			SolutionStateRepository $solution_states
+	) {
+			
 		$this->contests = $contests;
 		$this->languages = $languages;
 		$this->problems = $problems;
+		$this->solution_states = $solution_states;
 	}
 
 	/**

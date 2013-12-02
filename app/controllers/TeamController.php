@@ -23,7 +23,7 @@ class TeamController extends BaseController {
 	 */
 	public function store()
 	{
-		$solution_state_id = SolutionState::pending()->id;
+		$solution_state_id = $this->solution_states->firstPendingId();
 
 		$solution = new Solution();
 

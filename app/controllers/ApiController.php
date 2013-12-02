@@ -77,7 +77,7 @@ class ApiController extends BaseController {
 		if($s->ownedByCurrentUser()) {
 			// the user is the claiming judge, he can edit this solution
 			$s->claiming_judge_id = null;
-			$s->solution_state_id = SolutionState::pending()->id;
+			$s->solution_state_id = $this->solution_states->firstPendingId();
 			if(!$s->save()) {
 				App::abort(400, $s->errors());
 			}
