@@ -15,10 +15,6 @@ class SolutionState extends Base {
 		return $this->hasMany('Solution');
 	}
 
-	/**
-	 * Gets the solution state in the database representing a
-	 * solution still being judged
-	 */
 	public static function pending() {
 		return static::where('pending', true)->firstOrFail();
 	}

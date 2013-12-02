@@ -23,7 +23,7 @@ class JudgeController extends BaseController {
 	public function edit($id)
 	{
 		// get the solution passed
-		$solution = Solution::find($id);
+		$solution = $this->solutions->find($id);
 
 		// claim the problem, reporting errors if the user couldn't claim it
 		if(!$solution->claim()) {
@@ -45,7 +45,7 @@ class JudgeController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$solution = Solution::find($id);
+		$solution = $this->solutions->find($id);
 
 		// Check that this current judge has claimed the problem
 		// Check validation on save, and report errors if any. There shouldn't be, but
@@ -69,7 +69,7 @@ class JudgeController extends BaseController {
 	 * @param int $id The id of the solution to unclaim
 	 */
 	public function unclaim($id) {
-		$solution = Solution::find($id);
+		$solution = $this->solutions->find($id);
 
 		if(!$solution->unclaim()) {
 			Session::flash('error', 'You are not the claiming judge for this problem');
@@ -82,7 +82,7 @@ class JudgeController extends BaseController {
 	 */
 	public function package($id) {
 		// get the requested solution
-		$solution = Solution::find($id);
+		$solution = $this->solutions->find($id);
 
 		$solution_package = new SolutionPackage($solution);
 

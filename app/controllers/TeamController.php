@@ -12,8 +12,8 @@ class TeamController extends BaseController {
 
 		return View::make('solutions_team')
 			->with('solutions', Solution::forCurrentContest()->where('user_id', Auth::user()->id)->get())
-			->with('problems', Problem::forCurrentContest()->lists('name', 'id'))
-			->with('languages', Language::orderBy('name')->lists('name', 'id'));
+			->with('problems', $this->problems->getSelectBoxData())
+			->with('languages', $this->languages->getSelectBoxData() );
 	}
 
 	/**
@@ -23,7 +23,7 @@ class TeamController extends BaseController {
 	 */
 	public function store()
 	{
-		$solution_state_id = SolutionState::pending()->id;
+		$solution_state_id = $this->solution_states->firstPendingId();
 
 		$solution = new Solution();
 

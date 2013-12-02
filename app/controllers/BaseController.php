@@ -2,15 +2,19 @@
 
 class BaseController extends Controller {
 
-	/**
-	 * Repository for querying contest
-	 *
-	 * @var $contests
-	 */
-	protected $contests;
-
-	public function __construct(ContestRepository $contests) {
+	public function __construct(
+			ContestRepository $contests, 
+			LanguageRepository $languages, 
+			ProblemRepository $problems,
+			SolutionRepository $solutions,
+			SolutionStateRepository $solution_states
+	) {
+			
 		$this->contests = $contests;
+		$this->languages = $languages;
+		$this->problems = $problems;
+		$this->solutions = $solutions;
+		$this->solution_states = $solution_states;
 	}
 
 	/**
