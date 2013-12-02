@@ -9,8 +9,9 @@ class BaseController extends Controller {
 	 */
 	protected $contests;
 
-	public function __construct(ContestRepository $contests) {
+	public function __construct(ContestRepository $contests, LanguageRepository $languages) {
 		$this->contests = $contests;
+		$this->languages = $languages;
 	}
 
 	/**

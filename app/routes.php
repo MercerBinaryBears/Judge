@@ -2,6 +2,7 @@
 
 // IOC Binding
 App::bind('ContestRepository', 'EloquentContestRepository');
+App::bind('LanguageRepository', 'EloquentLanguageRepository');
 
 // home route. This is where the scoreboard lives.
 Route::get('/', array('as'=>'index', 'uses'=>'HomeController@index'));
