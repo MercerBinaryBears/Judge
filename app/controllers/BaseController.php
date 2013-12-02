@@ -6,12 +6,14 @@ class BaseController extends Controller {
 			ContestRepository $contests, 
 			LanguageRepository $languages, 
 			ProblemRepository $problems,
+			SolutionRepository $solutions,
 			SolutionStateRepository $solution_states
 	) {
 			
 		$this->contests = $contests;
 		$this->languages = $languages;
 		$this->problems = $problems;
+		$this->solutions = $solutions;
 		$this->solution_states = $solution_states;
 	}
 

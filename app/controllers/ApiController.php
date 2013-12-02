@@ -25,7 +25,7 @@ class ApiController extends BaseController {
 		$user_id = Auth::user()->id;
 
 		// Attempt to claim, returning an error if it occurs
-		$solution = Solution::find($id);
+		$solution = $this->solutions->find($id);
 		if(!$solution->claim()) {
 			App::abort(403, 'That solution has already been claimed by ' . $solution->claiming_judge->username);
 		}
@@ -49,7 +49,7 @@ class ApiController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$s = Solution::find($id);
+		$s = $this->solutions->find($id);
 		$judge_id = Auth::user()->id;
 
 		// Check that this current judge has claimed the problem
@@ -72,7 +72,7 @@ class ApiController extends BaseController {
 	 * API function to unclaim a problem
 	 */
 	public function unclaim($id) {
-		$s = Solution::find($id);
+		$s = $this->solutions->find($id);
 
 		if($s->ownedByCurrentUser()) {
 			// the user is the claiming judge, he can edit this solution
@@ -94,7 +94,7 @@ class ApiController extends BaseController {
 	 * TODO: This is duplicate code from the judge controller, find a way to NOT duplicate
 	 */
 	public function package($id) {
-		$s = Solution::find($id);
+		$s = $this->solutions->find($id);
 
 		$solution_package = new SolutionPackage($s);
 

@@ -4,6 +4,7 @@
 App::bind('ContestRepository', 'EloquentContestRepository');
 App::bind('LanguageRepository', 'EloquentLanguageRepository');
 App::bind('ProblemRepository', 'EloquentProblemRepository');
+App::bind('SolutionRepository', 'EloquentSolutionRepository');
 App::bind('SolutionStateRepository', 'EloquentSolutionStateRepository');
 
 // home route. This is where the scoreboard lives.
