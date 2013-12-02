@@ -12,7 +12,7 @@ class TeamController extends BaseController {
 
 		return View::make('solutions_team')
 			->with('solutions', Solution::forCurrentContest()->where('user_id', Auth::user()->id)->get())
-			->with('problems', Problem::lists('name', 'id'))
+			->with('problems', $this->problems->getSelectBoxData())
 			->with('languages', $this->languages->getSelectBoxData() );
 	}
 
