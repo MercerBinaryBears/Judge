@@ -5,4 +5,5 @@ interface ProblemRepository {
 
 	public function allIds();
 
+	public function forContest(Contest $c);
 }

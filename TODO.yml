@@ -1,5 +1,4 @@
 TODO
-- Convert all repositories to use Collection+Model
 - Ensure Repositories are built as singletons
 - For each controller, make sure that they are only using repositories for queries
 - For each model, make sure that they are only using repositories for queries

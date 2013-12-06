@@ -12,5 +12,7 @@ class EloquentProblemRepository implements ProblemRepository {
 			->lists('id');
 	}
 
-
+	public function forContest(Contest $c) {
+		return Problem::whereContestId($c->id)->get();
+	}
 }

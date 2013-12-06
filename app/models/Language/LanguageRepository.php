@@ -1,5 +1,5 @@
 <?php
 
 interface LanguageRepository {
-	public function getSelectBoxData();
+	public function all();
 }

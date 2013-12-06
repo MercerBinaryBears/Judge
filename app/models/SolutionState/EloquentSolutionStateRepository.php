@@ -10,4 +10,8 @@ class EloquentSolutionStateRepository implements SolutionStateRepository {
 			->firstOrFail()
 			->id;
 	}
+
+	public function all() {
+		return SolutionState::all();
+	}
 }
