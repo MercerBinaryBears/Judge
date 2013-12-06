@@ -36,4 +36,20 @@ class EloquentSolutionRepository implements SolutionRepository {
 			->whereJudgeId($u->id)
 			->get();
 	}
+
+	public function forUserInContest(User $u, Contest $c = null) {
+		if($c == null) {
+			$c = $this->contests->firstCurrent();
+		}
+
+		$problems = $this->contests->problemsForContest();
+
+		if($problems->count() < 1) {
+			return Illuminate\Support\Collection::make(array());
+		}
+
+		return Solution::whereIn($problems->lists('id'))
+			->whereUserId($u->id);
+
+	}
 }
