@@ -9,13 +9,13 @@ class HomeController extends BaseController {
 	public function index() {
 		$user_data = array();
 
-		$current_contest = $this->contests->currentContests()->first();
+		$current_contest = $this->contests->firstCurrent();
 
 		if(is_null($current_contest)) {
 			return View::make('index')->with('user_data', array())->with('problems', array());
 		}
 
-		foreach($current_contest->users as $user) {
+		foreach($this->contests->usersForContest($current_contest) as $user) {
 
 			$user_data[] = $user->contestSummary($current_contest);
 		}
@@ -32,6 +32,8 @@ class HomeController extends BaseController {
 			return $user_2['problems_solved'] - $user_1['problems_solved'];
 		});
 
-		return View::make('index')->with('user_data', $user_data)->with('problems', $current_contest->problems);
+		return View::make('index')
+			->with('user_data', $user_data)
+			->with('problems', $this->contests->problemsForContest($current_contest));
 	}
 }
