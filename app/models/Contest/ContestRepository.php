@@ -8,7 +8,7 @@ interface ContestRepository {
 	 * @param Contest $c
 	 * @return Collection A laravel collection of Problem instances
 	 */
-	public function problemsForContest(Contest $c);
+	public function problemsForContest(Contest $c = null);
 
 	/**
 	 * Returns all users associated with the passed contest
@@ -17,7 +17,7 @@ interface ContestRepository {
 	 * @param Contest $c
 	 * @return Collection a laravel collection of User instances
 	 */
-	public function usersForContest(Contest $c);
+	public function usersForContest(Contest $c = null);
 
 	/**
 	 * Returns all contests considered "current", i.e. their start

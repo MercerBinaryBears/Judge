@@ -1,18 +1,15 @@
 <?php
 
 class EloquentProblemRepository implements ProblemRepository {
-	public function getSelectBoxData() {
-		return Problem::forCurrentContest()
-			->orderBy('name')
-			->lists('name', 'id');
+	
+	public function __construct(ContestRepository $contests) {
+		$this->contests = $contests;
 	}
-
-	public function allIds() {
-		return Problem::forCurrentContest()
-			->lists('id');
-	}
-
-	public function forContest(Contest $c) {
+	
+	public function forContest(Contest $c = null) {
+		if($c == null) {
+			$c = $this->contests->firstCurrent();
+		}
 		return Problem::whereContestId($c->id)->get();
 	}
 }

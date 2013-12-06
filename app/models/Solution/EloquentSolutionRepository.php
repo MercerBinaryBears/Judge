@@ -12,7 +12,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 		return Solution::find($id);
 	}	
 
-	public function judgeableForContest(Contest $c) {
+	public function judgeableForContest(Contest $c = null) {
 		if($c == null) {
 			$c = $this->contests->firstCurrent();
 		}
@@ -28,7 +28,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 			->get();
 	}
 
-	public function claimedByJudgeInContest(User $u, Contest $c) {
+	public function claimedByJudgeInContest(User $u, Contest $c = null) {
 		if($c == null) {
 			$c = $this->contests->firstCurrent();
 		}
