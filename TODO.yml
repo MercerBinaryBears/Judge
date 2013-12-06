@@ -1,3 +1,10 @@
+TODO
+- Remove dummy repositories. Worry about tests later
+- Convert all repositories to use Collection+Model
+- Ensure Repositories are built as singletons
+- For each controller, make sure that they are only using repositories for queries
+- For each model, make sure that they are only using repositories for queries
+
 App Restructuring
 - Repositories
     - All Queries are laid out in the repositories
