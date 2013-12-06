@@ -1,7 +1,7 @@
 TODO
-- Ensure Repositories are built as singletons
-- For each controller, make sure that they are only using repositories for queries
+- Make sure that no Eloquent relationships are used for queries
 - For each model, make sure that they are only using repositories for queries
+- Re-invent tests. MORE+MORE+MORE!
 
 App Restructuring
 - Repositories
