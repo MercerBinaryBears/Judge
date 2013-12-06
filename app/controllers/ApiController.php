@@ -6,7 +6,7 @@ class ApiController extends BaseController {
 	 * API function to get all SolutionTypes as an id:name pair
 	 */
 	public function getSolutionStates() {
-		return ApiController::formatJSend(SolutionState::all()->toArray());
+		return ApiController::formatJSend($this->solutions_states->all()->toArray());
 	}
 
 	/**
@@ -14,7 +14,7 @@ class ApiController extends BaseController {
 	 */
 	public function show() {
 		return ApiController::formatJSend(
-			Solution::where('claiming_judge_id', '=', null)->get()->toArray()
+			$this->solutions->judgeableForContest()
 			);
 	}
 
