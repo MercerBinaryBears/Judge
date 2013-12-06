@@ -1,5 +1,4 @@
 TODO
-- Remove dummy repositories. Worry about tests later
 - Convert all repositories to use Collection+Model
 - Ensure Repositories are built as singletons
 - For each controller, make sure that they are only using repositories for queries
