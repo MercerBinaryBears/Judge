@@ -12,8 +12,11 @@ class EloquentSolutionRepository implements SolutionRepository {
 		return Solution::find($id);
 	}	
 
-	public function judgeableForCurrentContest() {
-		$problems = $this->contest->problemsForContest();
+	public function judgeableForContest(Contest $c) {
+		if($c == null) {
+			$c = $this->contests->firstCurrent();
+		}
+		$problems = $this->contests->problemsForContest($c);
 
 		if($problems->count() < 1) {
 			return Illuminate\Support\Collection::make(array());
@@ -25,8 +28,12 @@ class EloquentSolutionRepository implements SolutionRepository {
 			->get();
 	}
 
-	public function claimedByJudgeInCurrentContest(User $u) {
-		$problems = $this->contest->problemsForContest();
+	public function claimedByJudgeInContest(User $u, Contest $c) {
+		if($c == null) {
+			$c = $this->contests->firstCurrent();
+		}
+
+		$problems = $this->contests->problemsForContest();
 
 		if($problems->count() < 1) {
 			return Illuminate\Support\Collection::make(array());
@@ -50,6 +57,5 @@ class EloquentSolutionRepository implements SolutionRepository {
 
 		return Solution::whereIn($problems->lists('id'))
 			->whereUserId($u->id);
-
 	}
 }

@@ -3,9 +3,13 @@
 interface SolutionRepository {
 	public function find($id);
 
-	public function judgeableForCurrentContest();
+	/*
+	 * Gets a list of judgeable solutions for a contest.
+	 * If the contest is null, it defaults to the first current contest
+	 */
+	public function judgeableForContest(Contest $c);
 
-	public function claimedByJudgeInCurrentContest(User $u);
+	public function claimedByJudgeInContest(User $u, Contest $c);
 
 	/*
 	 * Gets the solutions sent by a user in a contest. If no
