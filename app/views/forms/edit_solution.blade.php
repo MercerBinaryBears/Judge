@@ -20,7 +20,7 @@
 <div class="span6">
 	{{ Form::open(array('route'=>array("edit_solution", $solution->id))) }}
 	{{ Form::label('solution_state_id', 'Solution State: ') }}
-	{{ Form::select('solution_state_id', $solution_states)}}
+	{{ Form::select('solution_state_id', $solution_states->lists('name','id'))}}
 	{{ Form::submit('Save')}}
 	{{ Form::close() }}
 
