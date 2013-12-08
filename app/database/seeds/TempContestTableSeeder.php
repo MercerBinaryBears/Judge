@@ -45,6 +45,9 @@ class TempContestTableSeeder extends Seeder {
 		// solution language
 		$language_id = Language::where('name','Python')->first()->id;
 
+		// solution states
+		$solution_states = SolutionState::all();
+
 		// create some solutions
 		for($i=1; $i <= $solution_count; $i++) {
 			// choose a user at random
@@ -56,8 +59,15 @@ class TempContestTableSeeder extends Seeder {
 			// choose a time offset from contest_start
 			$submission_offset = rand(5, 60*5);
 
+			// choose a solution state
+			$solution_state_id = $solution_states[ rand(0, $solution_states->count()-1) ]->id;
+
+			// choose a judge
+			$judge_id = $judges[ rand(0, $judge_count - 1) ]->id;
+
 			// create a solution
-			$this->createSolution($user_id, $problem_id, $language_id, $submission_offset);
+			$this->createSolution($user_id, $problem_id, $language_id, 
+				$judge_id, $solution_state_id, $submission_offset);
 		}
 
 	}
@@ -116,19 +126,19 @@ class TempContestTableSeeder extends Seeder {
 		return $this->saveOrErr($p);
 	}
 
-	public function createSolution($user_id, $problem_id, $language_id, $solution_offset) {
+	public function createSolution($user_id, $problem_id, $language_id, $judge_id, $solution_state_id, $solution_offset) {
 		$s = new Solution();
 		$s->problem_id = $problem_id;
 		$s->user_id = $user_id;
 		$s->solution_code = 'hello world';
 		$s->language_id = $language_id;
 		$s->solution_filename = 'filename';
+		$s->solution_state_id = $solution_state_id; 
 
-		// TODO: make this random
-		$s->solution_state_id = 1; 
+		if($solution_state_id != 7) {
+			$s->claiming_judge_id = $judge_id;
+		}
 
-		// TODO: randomly pick a claiming judge
-		
 		// calculate the start time from the contest time
 		$submission_time = (new Carbon($this->contest_start))->addMinutes($solution_offset);
 
