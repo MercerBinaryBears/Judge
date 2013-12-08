@@ -27,7 +27,7 @@ class ApiController extends BaseController {
 		// Attempt to claim, returning an error if it occurs
 		$solution = $this->solutions->find($id);
 		if(!$solution->claim()) {
-			App::abort(403, 'That solution has already been claimed by ' . $solution->claiming_judge->username);
+			App::abort(403, 'You cannot claim that solution');
 		}
 
 		// No one has claimed the file, so the current judge claims it.
