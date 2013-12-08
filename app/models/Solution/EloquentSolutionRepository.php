@@ -22,7 +22,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 			return Illuminate\Support\Collection::make(array());
 		}
 
-		return Solution::whereIn($problems->lists('id'))
+		return Solution::whereIn('problem_id', $problems->lists('id'))
 			->whereSolutionStateId($this->solution_states->firstPendingId())
 			->whereJudgeId(null)
 			->get();
@@ -39,7 +39,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 			return Illuminate\Support\Collection::make(array());
 		}
 
-		return Solution::whereIn($problems->lists('id'))
+		return Solution::whereIn('problem_id', $problems->lists('id'))
 			->whereJudgeId($u->id)
 			->get();
 	}
@@ -55,7 +55,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 			return Illuminate\Support\Collection::make(array());
 		}
 
-		return Solution::whereIn($problems->lists('id'))
+		return Solution::whereIn('problem_id', $problems->lists('id'))
 			->whereUserId($u->id);
 	}
 }
