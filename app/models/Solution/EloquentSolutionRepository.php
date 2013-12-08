@@ -56,6 +56,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 		}
 
 		return Solution::whereIn('problem_id', $problems->lists('id'))
-			->whereUserId($u->id);
+			->whereUserId($u->id)
+			->get();
 	}
 }
