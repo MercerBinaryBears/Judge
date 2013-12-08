@@ -1,5 +1,6 @@
 <?php
 
+use \Mockery;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
@@ -9,6 +10,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		// setup the application, using the parent TestCase class
 		parent::setUp();
 
+	}
+
+	public function tearDown() {
+		Mockery::close();
 	}
 
 	/**
