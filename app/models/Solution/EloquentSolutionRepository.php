@@ -24,7 +24,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 
 		return Solution::whereIn('problem_id', $problems->lists('id'))
 			->whereSolutionStateId($this->solution_states->firstPendingId())
-			->whereJudgeId(null)
+			->whereClaimingJudgeId(null)
 			->get();
 	}
 
@@ -40,7 +40,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 		}
 
 		return Solution::whereIn('problem_id', $problems->lists('id'))
-			->whereJudgeId($u->id)
+			->whereClaimingJudgeId($u->id)
 			->get();
 	}
 
