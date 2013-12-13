@@ -184,20 +184,46 @@ class User extends Base implements UserInterface {
 	 * @param Contest $contest
 	 * @return int
 	 */
-	public function problemsSolved($contest = null) {
-		if($contest == null) {
-			$contest = Contest::current()->firstOrFail();
+	public function problemsSolved(Contest $c = null) {
+		$problems = $this->cachedProblems($c);
+		$solutions = $this->cachedSolutions($c);
+
+		/*
+		 * Loop over every problem, checking if there is a solution
+		 * that is solved
+		 */
+		$solved_states = array();
+		$solved_state_id = App::make('SolutionStateRepository')->firstCorrectId();
+		foreach($problems as $problem) {
+			$solved_states[$problem->id] = 0;
+			foreach($solutions as $solution) {
+				if($solution->problem_id == $problem->id && $solution->solution_state_id == $solved_state_id) {
+					$solved_states[$problem->id] = 1;
+				}
+			}
 		}
 
-		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
-		
-		$problem_ids = $contest->problems()->lists('id');
+		// now sum up the solved states
+		return array_sum($solved_states);	
+	}
 
-		return $this->solutions()
-			->where('solution_state_id', $solved_state_id)
-			->whereIn('problem_ids', $problem_ids)
-			->select('problem_id')
-			->distinct()
-			->count();
+	protected function cachedProblems(Contest $c = null) {
+		if(isset($this->cached_problems)) {
+			return $this->cached_problems;
+		}
+
+		$this->cached_problems = App::make('ContestRepository')->problemsForContest($c);
+
+		return $this->cached_problems;
+	}
+
+	protected function cachedSolutions(Contest $c = null) {
+		if(isset($this->cached_solutions)) {
+			return $this->cached_solutions;
+		}
+
+		$this->cached_solutions = App::make('SolutionRepository')->forUserInContest($this, $c);
+
+		return $this->cached_solutions;
 	}
 }

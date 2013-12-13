@@ -14,4 +14,10 @@ class EloquentSolutionStateRepository implements SolutionStateRepository {
 	public function all() {
 		return SolutionState::all();
 	}
+
+	public function firstCorrectId() {
+		return SolutionState::where('name', 'LIKE', '%Correct%')
+			->firstOrFail()
+			->id;
+	}
 }
