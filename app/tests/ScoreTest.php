@@ -1,6 +1,7 @@
 <?php
 
 use \Mockery;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
 class ScoreTest extends TestCase {
@@ -47,10 +48,9 @@ class ScoreTest extends TestCase {
 		$this->user = new User;
 	}
 
-	public function testProblemsSolvedOnlyCountsProblemsInASolvedState() {
+	public function testSolvedProblemDoesntCountUnsolved() {
 		$ary = array(
-			array('problem_id' => 1, 'solution_state_id' => $this->correct_solution_state_id),
-			array('problem_id' => 2, 'solution_state_id' => $this->correct_solution_state_id+1)
+			array('problem_id' => 1, 'solution_state_id' => -1),
 		);
 
 		$this->solution_repository
@@ -58,10 +58,45 @@ class ScoreTest extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $this->createCollection('Solution', $ary) );
 
-		$this->assertEquals(1, $this->user->problemsSolved()); 
+		$p = new Problem();
+		$p->unguard();
+		$p->id = 1;
+
+		$this->assertEquals(0, $this->user->solvedProblem($p)); 
 	}
 
 	public function testProblemsSolvedOnlyCountsASingleProblemOnce() {
+		$ary = array(
+			array('problem_id' => 1, 'solution_state_id' => $this->correct_solution_state_id),
+			array('problem_id' => 1, 'solution_state_id' => $this->correct_solution_state_id)
+		);
+
+		$this->solution_repository
+			->shouldReceive('forUserInContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Solution', $ary) );
+
+		$p = new Problem();
+		$p->unguard();
+		$p->id = 1;
+
+		$this->assertEquals(1, $this->user->solvedProblem($p));
+	}
+
+	public function testProblemsSolvedCountsEveryProblem() {
+		$ary = array(
+			array('problem_id' => 1, 'solution_state_id' => $this->correct_solution_state_id),
+			array('problem_id' => 2, 'solution_state_id' => $this->correct_solution_state_id)
+		);
+		$this->solution_repository
+			->shouldReceive('forUserInContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Solution', $ary) );
+
+		$this->assertEquals(2, $this->user->problemsSolved());
+	}
+
+	public function testIncorrectSubmissionsForProblem() {
 		$ary = array(
 			array('problem_id' => 1, 'solution_state_id' => $this->correct_solution_state_id),
 			array('problem_id' => 1, 'solution_state_id' => $this->correct_solution_state_id+1)
@@ -72,16 +107,109 @@ class ScoreTest extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $this->createCollection('Solution', $ary) );
 
-		$this->assertEquals(1, $this->user->problemsSolved());
+		$p = new Problem();
+		$p->unguard();
+		$p->id = 1;
+
+		$this->assertEquals(1, $this->user->incorrectSubmissionCountForProblem($p));
+	}
+
+	public function testEarliestCorrect() {
+		$ary = array(
+			array(
+				'problem_id' => 1, 
+				'solution_state_id' => $this->correct_solution_state_id,
+				'created_at' => new Carbon('2013-01-01 01:02:00')
+			),
+			array(
+				'problem_id' => 1, 
+				'solution_state_id' => $this->correct_solution_state_id,
+				'created_at' => new Carbon('2013-01-01 00:00:00')
+			),
+		);
+
+		$this->solution_repository
+			->shouldReceive('forUserInContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Solution', $ary) );
+
+		$p = new Problem();
+		$p->unguard();
+		$p->id = 1;
+
+		$solution = $this->user->earliestCorrectSolutionForProblem($p);
+
+		$this->assertEquals('00:00:00', $solution->created_at->format('H:i:s'));
+	}
+
+	public function testScoreForNoCorrects() {
+
+		// mock out the current contest query as well
+		$contest = new Contest();
+		$contest->starts_at = new Carbon('2013-01-01 00:00:00');
+		$this->contest_repository->shouldReceive('firstCurrent')->once()->andReturn($contest);
+
+		$ary = array(
+			array(
+				'problem_id' => 1, 
+				'solution_state_id' => -1,
+				'created_at' => new Carbon('2013-01-01 00:00:00')
+			),
+			array(
+				'problem_id' => 1, 
+				'solution_state_id' => -1,
+				'created_at' => '2013-01-01 01:02:00' 
+			)
+		);
+
+		$this->solution_repository
+			->shouldReceive('forUserInContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Solution', $ary) );
+
+		$p = new Problem();
+		$p->unguard();
+		$p->id = 1;
+
+		$this->assertEquals(0, $this->user->pointsForProblem($p));
+
+	}
+	
+	public function testScoreForCorrectProblem() {
+
+		// mock out the current contest query as well
+		$contest = new Contest();
+		$contest->starts_at = new Carbon('2013-01-01 00:00:00');
+		$this->contest_repository->shouldReceive('firstCurrent')->once()->andReturn($contest);
+
+		$ary = array(
+			array(
+				'problem_id' => 1, 
+				'solution_state_id' => -1,
+				'created_at' => new Carbon('2013-01-01 00:00:00')
+			),
+			array(
+				'problem_id' => 1, 
+				'solution_state_id' => $this->correct_solution_state_id,
+				'created_at' => '2013-01-01 01:02:00' 
+			)
+		);
+
+		$this->solution_repository
+			->shouldReceive('forUserInContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Solution', $ary) );
+
+		$p = new Problem();
+		$p->unguard();
+		$p->id = 1;
+
+		$this->assertEquals(20+62, $this->user->pointsForProblem($p));
 
 	}
 
 	/*
 	 * Tests 
-	 * - Calculation of the number of incorrect submissions for a single problem
-	 * - Calculation of the score for a single problem is correct
-	 *    - Incorrect submissions with 0 correct give 0 penalty points
-	 *    - n Incorrect submissions with k correct gives n penalty points, plus submission time
 	 * - Calculation of the score for an entire problem set is correct
 	 *    - Sum of all penalty points for every problem
 	 */
