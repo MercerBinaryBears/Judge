@@ -21,6 +21,12 @@ class CreateSolutions extends Migration {
 			$table->text('solution_state_id');
 			$table->integer('claiming_judge_id')->nullable();
 			$table->timestamps();
+
+			$table->foreign('problem_id')->references('id')->on('problems')->onDelete('cascade');
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('language_id')->references('id')->on('languages');
+			$table->foreign('solution_state_id')->references('id')->on('solution_states');
+			$table->foreign('claiming_judge_id')->references('id')->on('users');
 		});
 	}
 

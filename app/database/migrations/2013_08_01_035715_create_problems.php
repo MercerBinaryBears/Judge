@@ -19,7 +19,7 @@ class CreateProblems extends Migration {
 			$table->text('judging_output');
 			$table->timestamps();
 
-			$table->foreign('contest_id')->references('contests')->on('id');
+			$table->foreign('contest_id')->references('contests')->on('id')->onDelete('cascade');
 		});
 	}
 
