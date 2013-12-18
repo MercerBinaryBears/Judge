@@ -21,13 +21,6 @@ class Solution extends Base {
 	protected $fillable = array('problem_id', 'user_id', 'solution_code', 'solution_language', 'solution_state_id');
 
 	/**
-	 * Enables soft deleting on the model.
-	 *
-	 * @var bool
-	 */
-	protected $softDelete = true;
-
-	/**
 	 * Gets the problem that this solution solves
 	 */
 	public function problem() {
@@ -163,4 +156,26 @@ class Solution extends Base {
 		// make the update and return the result
 		return $this->save();
 	}
+
+	/**
+	 * Prints a pretty diff of the solution since the contest start
+	 */
+	public function submissionPrettyDiff() {
+		// get the contest for this solution
+
+		$current_contest = App::make('ContestRepository')->firstCurrent();
+
+		var_dump($this->created_at);
+		var_dump($current_contest->created_at);
+
+		/*
+		 * THE SEEDS ARE WRONG. Fix createSolution in TempContestTableSeeder.
+		 * Because I'm using a model, the created_at field is being overwritten,
+		 * and I'm not getting the values I want!
+		 */
+
+		return $this->created_at->diffForHumans($current_contest->created_at)
+			. ' contest start';
+	}
+
 }
