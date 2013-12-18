@@ -1,112 +1,181 @@
 <?php
 
-use Carbon\Carbon as Carbon;
+use \Mockery;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection as Collection;
 
 class ScoreTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
 
-		// Add a contest and team to work with, then attach them
-		$this->contest = $this->createContest('Contest Test');
-		$this->team = $this->createTeam('Team Test', $this->contest->id);
-		$this->contest->users()->attach($this->team);
+		// some constants
+		$this->correct_solution_state_id = 1;
 
-		// attach first problem to contest
-		$this->problem = Problem::find(1);
-		$this->problem->contest_id = $this->contest->id;
-		$this->problem->save();
+		// mock the repositories	
+		$this->solution_repository = Mockery::mock('SolutionRepository');
+		App::instance('SolutionRepository', $this->solution_repository);
 
-		// get the solution we want to work with
-		// we'll just attempt with the first solution in the database,
-		// which we assume to be a seed value anyways
-		// TODO: Make this more robust instead of ASSUMING!
-		$this->solution = $this->createSolution($this->team, Problem::first());
+		$this->mockSolutionStates();
+
+		$this->mockContest();
+
+		$this->user = new User;
+
+		// create a fake problem to use throughout the tests
+		$this->problem = new Problem();
+		$this->problem->unguard();
+		$this->problem->id = 1;
 	}
 
-	public function tearDown() {
-		$this->solution->delete();
-		DB::table('users')->where('username', 'LIKE', 'Team Test')->delete();
-		DB::table('contests')->where('name', 'LIKE', 'Contest Test')->delete();
+	public function testSolvedProblemDoesntCountUnsolved() {
+		$this->mockSolutions(
+			1, -1, '2013-01-01 01:02:00',
+			1, -1, '2013-01-01 01:02:00'
+		);
+		
+		$this->assertEquals(0, $this->user->solvedProblem($this->problem)); 
 	}
 
-	public function testScoreIsZeroUponInit() {
-		// Test that the team's initial score is 0
-		$this->assertEquals($this->team->totalPoints($this->contest), 0);
+	public function testProblemsSolvedOnlyCountsASingleProblemOnce() {
+		$this->mockSolutions(
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00'
+		);
+
+		$this->assertEquals(1, $this->user->solvedProblem($this->problem));
 	}
 
-	public function testScoreIsZeroUponPendingOrIncorrect() {
-		// Set a solution to be Pending and submitted one hour after contest start
-		$this->solution->solution_state_id = SolutionState::pending()->id;
-		$this->solution->created_at = Carbon::now()->subDay(1)->addHour();
-		$this->solution->user_id = $this->team->id;
-		$this->assertEquals($this->team->totalPoints($this->contest), 0);
+	public function testProblemsSolvedCountsEveryProblem() {
+		$this->mockSolutions(
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
+			2, $this->correct_solution_state_id, '2013-01-01 01:02:00'
+		);
 
-		$this->solution->solution_state_id = SolutionState::find(2)->id;
-		$this->assertEquals($this->team->totalPoints($this->contest), 0);
+		$this->assertEquals(2, $this->user->problemsSolved());
 	}
 
-	public function testScoreIsAccurateUponCorrect() {
-		$this->solution->solution_state_id = SolutionState::where('name', 'LIKE', '%correct%')->first()->id;
-		$this->solution->created_at = (new Carbon($this->contest->starts_at))->addHour()->format('Y-m-d H:i:s');
-		$this->solution->save();
+	public function testIncorrectSubmissionsForProblem() {
+		$this->mockSolutions(
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
+			1, -1, '2013-01-01 00:00:00'
+		);
 
-		$this->assertEquals(60, $this->team->totalPoints($this->contest));
+		$this->assertEquals(1, $this->user->incorrectSubmissionCountForProblem($this->problem));
 	}
 
-	//public function testMultipleContestsDoNotAffectScore() {	
-	//}
+	public function testEarliestCorrect() {
+		$this->mockSolutions(
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
+			1, $this->correct_solution_state_id, '2013-01-01 00:00:00'
+		);
 
-	/**
-	 * Creates a temporary contest to test with
-	 *
-	 * @param string $contest_name The name of the contest to be created
-	 * @return Contest The contest that was created
-	 */
-	private function createContest($contest_name) {
-		$yesterday = Carbon::now()->subDay(1);
+		$solution = $this->user->earliestCorrectSolutionForProblem($this->problem);
+
+		$this->assertEquals('00:00:00', $solution->created_at->format('H:i:s'));
+	}
+
+	public function testScoreForNoCorrects() {
+
+		// mock out the current contest query as well
 		$contest = new Contest();
-		$contest->name = $contest_name;
-		$contest->starts_at = $yesterday->format("Y-m-d H:i:s");
-		$contest->ends_at = $yesterday->addDays(3)->format("Y-m-d H:i:s");
-		$contest->save();
-		return $contest;
+		$contest->starts_at = new Carbon('2013-01-01 00:00:00');
+		$this->contest_repository->shouldReceive('firstCurrent')->once()->andReturn($contest);
+
+		$this->mockSolutions(
+			1, -1, '2013-01-01 00:00:00',
+			1, -1, '2013-01-01 00:00:00'
+		);
+
+		$this->assertEquals(0, $this->user->pointsForProblem($this->problem));
+
+	}
+	
+	public function testScoreForCorrectProblem() {
+
+		// mock out the current contest query as well
+		$contest = new Contest();
+		$contest->starts_at = new Carbon('2013-01-01 00:00:00');
+		$this->contest_repository->shouldReceive('firstCurrent')->once()->andReturn($contest);
+
+		$this->mockSolutions(
+			1, -1, '2013-01-01 00:00:00',
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00'
+		);
+
+		$this->assertEquals(20+62, $this->user->pointsForProblem($this->problem));
+
+	}
+
+	public function testTotalScore() {
+
+		// mock out the score per problem function
+		$this->user = Mockery::mock('User[pointsForProblem]');
+		$this->user->shouldReceive('pointsForProblem')->twice()->andReturn(10);
+
+		$this->assertEquals(20, $this->user->totalPoints(new Contest));
 	}
 
 	/**
-	 * Creates a team to test with
-	 *
-	 * @param string $username The name for this team
-	 * @param int $contest_id The id for the team's contest
-	 * @return User $user The team that was created
+	 * Helper function to mock the solution repository
 	 */
-	private function createTeam($username, $contest_id) {
-		$user = new User();
-		$user->username = $username;
-		$user->password = 'secret';
-		$user->admin = false;
-		$user->judge = false;
-		$user->team = true;
-		$user->contests()->sync(array($contest_id));
-		$user->save();
-		return $user;
+	protected function mockSolutions($problem_id_1, $solution_state_id_1, $created_at_1, $problem_id_2, $solution_state_id_2, $created_at_2) {
+		$ary = array(
+			array(
+				'problem_id' => $problem_id_1, 
+				'solution_state_id' => $solution_state_id_1,
+				'created_at' => new Carbon($created_at_1)
+			),
+			array(
+				'problem_id' => $problem_id_2, 
+				'solution_state_id' => $solution_state_id_2,
+				'created_at' => new Carbon($created_at_2) 
+			)
+		);
+
+		$this->solution_repository
+			->shouldReceive('forUserInContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Solution', $ary) );
 	}
 
 	/**
-	 * Creates a test solution associated with a user
-	 *
-	 * @param User $user A user to attach
-	 * @param Problem $problem A problem to associate the solution with
+	 * Creates a mock of the solution state repository
 	 */
-	private function createSolution(User $user, Problem $problem) {
-		$solution = new Solution();
-		$solution->user_id = $user->id;
-		$solution->problem_id = $problem->id;
-		$solution->solution_code = 'asdfafds';
-		$solution->language_id = Language::first()->id;
-		$solution->solution_filename = 'hello.py';
-		$solution->solution_state_id = 7;
-		$solution->save();
-		return $solution;
+	protected function mockSolutionStates() {
+		$this->solution_state_repository = Mockery::mock('SolutionStateRepository');
+		$this->solution_state_repository
+			->shouldReceive('firstCorrectId')
+			->zeroOrMoreTimes()
+			->andReturn(1);
+		App::instance('SolutionStateRepository', $this->solution_state_repository);
+	}
+
+	/**
+	 * Creates a mock of the contest repository
+	 */
+	protected function mockContest() {
+		$this->contest_repository = Mockery::mock('ContestRepository');
+		$raw_problems = array(
+			array('id' => 1),
+			array('id' => 2)
+		);
+		$this->contest_repository
+			->shouldReceive('problemsForContest')
+			->zeroOrMoreTimes()
+			->andReturn( $this->createCollection('Problem', $raw_problems));
+		App::instance('ContestRepository', $this->contest_repository);
+	
+	}
+	
+	protected function createCollection($class_name, $models) {
+		$ary = array();
+		foreach($models as $m) {
+			$model_instance = new $class_name;
+			$model_instance->unguard();
+			$model_instance->fill($m);
+			$ary[] = $model_instance;
+		}
+		return Collection::make($ary);
 	}
 }

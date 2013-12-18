@@ -6,7 +6,7 @@ class ApiController extends BaseController {
 	 * API function to get all SolutionTypes as an id:name pair
 	 */
 	public function getSolutionStates() {
-		return ApiController::formatJSend(SolutionState::all()->toArray());
+		return ApiController::formatJSend($this->solutions_states->all()->toArray());
 	}
 
 	/**
@@ -14,7 +14,7 @@ class ApiController extends BaseController {
 	 */
 	public function show() {
 		return ApiController::formatJSend(
-			Solution::where('claiming_judge_id', '=', null)->get()->toArray()
+			$this->solutions->judgeableForContest()
 			);
 	}
 
@@ -27,7 +27,7 @@ class ApiController extends BaseController {
 		// Attempt to claim, returning an error if it occurs
 		$solution = $this->solutions->find($id);
 		if(!$solution->claim()) {
-			App::abort(403, 'That solution has already been claimed by ' . $solution->claiming_judge->username);
+			App::abort(403, 'You cannot claim that solution');
 		}
 
 		// No one has claimed the file, so the current judge claims it.

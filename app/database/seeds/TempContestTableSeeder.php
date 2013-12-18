@@ -9,110 +9,151 @@ class TempContestTableSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		// the contest
-		$contest1 = $this->createContest();
-		$contest2 = $this->createContest();
+		// random sizes for everything
+		$problem_count = rand(3,10); 
+		$team_count = rand(3,10);
+		$judge_count = rand(2,4);
+		$solution_count = rand(2, $problem_count * $team_count * 2);
 
-		// problems
-		$problem1 = $this->createProblem('Problem 1', $contest1);
-		$problem2 = $this->createProblem('Problem 2', $contest1);
-		$problemA = $this->createProblem('Problem A', $contest2);
-		$problemB = $this->createProblem('Problem B', $contest2);
+		// arrays to hold temps
+		$contest = null;
+		$teams = [];
+		$judges = [];
+		$problems = [];
 
-		// users
-		$team1 = $this->createTeam('Team 1', array($contest1->id, $contest2->id));
-		$team2 = $this->createTeam('Team 2', array($contest1->id, $contest2->id));
 
-		// attach users to their contests
-		$this->attachToContests($team1, array($contest1, $contest2));
-		$this->attachToContests($team2, array($contest1, $contest2));
+		/*
+		 * create the contest and store it as $this->contest.
+		 */
+		$this->createContest();
 
+		// generate teams
+		for($i=1; $i <= $team_count; $i++) {
+			$teams[] = $this->createTeam($i);
+		}	
+
+		// generate judges
+		for($i=1; $i <= $judge_count; $i++) {
+			$judges[] = $this->createJudge($i);
+		}
+
+		// generate problems
+		for($i=1; $i<= $problem_count; $i++) {
+			$problems[] = $this->createProblem($i);	
+		}
+		
 		// solution language
-		$language = Language::where('name','Python')->first();
+		$language_id = Language::where('name','Python')->first()->id;
 
-		// some solutions
-		$this->createSolution($team1, $problem1, $language);
-		$this->createSolution($team1, $problem2, $language);
-		$this->createSolution($team1, $problem1, $language);
-		$this->createSolution($team2, $problem2, $language);
-		$this->createSolution($team1, $problem2, $language);
+		// solution states
+		$solution_states = SolutionState::all();
+
+		// create some solutions
+		for($i=1; $i <= $solution_count; $i++) {
+			// choose a user at random
+			$user_id = $teams[ rand(0, $team_count - 1) ]->id;
+
+			// choose a problem at random
+			$problem_id = $problems[ rand(0, $problem_count -1) ]->id;
+
+			// choose a time offset from contest_start
+			$submission_offset = rand(5, 60*5);
+
+			// choose a solution state
+			$solution_state_id = $solution_states[ rand(0, $solution_states->count()-1) ]->id;
+
+			// choose a judge
+			$judge_id = $judges[ rand(0, $judge_count - 1) ]->id;
+
+			// create a solution
+			$this->createSolution($user_id, $problem_id, $language_id, 
+				$judge_id, $solution_state_id, $submission_offset);
+		}
+
 	}
 
-	private function writeTmp($filename='test.py', $path='/tmp/', $contents='Hello world') {
-		$fh = fopen($path . '/' . $filename, "w");
-		fwrite($fh, $contents);
-		fclose($fh);
+	public function createContest() {
+		$this->contest_start = Carbon::now()->subDay();
+		$this->contest_end = Carbon::now()->subDay()->addHours(rand(3,5));
+
+		$this->contest = Contest::create(array(
+			'name' => 'Contest on ' . $this->contest_start->format('m/d/Y'),
+			'starts_at' => $this->contest_start->toDateTimeString(),
+			'ends_at' => $this->contest_end->toDateTimeString()
+		));
+	}
+
+	public function createTeam($i) {
+		return $this->createUser($i, 'team', true);	
+	}
+
+	public function createJudge($i) {
+		return $this->createUser($i, 'judge', false, true);
+	}
+
+	private function createUser($i, $prefix, $team = false, $judge = false) {
+		$u = new User();
+		$u->username = "${prefix}_$i";
+		$u->password = Hash::make("password");
+		$u->admin = false;
+		$u->judge = $judge;
+		$u->team = $team;
+		$u->created_at = Carbon::now()->toDateTimeString();
+		$u->updated_at = Carbon::now()->toDateTimeString();
+
+		$this->saveOrErr($u);
+
+		// attach the user to the current contest
+		DB::table('contest_user')->insert(array(
+			'user_id' => $u->id,
+			'contest_id' => $this->contest->id,
+			'created_at' => Carbon::now(),
+			'updated_at' => Carbon::now()
+		));
+
+		return $u;
+	}
+
+	public function createProblem($i) {
+		$p = new Problem();
+		$p->name = "Problem $i";
+		$p->contest_id = $this->contest->id;
+		$p->judging_input = 'INPUT';
+		$p->judging_output = 'OUTPUT';
+		$p->created_at = Carbon::now()->toDateTimeString();
+		$p->updated_at = Carbon::now()->toDateTimeString();
+
+		return $this->saveOrErr($p);
+	}
+
+	public function createSolution($user_id, $problem_id, $language_id, $judge_id, $solution_state_id, $solution_offset) {
+		$s = new Solution();
+		$s->problem_id = $problem_id;
+		$s->user_id = $user_id;
+		$s->solution_code = 'hello world';
+		$s->language_id = $language_id;
+		$s->solution_filename = 'filename';
+		$s->solution_state_id = $solution_state_id; 
+
+		if($solution_state_id != 7) {
+			$s->claiming_judge_id = $judge_id;
+		}
+
+		// calculate the start time from the contest time
+		$submission_time = (new Carbon($this->contest_start))->addMinutes($solution_offset);
+
+		$s->created_at = $submission_time->toDateTimeString();
+		$s->updated_at = $submission_time->toDateTimeString();
+
+		return $this->saveOrErr($s);
 	}
 
 	private function saveOrErr($model, $message='Invalid Model') {
-		if($model->save()) {
-			return $model;
-		}
-		else {
-			throw new Exception($message . ' ' . $model->errors()->toJson());
-		}
-	}
-
-	private function attachToContests($user, array $contests) {
-		foreach($contests as $contest) {
-			$contest->users()->attach($user);
-		}
-	}
-
-	private function createContest() {
-		$yesterday = Carbon::now()->subDay(1);
-
-		$contest = new Contest();
-		$contest->name = "Contest on " . $yesterday->format("Y-m-d");
-		$contest->starts_at = $yesterday->format("Y-m-d H:i:s");
-		$contest->ends_at = $yesterday->addDays(3)->format("Y-m-d H:i:s");
-		return $this->saveOrErr($contest, 'Invalid Contest');
-	}
-
-	private function createProblem($problem_name, $contest) {
-		// problems
-		$problem = new Problem();
-		$problem->name = $problem_name;
-		$problem->contest_id = $contest->id;
-
-		// judging data
-		$judging_input_filename = $problem->generateRandomString();
-		$this->writeTmp($judging_input_filename, storage_path() . "/" . 'judging_input/', 'INPUT');
-		$problem->judging_input = $judging_input_filename;
-
-		$judging_output_filename = $problem->generateRandomString();
-		$this->writeTmp($judging_output_filename, storage_path() . "/" . 'judging_output/', 'OUTPUT');
-		$problem->judging_output = $judging_output_filename;
-
-		return $this->saveOrErr($problem, 'Invalid Problem');
-	}
-
-	private function createTeam($username, array $contest_ids) {
-		$user = new User();
-		$user->username = $username;
-		$user->password = 'secret';
-		$user->admin = false;
-		$user->judge = false;
-		$user->team = true;
-		$user->contests()->sync($contest_ids);
-
-		return $this->saveOrErr($user, 'Invalid User');
-	}
-
-	private function createSolution($team, $problem, $language) {
-		$judging = SolutionState::pending();
-
-		$solution = new Solution();
-
-		// write the solution code to a file
-		$solution->solution_code = $solution->generateRandomString();
-		$this->writeTmp($solution->solution_code, storage_path() . '/solution_code/', "print 'Hello World'");
-
-		$solution->user_id = $team->id;
-		$solution->problem_id = $problem->id;
-		$solution->solution_filename = 'test.py';
-		$solution->language_id = $language->id;
-		$solution->solution_state_id = $judging->id;
-		return $this->saveOrErr($solution, 'Invalid Solution');
-	}
+			if($model->save()) {
+					return $model;
+			}
+			else {
+					throw new Exception($message . ' ' . $model->errors()->toJson());
+			}
+        }
 }

@@ -61,36 +61,22 @@ class User extends Base implements UserInterface {
 	 * @param problem $problem the problem to score
 	 * @return int the number of points
 	 */
-	public function pointsForProblem($problem) {
-		$points = 0;
-		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
+	public function pointsForProblem(Problem $problem) {
+		// get the start time for the contest
+		$starts_at = new Carbon($this->cachedContest()->starts_at);
 
-		// the total number of submissions for this problem
-		$total_submissions = Solution::where('problem_id', $problem->id)
-			->where('user_id', $this->id)
-			->count();
-
-		// did they solve it
-		$did_solve = Solution::where('problem_id', $problem->id)
-			->where('user_id', $this->id)
-			->where('solution_state_id', $solved_state_id)
-			->count() > 0;
-
-		if( $did_solve ) {
-
-			$contest_start = new Carbon($problem->contest->starts_at);
-
-			$correct_start = Solution::where('problem_id', $problem->id)
-				->where('user_id', $this->id)
-				->where('solution_state_id', $solved_state_id)
-				->first()
-				->created_at;
-
-			$correct_start = new Carbon($correct_start);
-
-			$points += ($total_submissions - 1) * 20 + $contest_start->diffInMinutes(new Carbon($correct_start));
+		// if they didn't solve it, return 0
+		if(! $this->solvedProblem($problem)) {
+			return 0;
 		}
-		return $points;
+
+		$incorrect_count = $this->incorrectSubmissionCountForProblem($problem);
+
+		$earliest_solution = $this->earliestCorrectSolutionForProblem($problem);
+
+		$minutes_since_contest = $earliest_solution->created_at->diffInMinutes($starts_at); 
+		
+		return $incorrect_count * 20 + $minutes_since_contest;
 	}
 
 	/**
@@ -108,8 +94,9 @@ class User extends Base implements UserInterface {
 	 * @return int the total number of points for this user
 	 */
 	public function totalPoints($contest) {
+		$problems = $this->cachedProblems($contest);
 		$points = 0;
-		foreach($contest->problems as $problem) {
+		foreach($problems as $problem) {
 			$points += $this->pointsForProblem($problem);
 		}
 		return $points;
@@ -169,7 +156,7 @@ class User extends Base implements UserInterface {
 		foreach($contest->problems as $problem) {
 			$problem_info = array();
 			$problem_info['points_for_problem'] = $this->pointsForProblem($problem);
-			$problem_info['num_submissions'] = $this->solutions()->where('problem_id', $problem->id)->count();
+			$problem_info['num_submissions'] = $this->incorrectSubmissionCountForProblem($problem) + $this->solvedProblem($problem);
 
 			$summary['problem_info'][] = $problem_info;
 		}
@@ -184,20 +171,105 @@ class User extends Base implements UserInterface {
 	 * @param Contest $contest
 	 * @return int
 	 */
-	public function problemsSolved($contest = null) {
-		if($contest == null) {
-			$contest = Contest::current()->firstOrFail();
+	public function problemsSolved(Contest $c = null) {
+		$problems = $this->cachedProblems($c);
+		$solutions = $this->cachedSolutions($c);
+
+		/*
+		 * Loop over every problem, checking if there is a solution
+		 * that is solved
+		 */
+		$total = 0;
+		foreach($problems as $problem) {
+			if($this->solvedProblem($problem)) {
+				$total++;
+			}
 		}
 
-		$solved_state_id = SolutionState::where('is_correct', true)->first()->id;
-		
-		$problem_ids = $contest->problems()->lists('id');
+		// now sum up the solved states
+		return $total;	
+	}
 
-		return $this->solutions()
-			->where('solution_state_id', $solved_state_id)
-			->whereIn('problem_ids', $problem_ids)
-			->select('problem_id')
-			->distinct()
-			->count();
+	/**
+	 * Returns true if this user solved the given problem
+	 */
+	public function solvedProblem(Problem $problem) {
+		// TODO: Cache this so we don't have to query all the time!
+		$solved_state_id = App::make('SolutionStateRepository')->firstCorrectId();
+
+		foreach($this->cachedSolutions() as $solution) {
+			if($solution->problem_id == $problem->id && $solution->solution_state_id == $solved_state_id) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Calculates the number of incorrect submissions for a given problem
+	 */
+	public function incorrectSubmissionCountForProblem(Problem $p) {
+		$solutions = $this->cachedSolutions();
+		$solved_state_id = App::make('SolutionStateRepository')->firstCorrectId();
+
+		$incorrect_count = 0;
+		foreach($solutions as $solution) {
+			if($solution->problem_id == $p->id && $solution->solution_state_id == $solved_state_id) {
+				$incorrect_count++;
+			}
+		}
+		return $incorrect_count;
+	}
+
+	public function earliestCorrectSolutionForProblem(Problem $problem) {
+		$correct_solution = null;
+		
+		$solved_state_id = App::make('SolutionStateRepository')->firstCorrectId();
+
+		foreach($this->cachedSolutions() as $solution) {
+			$is_solved = $solution->solution_state_id == $solved_state_id ;
+			if($is_solved) {
+				if($correct_solution == null) {
+					$correct_solution = $solution;
+				}	
+				else if($correct_solution->created_at > $solution->created_at) {
+					$correct_solution = $solution;
+				}
+			}
+
+		}
+
+		return $correct_solution;
+	}
+
+	protected function cachedContest() {
+		if(isset($this->cached_contest)) {
+			return $this->cached_contest;
+		}
+
+		$this->cached_contest = App::make('ContestRepository')->firstCurrent();
+
+		return $this->cached_contest;
+	}
+
+	protected function cachedProblems(Contest $c = null) {
+		if(isset($this->cached_problems)) {
+			return $this->cached_problems;
+		}
+
+		$this->cached_problems = App::make('ContestRepository')->problemsForContest($c);
+
+		return $this->cached_problems;
+	}
+
+	protected function cachedSolutions(Contest $c = null) {
+		if(isset($this->cached_solutions)) {
+			return $this->cached_solutions;
+		}
+
+		$this->cached_solutions = App::make('SolutionRepository')->forUserInContest($this, $c);
+
+		return $this->cached_solutions;
 	}
 }

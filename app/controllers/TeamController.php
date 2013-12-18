@@ -8,12 +8,10 @@ class TeamController extends BaseController {
 	 * problem
 	 */
 	public function teamIndex() {
-		$problems = array();
-
 		return View::make('solutions_team')
-			->with('solutions', Solution::forCurrentContest()->where('user_id', Auth::user()->id)->get())
-			->with('problems', $this->problems->getSelectBoxData())
-			->with('languages', $this->languages->getSelectBoxData() );
+			->with('solutions', $this->solutions->forUserInContest(Auth::user()))
+			->with('problems', $this->contests->problemsForContest())
+			->with('languages', $this->languages->all() );
 	}
 
 	/**

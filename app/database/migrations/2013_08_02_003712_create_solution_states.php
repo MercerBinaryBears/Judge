@@ -19,36 +19,45 @@ class CreateSolutionStates extends Migration {
 			$table->timestamps();
 		});
 
-		// add some
-		DB::table('solution_states')->insert(array(
-			'name'=>'Correct',
-			'is_correct'=>true,
-			));
-		DB::table('solution_states')->insert(array(
-			'name'=>'Wrong Output',
-			'is_correct'=>false,
-			));
-		DB::table('solution_states')->insert(array(
-			'name'=>'Time Limit Exceeded',
-			'is_correct'=>false,
-			));
-		DB::table('solution_states')->insert(array(
-			'name'=>'Presentation Error',
-			'is_correct'=>false,
-			));
-		DB::table('solution_states')->insert(array(
-			'name'=>'Runtime Error',
-			'is_correct'=>false,
-			));
-		DB::table('solution_states')->insert(array(
-			'name'=>'Compile Error',
-			'is_correct'=>false,
-			));
-		DB::table('solution_states')->insert(array(
-			'name'=>'Judging',
-			'is_correct'=>false,
-			'pending'=>true,
-			));
+		// Create the Solution States data
+		$now = Carbon\Carbon::now();
+		$solution_states = array(	
+			array(
+				'name'=>'Correct',
+				'is_correct'=>true,
+			),
+			array(
+				'name'=>'Wrong Output',
+				'is_correct'=>false,
+			),
+			array(
+				'name'=>'Time Limit Exceeded',
+				'is_correct'=>false,
+			),
+			array(
+				'name'=>'Presentation Error',
+				'is_correct'=>false,
+			),
+			array(
+				'name'=>'Runtime Error',
+				'is_correct'=>false,
+			),
+			array(
+				'name'=>'Compile Error',
+				'is_correct'=>false,
+			),
+			array(
+				'name'=>'Judging',
+				'is_correct'=>false,
+				'pending'=>true,
+			)
+		);
+
+		foreach($solution_states as $solution_state) {
+			$solution_state['created_at'] = $now->format('Y-m-d H:i:s');
+			$solution_state['updated_at'] = $now->format('Y-m-d H:i:s');
+			DB::table('solution_states')->insert($solution_state);
+		}
 
 	}
 
