@@ -25,12 +25,29 @@ class ContestSummary {
 	 * The main comparison function for two contest summaries
 	 */
 	public static function compare(ContestSummary $c1, ContestSummary $c2) {
+		/*
+		 * Check problems solved first
+		 */
 		if($c1->problems_solved < $c2->problems_solved) {
 			return 1;
 		}
 		else if($c1->problems_solved > $c2->problems_solved) {
 			return -1;
 		}
-		return 0;
+
+		/*
+		 * Check penalty points next
+		 */
+		if($c1->penalty_points < $c2->penalty_points) {
+			return -1;
+		}
+		else if($c1->penalty_points > $c2->penalty_points) {
+			return 1;
+		}
+
+		/*
+		 * Lastly, sort alphabetically by username
+		 */
+		return strcasecmp($c1->user->username, $c2->user->username);
 	}
 }

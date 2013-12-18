@@ -31,4 +31,31 @@ class ContestSummaryTest extends TestCase {
 
 		$this->assertEquals(-1, ContestSummary::compare($this->summary1, $this->summary2));
 	}
+
+	public function testPenaltyPointsTakesSecondPrecedence() {
+		$this->summary1->problems_solved = 1;
+		$this->summary2->problems_solved = 1;
+		$this->summary1->penalty_points = 10;
+		$this->summary2->penalty_points = 20;
+
+		$this->assertEquals(-1, ContestSummary::compare($this->summary1, $this->summary2));
+		
+		$this->summary1->penalty_points = 20;
+		$this->summary2->penalty_points = 10;
+
+		$this->assertEquals(1, ContestSummary::compare($this->summary1, $this->summary2));
+	}
+
+	public function testUsernameIsThirdPrecedence() {
+		$this->summary1->user->username = 'Apple';
+		$this->summary2->user->username = 'Banana';
+
+		$this->assertEquals(-1, ContestSummary::compare($this->summary1, $this->summary2));
+		
+		$this->summary1->user->username = 'Banana';
+		$this->summary2->user->username = 'Apple';
+
+		$this->assertEquals(1, ContestSummary::compare($this->summary1, $this->summary2));
+
+	}
 }
