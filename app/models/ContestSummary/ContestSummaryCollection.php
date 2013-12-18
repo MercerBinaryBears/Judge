@@ -1,7 +1,7 @@
 <?php
 
 class ContestSummaryCollection implements Iterator {
-	public function __construct__() {
+	public function __construct() {
 		$this->summaries = array();
 	}
 

@@ -6,12 +6,12 @@ class HomeController extends BaseController {
 	 * that auto-refreshes (we can do that part later)
 	 */
 	public function index() {
-		$user_data = array();
-
 		$current_contest = $this->contests->firstCurrent();
 
 		if(is_null($current_contest)) {
-			return View::make('index')->with('user_data', array())->with('problems', array());
+			return View::make('index')
+				->with('contest_summaries', new ContestSummaryCollection)
+				->with('problems', array());
 		}
 
 		$contest_summaries = new ContestSummaryCollection();
