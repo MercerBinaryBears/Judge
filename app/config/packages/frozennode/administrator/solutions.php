@@ -36,6 +36,11 @@ return array(
 
 		),
 	'edit_fields' => array(
+		'user' => array(
+			'title' => 'User',
+			'type' => 'relationship',
+			'name_field' => 'username'
+		),
 		'solutionState' => array(
 			'title' => 'Solution State',
 			'type' => 'relationship',
@@ -45,6 +50,11 @@ return array(
 			'title' => 'Claiming Judge',
 			'type' => 'relationship',
 			'name_field' => 'username',
-			)
+			),
+		'created_at' => array(
+			'title' => 'Submission Time',
+			'type' => 'datetime'
+			),
+
 		)
 	);
