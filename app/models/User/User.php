@@ -156,7 +156,7 @@ class User extends Base implements UserInterface {
 		foreach($contest->problems as $problem) {
 			$problem_info = array();
 			$problem_info['points_for_problem'] = $this->pointsForProblem($problem);
-			$problem_info['num_submissions'] = $this->solutions()->where('problem_id', $problem->id)->count();
+			$problem_info['num_submissions'] = $this->incorrectSubmissionCountForProblem($problem) + $this->solvedProblem($problem);
 
 			$summary['problem_info'][] = $problem_info;
 		}
