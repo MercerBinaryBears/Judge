@@ -107,6 +107,15 @@ class ScoreTest extends TestCase {
 
 	}
 
+	public function testTotalScore() {
+
+		// mock out the score per problem function
+		$this->user = Mockery::mock('User[pointsForProblem]');
+		$this->user->shouldReceive('pointsForProblem')->twice()->andReturn(10);
+
+		$this->assertEquals(20, $this->user->totalPoints(new Contest));
+	}
+
 	/**
 	 * Helper function to mock the solution repository
 	 */
@@ -169,10 +178,4 @@ class ScoreTest extends TestCase {
 		}
 		return Collection::make($ary);
 	}
-
-	/*
-	 * Tests 
-	 * - Calculation of the score for an entire problem set is correct
-	 *    - Sum of all penalty points for every problem
-	 */
 }

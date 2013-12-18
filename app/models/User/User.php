@@ -94,8 +94,9 @@ class User extends Base implements UserInterface {
 	 * @return int the total number of points for this user
 	 */
 	public function totalPoints($contest) {
+		$problems = $this->cachedProblems($contest);
 		$points = 0;
-		foreach($contest->problems as $problem) {
+		foreach($problems as $problem) {
 			$points += $this->pointsForProblem($problem);
 		}
 		return $points;
