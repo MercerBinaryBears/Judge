@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('contest_name')
+{{ $contest_name }}
+@stop
+
 @section('content')
 	@if($problems == array())
 		<div class="well text-center">

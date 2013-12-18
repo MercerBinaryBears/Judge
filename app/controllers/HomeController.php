@@ -10,6 +10,7 @@ class HomeController extends BaseController {
 
 		if(is_null($current_contest)) {
 			return View::make('index')
+				->with('contest_name', 'Judge')
 				->with('contest_summaries', new ContestSummaryCollection)
 				->with('problems', array());
 		}
@@ -23,6 +24,7 @@ class HomeController extends BaseController {
 		}
 
 		return View::make('index')
+			->with('contest_name', $current_contest->name)
 			->with('contest_summaries', $contest_summaries)
 			->with('problems', $this->contests->problemsForContest($current_contest));
 	}

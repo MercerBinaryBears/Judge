@@ -12,11 +12,14 @@
 	<body>
 		<div class='container'>
 			<div class='row'>
-				<div class='logo span2'>
-					<img src='asdfa' alt='img'/>
+				<div class='logo span1'>
+					<img src='logo.png' alt='Judge Logo'/>
 				</div>
-				<div class='span10'>
-					<h1>Logo Here</h1>
+				<div class='span11'>
+					<h1>
+						@section('contest_name')
+						@show
+					</h1>
 				</div>
 			</div>
 			<div class='row'>
