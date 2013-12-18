@@ -14,25 +14,16 @@ class HomeController extends BaseController {
 			return View::make('index')->with('user_data', array())->with('problems', array());
 		}
 
+		$contest_summaries = new ContestSummaryCollection();
+
 		foreach($this->contests->usersForContest($current_contest) as $user) {
 
-			$user_data[] = $user->contestSummary($current_contest);
+			$contest_summaries->add( $user->contestSummary($current_contest) );
+
 		}
 
-		usort($user_data, function($user_1, $user_2) {
-
-			if($user_1['problems_solved'] === $user_2['problems_solved']) {
-
-				// Sort scores in ascending order
-				return $user_1['score'] - $user_2['score'];
-			}
-
-			// Sort problems solved in descending order
-			return $user_2['problems_solved'] - $user_1['problems_solved'];
-		});
-
 		return View::make('index')
-			->with('user_data', $user_data)
+			->with('contest_summaries', $contest_summaries)
 			->with('problems', $this->contests->problemsForContest($current_contest));
 	}
 }

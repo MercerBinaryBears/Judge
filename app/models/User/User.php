@@ -143,22 +143,22 @@ class User extends Base implements UserInterface {
 	 * @return array The summary data
 	 */
 	public function contestSummary($contest) {
-		$summary = array();
+		$summary = new ContestSummary;
 
-		$summary['username'] = $this->username;
+		$summary->user = $this;
+		
+		$summary->problems_solved = $this->problemsSolved($contest);
 
-		$summary['score'] = $this->totalPoints($contest);
+		$summary->penalty_points = $this->totalPoints($contest);
 
-		$summary['problems_solved'] = $this->problemsSolved($contest);
-
-		$summary['problem_info'] = array();
+		$summary->problem_summaries = array();
 
 		foreach($contest->problems as $problem) {
 			$problem_info = array();
 			$problem_info['points_for_problem'] = $this->pointsForProblem($problem);
 			$problem_info['num_submissions'] = $this->incorrectSubmissionCountForProblem($problem) + $this->solvedProblem($problem);
 
-			$summary['problem_info'][] = $problem_info;
+			$summary->problem_summaries[] = $problem_info;
 		}
 		return $summary;
 	}

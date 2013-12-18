@@ -12,13 +12,13 @@
 			@endforeach
 		</tr>
 		
-		@foreach($user_data as $single_user)
+		@foreach($contest_summaries as $contest_summary)
 			<tr>	
-				<td>{{ $single_user['username'] }}</td>
-				<td>{{ $single_user['problems_solved'] }}</td>
-				<td>{{ $single_user['score'] }}</td>
+				<td>{{ $contest_summary->user->username }}</td>
+				<td>{{ $contest_summary->problems_solved}}</td>
+				<td>{{ $contest_summary->penalty_points }}</td>
 
-				@foreach($single_user['problem_info'] as $problem_info)
+				@foreach($contest_summary->problem_summaries as $problem_info)
 					<td>{{ $problem_info['points_for_problem'] }} / {{ $problem_info['num_submissions'] }}</td>
 				@endforeach
 			</tr>
