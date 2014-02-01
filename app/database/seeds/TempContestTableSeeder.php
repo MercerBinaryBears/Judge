@@ -142,10 +142,12 @@ class TempContestTableSeeder extends Seeder {
 		// calculate the start time from the contest time
 		$submission_time = (new Carbon($this->contest_start))->addMinutes($solution_offset);
 
-		$s->created_at = $submission_time->toDateTimeString();
-		$s->updated_at = $submission_time->toDateTimeString();
+		$s = $this->saveOrErr($s);
+		
+		// manually set the created_at time, since the model won't allow it.
+		DB::table('solutions')->whereId($s->id)->update(array('created_at' => $submission_time->toDateTimeString()));
 
-		return $this->saveOrErr($s);
+		return $s;
 	}
 
 	private function saveOrErr($model, $message='Invalid Model') {
