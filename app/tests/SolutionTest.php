@@ -121,4 +121,23 @@ class SolutionTest extends TestCase {
 		$this->assertTrue($result);
 		$this->assertEquals(null, $this->solution->claiming_judge_id);
 	}
+
+	public function testPrettyDiff() {
+		$contest = new stdClass;
+		$contest->starts_at = '2014-01-01 00:00:00';
+
+		$contest_repo = Mockery::mock()
+			->shouldReceive('firstCurrent')
+			->once()->andReturn($contest)
+			->getMock();
+
+		App::shouldReceive('make')->once()->with('ContestRepository')
+			->andReturn($contest_repo);
+
+		$s = new Solution();
+		$s->created_at = '2014-01-01 03:00:00';
+
+		$this->assertEquals('3 hours after contest start',
+			$s->submissionPrettyDiff());
+	}
 }

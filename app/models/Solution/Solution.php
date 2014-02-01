@@ -165,16 +165,10 @@ class Solution extends Base {
 
 		$current_contest = App::make('ContestRepository')->firstCurrent();
 
-		var_dump($this->created_at);
-		var_dump($current_contest->created_at);
+		$submission_time = new Carbon($this->created_at);
+		$contest_start = new Carbon($current_contest->starts_at);
 
-		/*
-		 * THE SEEDS ARE WRONG. Fix createSolution in TempContestTableSeeder.
-		 * Because I'm using a model, the created_at field is being overwritten,
-		 * and I'm not getting the values I want!
-		 */
-
-		return $this->created_at->diffForHumans($current_contest->created_at)
+		return $submission_time->diffForHumans($contest_start)
 			. ' contest start';
 	}
 

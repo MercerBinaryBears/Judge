@@ -12,7 +12,7 @@
 				<dt>Problem</dt>
 				<dd>{{ $solution->problem->name }}</dt>
 				<dt>Submitted</dt>
-				<dd>{{ $solution->created_at }}</dd>
+				<dd>{{ $solution->submissionPrettyDiff() }}</dd>
 				<dt>State</dt>
 				<dd>{{ $solution->solutionState->name}}</dd>
 				<dt>Judged By</dt>
