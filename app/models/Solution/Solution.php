@@ -168,8 +168,8 @@ class Solution extends Base {
 		$submission_time = new Carbon($this->created_at);
 		$contest_start = new Carbon($current_contest->starts_at);
 
-		return $submission_time->diffForHumans($contest_start)
-			. ' contest start';
+		return $submission_time->diffInMinutes($contest_start)
+			. ' minutes after contest start';
 	}
 
 }

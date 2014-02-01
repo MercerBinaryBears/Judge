@@ -208,7 +208,7 @@ class User extends Base implements UserInterface {
 
 		$incorrect_count = 0;
 		foreach($solutions as $solution) {
-			if($solution->problem_id == $p->id && $solution->solution_state_id == $solved_state_id) {
+			if($solution->problem_id == $p->id && $solution->solution_state_id != $solved_state_id) {
 				$incorrect_count++;
 			}
 		}

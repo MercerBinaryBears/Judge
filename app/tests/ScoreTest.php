@@ -55,13 +55,32 @@ class ScoreTest extends TestCase {
 		$this->assertEquals(2, $this->user->problemsSolved());
 	}
 
-	public function testIncorrectSubmissionsForProblem() {
+	public function testIncorrectSubmissionsForProblemCountsOneIfOne() {
 		$this->mockSolutions(
 			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
 			1, -1, '2013-01-01 00:00:00'
 		);
 
 		$this->assertEquals(1, $this->user->incorrectSubmissionCountForProblem($this->problem));
+	}
+
+	public function testIncorrectSubmissionForProblemCountsNoneIfNone() {
+		$this->mockSolutions(
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
+			1, $this->correct_solution_state_id, '2013-01-01 00:00:00'
+		);
+
+		$this->assertEquals(0, $this->user->incorrectSubmissionCountForProblem($this->problem));
+	}
+
+	public function testIncorrectSubmissionsForProblemCountsTwoIfTwo() {
+		$this->mockSolutions(
+			1, -1, '2013-01-01 01:02:00',
+			1, -1, '2013-01-01 00:00:00'
+		);
+
+		$this->assertEquals(2, $this->user->incorrectSubmissionCountForProblem($this->problem));
+		
 	}
 
 	public function testEarliestCorrect() {

@@ -11,11 +11,11 @@ class EloquentContestRepository implements ContestRepository {
 		return $c->problems;
 	}
 
-	public function usersForContest(Contest $c = null) {
+	public function teamsForContest(Contest $c = null) {
 		if($c == null) {
 			$c = $this->firstCurrent();
 		}
-		return $c->users;
+		return $c->users()->whereTeam(1)->get();
 	}
 
 	public function currentContests() {

@@ -17,7 +17,7 @@ interface ContestRepository {
 	 * @param Contest $c
 	 * @return Collection a laravel collection of User instances
 	 */
-	public function usersForContest(Contest $c = null);
+	public function teamsForContest(Contest $c = null);
 
 	/**
 	 * Returns all contests considered "current", i.e. their start

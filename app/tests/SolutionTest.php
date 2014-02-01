@@ -135,9 +135,9 @@ class SolutionTest extends TestCase {
 			->andReturn($contest_repo);
 
 		$s = new Solution();
-		$s->created_at = '2014-01-01 03:00:00';
+		$s->created_at = '2014-01-01 01:02:00';
 
-		$this->assertEquals('3 hours after contest start',
+		$this->assertEquals('62 minutes after contest start',
 			$s->submissionPrettyDiff());
 	}
 }
