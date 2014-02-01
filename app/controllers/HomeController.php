@@ -17,7 +17,7 @@ class HomeController extends BaseController {
 
 		$contest_summaries = new ContestSummaryCollection();
 
-		foreach($this->contests->usersForContest($current_contest) as $user) {
+		foreach($this->contests->teamsForContest($current_contest) as $user) {
 
 			$contest_summaries->add( $user->contestSummary($current_contest) );
 
