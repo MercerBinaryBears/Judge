@@ -113,12 +113,6 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-
-		// the ones I've added
-		'DaveJamesMiller\Boris\BorisServiceProvider',
-		'Frozennode\Administrator\AdministratorServiceProvider',
-		'Way\Generators\GeneratorsServiceProvider',
-
 	),
 
 	/*
