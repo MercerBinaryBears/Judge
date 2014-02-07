@@ -4,8 +4,8 @@
 	"keywords": ["framework", "laravel"],
 	"require": {
 		"laravel/framework": "4.0.*",
-		"laravelbook/ardent": "dev-master",
-		"frozennode/administrator": "dev-master"
+		"laravelbook/ardent": "v2.1.0",
+		"frozennode/administrator": "v4.8.0"
 	},
 	"require-dev" : {
 		"phpunit/phpunit": "3.*@dev",
