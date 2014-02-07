@@ -1,0 +1,12 @@
+---
+# For future back-compatability
+version: 1
+
+# Use full sync strategy, so git-deleted files are removed on the server
+strategy: fullsync
+
+composer:
+   # always run composer
+   mode: always
+
+   method: install
