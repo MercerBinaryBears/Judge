@@ -1,0 +1,37 @@
+TODO
+- Make sure that no Eloquent relationships are used for queries
+- For each model, make sure that they are only using repositories for queries
+- Re-invent tests. MORE+MORE+MORE!
+
+App Restructuring
+- Repositories
+    - All Queries are laid out in the repositories
+    - A base repository will provide a find, all, create, update, delete (via a protected $model_name field).
+    - All repositories should be built as singletons in the IOC
+    - Methods that return a single item should return an instance of a model.
+    - Methods that return multiple items should return a Illuminate\Support\Collection of models
+    - Repositories:
+        - Contest
+            - Get the current contest
+        - Problem
+            - Get the problems for a current contest
+        - Solution
+            - Get the solutions for a given problem
+            - Get the judgeable solutions for the current contest
+        - SolutionState
+            - Get the pending solution state
+    - Models:
+        - Small classes that wrap database rows
+        - Provide business logic associated with a database row
+        - NOT coupled to database design, but should utilize what Laravel offers 
+    - Controllers:
+        - Should be thin, and rely on the models and repositories to manipulate data
+
+- Debate
+    - How to return data from database?
+        - As Model class?
+            - Pro: Associate methods with database row, giving database logic.
+            - Con: All repositories (for different db engines) must return this format
+        - As Array?
+            - Pro: Regardless of database, this is the format that is most universal
+            - Con: Cannot directly associate business logic with a database entry
