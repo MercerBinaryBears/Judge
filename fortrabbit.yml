@@ -6,7 +6,9 @@ version: 1
 strategy: fullsync
 
 composer:
-   # always run composer
-   mode: always
-
+   mode: trigger
    method: install
+
+post-deploy:
+   script: artisan
+   args: ['migrate']
