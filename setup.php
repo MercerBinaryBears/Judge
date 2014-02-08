@@ -1,5 +1,10 @@
 <?php
-	// Make sure the database exists
-	`touch app/database/production.sqlite`;
-	`php artisan migrate`;
+// create Laravel autoloader
+echo `php artisan optimize`;
+
+// Make sure the database exists
+echo `touch app/database/production.sqlite`;
+
+// Migrate
+echo `php artisan migrate`;
 ?>
