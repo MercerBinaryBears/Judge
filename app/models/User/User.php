@@ -222,7 +222,7 @@ class User extends Base implements UserInterface {
 
 		foreach($this->cachedSolutions() as $solution) {
 			$is_solved = $solution->solution_state_id == $solved_state_id ;
-			if($is_solved) {
+			if($is_solved && $solution->problem_id == $problem->id) {
 				if($correct_solution == null) {
 					$correct_solution = $solution;
 				}	
