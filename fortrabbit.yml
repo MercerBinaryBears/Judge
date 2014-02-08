@@ -10,5 +10,5 @@ composer:
    method: install
 
 post-deploy:
-   script: artisan
-   args: ['migrate']
+   script: setup.php
+   args: []
