@@ -6,7 +6,7 @@ class ApiController extends BaseController {
 	 * API function to get all SolutionTypes as an id:name pair
 	 */
 	public function getSolutionStates() {
-		return ApiController::formatJSend($this->solutions_states->all()->toArray());
+		return ApiController::formatJSend($this->solution_states->all()->toArray());
 	}
 
 	/**
