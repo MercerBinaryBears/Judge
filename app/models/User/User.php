@@ -123,9 +123,18 @@ class User extends Base implements UserInterface {
 	public static function boot() {
 		parent::boot();
 
-		// before a user is about to be created, create an api key for that user
-		User::creating(function($user){
+		/* 
+		 * Before a user is about to be created, 
+		 * Create an api key for that user. Before any updates
+		 * or creations, be sure to hash the password
+		 */
+		User::creating(function($user) {
 			$user->api_key = User::generateApiKey();
+			$user->password = Hash::make($user->password);
+		});
+
+		User::updating(function($user) {
+			$user->password = Hash::make($user->password);
 		});
 	}
 
