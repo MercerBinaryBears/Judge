@@ -106,9 +106,7 @@ class TempContestTableSeeder extends Seeder {
 		// attach the user to the current contest
 		DB::table('contest_user')->insert(array(
 			'user_id' => $u->id,
-			'contest_id' => $this->contest->id,
-			'created_at' => Carbon::now(),
-			'updated_at' => Carbon::now()
+			'contest_id' => $this->contest->id
 		));
 
 		return $u;

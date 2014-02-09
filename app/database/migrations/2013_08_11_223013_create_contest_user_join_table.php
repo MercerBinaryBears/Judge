@@ -13,9 +13,8 @@ class CreateContestUserJoinTable extends Migration {
 	{
 		Schema::create('contest_user', function($table){
 			$table->increments('id');
-			$table->integer('user_id');
-			$table->integer('contest_id');
-			$table->timestamps();
+			$table->integer('user_id')->unsigned();
+			$table->integer('contest_id')->unsigned();
 
 			// Set foreign key relationship between users and contests
 			$table->foreign('user_id')->references('id')->on('contests')->on_delete('cascade')->on_update('cascade');
