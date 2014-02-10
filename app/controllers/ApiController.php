@@ -110,13 +110,19 @@ class ApiController extends BaseController {
 	 * @param string $message The message to send to the user
 	 */
 	public static function formatJSend($data=array(), $success=true, $code=200, $message='') {
-		return json_encode(
-			array(
-				'status' => $success ? 'success' : 'error',
-				'code' => $code,
-				'message' => $message,
-				'data' => $data
-				)
-			);
+
+		/*
+		 * Convert the data to an array if not an instance
+		 */
+		if($data instanceof Illuminate\Support\Contracts\ArrayableInterface) {
+			$data = $data->toArray();
+		}
+
+		return Response::json(array(
+			'status' => $success ? 'success' : 'error',
+			'code' => $code,
+			'message' => $message,
+			'data' => $data
+		));
 	}
 }
