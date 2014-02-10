@@ -10,4 +10,7 @@ echo `php artisan migrate`;
 
 // Publish assets
 echo `php artisan asset:publish`;
+
+// zip up the judge client
+echo `zip -r public/judge_client.zip app/library/scripts/*`;
 ?>
