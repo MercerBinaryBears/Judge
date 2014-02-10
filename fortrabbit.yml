@@ -6,5 +6,5 @@ version: 1
 strategy: fullsync
 
 composer:
-   mode: trigger
+   mode: always
    method: install
