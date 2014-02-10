@@ -10,8 +10,3 @@
 | the console gets access to each of the command object instances.
 |
 */
-
-Artisan::add(new ProductionBackupCommand);
-Artisan::add(new PushNewProductionCommand);
-Artisan::add(new ProductionFinalizeCommand);
-Artisan::add(new DeployCommand);

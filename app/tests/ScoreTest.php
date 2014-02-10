@@ -94,6 +94,17 @@ class ScoreTest extends TestCase {
 		$this->assertEquals('00:00:00', $solution->created_at->format('H:i:s'));
 	}
 
+	public function testEarliestCorrectSelectsCorrectProblem() {
+		$this->mockSolutions(
+			1, $this->correct_solution_state_id, '2013-01-01 01:02:00',
+			2, $this->correct_solution_state_id, '2013-01-01 00:00:00'
+		);
+
+		$solution = $this->user->earliestCorrectSolutionForProblem($this->problem);
+
+		$this->assertEquals('01:02:00', $solution->created_at->format('H:i:s'));
+	}
+
 	public function testScoreForNoCorrects() {
 
 		// mock out the current contest query as well

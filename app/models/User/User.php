@@ -123,9 +123,18 @@ class User extends Base implements UserInterface {
 	public static function boot() {
 		parent::boot();
 
-		// before a user is about to be created, create an api key for that user
-		User::creating(function($user){
+		/* 
+		 * Before a user is about to be created, 
+		 * Create an api key for that user. Before any updates
+		 * or creations, be sure to hash the password
+		 */
+		User::creating(function($user) {
 			$user->api_key = User::generateApiKey();
+			$user->password = Hash::make($user->password);
+		});
+
+		User::updating(function($user) {
+			$user->password = Hash::make($user->password);
 		});
 	}
 
@@ -222,7 +231,7 @@ class User extends Base implements UserInterface {
 
 		foreach($this->cachedSolutions() as $solution) {
 			$is_solved = $solution->solution_state_id == $solved_state_id ;
-			if($is_solved) {
+			if($is_solved && $solution->problem_id == $problem->id) {
 				if($correct_solution == null) {
 					$correct_solution = $solution;
 				}	
