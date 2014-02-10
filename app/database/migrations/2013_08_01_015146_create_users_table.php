@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration {
 		// add the initial user, an admin
 		$u = new User();
 		$u->username = 'admin';
-		$u->password = Hash::make('admin');
+		$u->password = 'admin';
 		$u->admin = true;
 		$u->save();
 	}
