@@ -80,7 +80,14 @@ class SolutionJudger(object):
 		if self.debug:
 			print("Comparing program output {0} and judging output {1}".format(self.program_output_file, expected_output_file))
 
-		status, output = commands.getstatusoutput('diff {0} {1}'.format(self.program_output_file, expected_output_file))
+
+		# instead of simply running diff, we'll trim extra spaces off the ends
+		build_sed_command = lambda filename : "<(cat {0} | sed 's/ *$//; s/^ *//')".format(filename)
+		
+		trimmed_team_output = build_sed_command(self.program_output_file)
+		trimmed_judge_output = build_sed_command(expected_output_file)
+
+		status, output = commands.getstatusoutput('diff {0} {1}'.format(trimmed_team_output, trimmed_judge_output))
 
 		return (output == '', output)
 
