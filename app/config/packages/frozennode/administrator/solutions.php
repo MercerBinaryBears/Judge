@@ -34,7 +34,8 @@ return array(
 			'select' => '(:table).name',
 			),
 
-		),
+	),
+
 	'edit_fields' => array(
 		'user' => array(
 			'title' => 'User',
@@ -56,5 +57,24 @@ return array(
 			'type' => 'datetime'
 			),
 
-		)
-	);
+	),
+	
+	'filters' => array(
+		'user' => array(
+			'title' => 'User',
+			'type' => 'relationship',
+			'name_field' => 'username'
+		),
+		'problem' => array(
+			'title' => 'Problem',
+			'type' => 'relationship',
+			'name_field' => 'name'
+		),
+		'language' => array(
+			'title' => 'Language',
+			'type' => 'relationship',
+			'name_field' => 'name'
+		),	
+
+	),
+);
