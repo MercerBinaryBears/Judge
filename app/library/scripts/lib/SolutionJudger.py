@@ -87,7 +87,8 @@ class SolutionJudger(object):
 		trimmed_team_output = build_sed_command(self.program_output_file)
 		trimmed_judge_output = build_sed_command(expected_output_file)
 
-		status, output = commands.getstatusoutput('diff {0} {1}'.format(trimmed_team_output, trimmed_judge_output))
+		status, output = commands.getstatusoutput('diff -y --suppress-common-lines {0} {1}'.format(
+			trimmed_team_output, trimmed_judge_output))
 
 		return (output == '', output)
 
