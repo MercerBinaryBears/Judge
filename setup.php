@@ -12,5 +12,5 @@ echo `php artisan migrate`;
 echo `php artisan asset:publish`;
 
 // zip up the judge client
-echo `zip -r public/judge_client.zip app/library/scripts/*`;
+echo `rm -f public/judge_client.zip && cd app/library/scripts && zip -r ../../../public/judge_client.zip *`;
 ?>
