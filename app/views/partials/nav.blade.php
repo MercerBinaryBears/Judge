@@ -3,6 +3,7 @@
 	@if(Auth::check())
 		<a class='brand'>{{ Auth::user()->username }}</a>
 		<ul class='nav'>
+			<li>{{ link_to('/', 'Scoreboard') }}</li>
 			@if(Auth::user()->admin)
 				<li> {{ link_to_route('admin_dashboard', 'Admin', array(), array()) }} </li>
 			@endif
