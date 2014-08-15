@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Auth\UserInterface as UserInterface;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
 use Carbon\Carbon as Carbon;
 
-class User extends Base implements UserInterface {
+class User extends Base implements UserInterface, RemindableInterface {
 
 	/**
 	 * The database table used by the model.
@@ -274,4 +275,16 @@ class User extends Base implements UserInterface {
 
 		return $this->cached_solutions;
 	}
+
+    public function getRememberToken() {
+    }
+
+    public function setRememberToken($value) {
+    }
+
+    public function getRememberTokenName() {
+    }
+
+    public function getReminderEmail() {
+    }
 }
