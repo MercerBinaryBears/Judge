@@ -38,7 +38,7 @@ class ApiController extends BaseController {
 			App::abort(400, $solution->errors());
 		}
 
-		return ApiController::formatJSend(array('solution'=>$solution));
+		return ApiController::formatJSend(array('solution' => $solution->toArray()));
 	}
 
 	/**
