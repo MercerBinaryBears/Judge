@@ -148,12 +148,12 @@ class TempContestTableSeeder extends Seeder {
 		return $s;
 	}
 
-	private function saveOrErr($model, $message='Invalid Model') {
-			if($model->save()) {
-					return $model;
-			}
-			else {
-					throw new Exception($message . ' ' . $model->errors()->toJson());
-			}
+    private function saveOrErr($model, $message='Invalid Model') {
+        if($model->save()) {
+            return $model;
         }
+        else {
+            throw new Exception($message . ' ' . $model->errors()->toJson());
+        }
+    }
 }
