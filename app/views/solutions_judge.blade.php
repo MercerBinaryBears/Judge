@@ -4,7 +4,7 @@
 	<h4 class="well well-small">
 		Your API key is {{ $api_key }}
 	</h4>
-	<div class="span6">
+	<div class="col-md-6">
 		<h3>Unjudged Solutions</h3>
 		<ul class="solutions unstyled">
 		@foreach($unjudged_solutions as $solution)
@@ -23,7 +23,7 @@
 		@endforeach
 		</ul>
 	</div>
-	<div class="span6">
+	<div class="col-md-6">
 		<h3>Your Judged Solutions</h3>
 		<ul class="solutions unstyled">
 		@foreach($claimed_solutions as $solution)

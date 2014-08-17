@@ -1,10 +1,10 @@
 @extends('layout')
 
 @section('content')
-<div class="span3">
+<div class="col-md-3">
 	@include('forms.create_solution')
 </div>
-<div class="span9">
+<div class="col-md-9">
 	<ul class="solutions unstyled">
 		@foreach($solutions as $solution)
 		<li>

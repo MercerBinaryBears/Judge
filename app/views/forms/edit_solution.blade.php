@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="span6">
+<div class="col-md-6">
 	<dl class='dl-horizontal'>
 		<dt>Problem</dt>
 		<dd>{{ $solution->problem->name }}</dt>
@@ -17,7 +17,7 @@
 	</dl>
 </div>
 
-<div class="span6">
+<div class="col-md-6">
 	{{ Form::open(array('route'=>array("edit_solution", $solution->id))) }}
 	{{ Form::label('solution_state_id', 'Solution State: ') }}
 	{{ Form::select('solution_state_id', $solution_states->lists('name','id'))}}

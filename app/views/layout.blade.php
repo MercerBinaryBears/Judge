@@ -9,10 +9,10 @@
 	<body>
 		<div class='container'>
 			<div class='row'>
-				<div class='logo span1'>
+				<div class='logo col-md-1'>
 					<img src='/logo.png' alt='Judge Logo'/>
 				</div>
-				<div class='span11'>
+				<div class='col-md-11'>
 					<h1>
 						@section('contest_name')
 						@show
