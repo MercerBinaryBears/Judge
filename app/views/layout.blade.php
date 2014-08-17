@@ -13,7 +13,7 @@
 		<div class='container'>
 			<div class='row'>
 				<div class='logo span1'>
-					<img src='logo.png' alt='Judge Logo'/>
+					<img src='/logo.png' alt='Judge Logo'/>
 				</div>
 				<div class='span11'>
 					<h1>
