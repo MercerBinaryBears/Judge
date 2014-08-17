@@ -277,14 +277,18 @@ class User extends Base implements UserInterface, RemindableInterface {
 	}
 
     public function getRememberToken() {
+        return $this->remember_token;
     }
 
     public function setRememberToken($value) {
+        return $this->remember_token;
     }
 
     public function getRememberTokenName() {
+        return 'remember_token';
     }
 
     public function getReminderEmail() {
+        return $this->email;
     }
 }
