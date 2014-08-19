@@ -4,10 +4,18 @@
 		<title>Judge</title>
 		@section('styles')
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <style rel="stylesheet" type="text/css">
+        body {
+            padding-top: 70px;
+        }
+        </style>
 		@show
 	</head>
 	<body>
 		<div class='container'>
+			<div class='row'>
+				@include('partials.nav')
+			</div>
 			<div class='row'>
 				<div class='logo col-md-1'>
 					<img src='/logo.png' alt='Judge Logo'/>
@@ -18,9 +26,6 @@
 						@show
 					</h1>
 				</div>
-			</div>
-			<div class='row'>
-				@include('partials.nav')
 			</div>
 			{{ HTML::flash() }}
 			<div id='content' class='row'>

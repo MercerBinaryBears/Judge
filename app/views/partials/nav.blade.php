@@ -1,4 +1,4 @@
-<div class='navbar navbar-default' role="navigation">
+<div class='navbar navbar-default navbar-fixed-top' role="navigation">
 	@if(Auth::check())
 		<a class='navbar-brand'>{{ Auth::user()->username }}</a>
 		<ul class='nav navbar-nav'>
