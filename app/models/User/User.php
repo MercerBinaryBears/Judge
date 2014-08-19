@@ -131,11 +131,15 @@ class User extends Base implements UserInterface, RemindableInterface {
 		 */
 		User::creating(function($user) {
 			$user->api_key = User::generateApiKey();
+            \Log::debug('Current password: ' . $user->password);
 			$user->password = Hash::make($user->password);
+            \Log::debug('New password: ' . $user->password);
 		});
 
 		User::updating(function($user) {
-			$user->password = Hash::make($user->password);
+            if (Hash::needsRehash($user->password)) {
+                $user->password = Hash::make($user->password);
+            }
 		});
 	}
 
@@ -281,7 +285,7 @@ class User extends Base implements UserInterface, RemindableInterface {
     }
 
     public function setRememberToken($value) {
-        return $this->remember_token;
+        $this->remember_token = $value;
     }
 
     public function getRememberTokenName() {

@@ -8,6 +8,15 @@ class TeamController extends BaseController {
 	 * problem
 	 */
 	public function teamIndex() {
+        View::share('contest_name', 'Judge');
+        $contest_name = 'Judge';
+
+        if (!is_null($contest_name)) {
+            $contest_name = $this->contests
+                ->firstCurrent()
+                ->name;
+        }
+
 		return View::make('solutions_team')
 			->with('solutions', $this->solutions->forUserInContest(Auth::user()))
 			->with('problems', $this->contests->problemsForContest())

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="span6">
+<div class="col-md-6">
 	<dl class='dl-horizontal'>
 		<dt>Problem</dt>
 		<dd>{{ $solution->problem->name }}</dt>
@@ -17,15 +17,20 @@
 	</dl>
 </div>
 
-<div class="span6">
-	{{ Form::open(array('route'=>array("edit_solution", $solution->id))) }}
+<div class="col-md-6">
+    <style>
+    form {
+        display: inline;
+    }
+    </style>
+	{{ Form::open(array('route'=>array("edit_solution", $solution->id), 'class' => 'form-inline')) }}
 	{{ Form::label('solution_state_id', 'Solution State: ') }}
-	{{ Form::select('solution_state_id', $solution_states->lists('name','id'))}}
-	{{ Form::submit('Save')}}
+	{{ Form::select('solution_state_id', $solution_states->lists('name','id'), '', array('class' => 'form-control'))}}
+	{{ Form::submit('Save', array('class' => 'btn btn-info'))}}
 	{{ Form::close() }}
 
-	{{ Form::open(array('route'=>array("unclaim_solution", $solution->id)))}}
-	{{ Form::submit('Unclaim') }}
+	{{ Form::open(array('route'=>array("unclaim_solution", $solution->id), 'class' => 'form-inline'))}}
+	{{ Form::submit('Unclaim', array('class' => 'btn btn-warning')) }}
 	{{ Form::close() }}
 </div>
 

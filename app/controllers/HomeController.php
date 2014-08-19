@@ -6,6 +6,8 @@ class HomeController extends BaseController {
 	 * that auto-refreshes (we can do that part later)
 	 */
 	public function index() {
+        View::share('contest_name', 'Judge');
+
 		$current_contest = $this->contests->firstCurrent();
 
 		if(is_null($current_contest)) {
@@ -14,6 +16,8 @@ class HomeController extends BaseController {
 				->with('contest_summaries', new ContestSummaryCollection)
 				->with('problems', array());
 		}
+
+        View::share($current_contest->name);
 
 		$contest_summaries = new ContestSummaryCollection();
 

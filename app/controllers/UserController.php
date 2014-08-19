@@ -8,20 +8,11 @@ class UserController extends BaseController {
 	 */
 	public function login()
 	{
-		$creds = array(
-			'username' => Input::get('username'),
-			'password' => Input::get('password')
-			);
-
-		Auth::attempt($creds, true);
-
-		if(Auth::check()) {
+		if(Auth::attempt(Input::only('username', 'password'))) {
 			return Redirect::route('index');
 		}
 
-		else {
-			return Redirect::route('index')->withInput(Input::except('password'));
-		}
+        return Redirect::route('index')->withInput(Input::except('password'));
 	}
 
 	/**
@@ -32,5 +23,4 @@ class UserController extends BaseController {
 		Auth::logout();
 		return Redirect::route('index');
 	}
-
 }
