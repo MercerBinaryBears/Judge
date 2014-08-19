@@ -5,6 +5,7 @@
     {{ Form::label('language_id', 'Language') }}
     {{ Form::select('language_id', $languages->lists('name','id'), '', array('class' => 'form-control')) }}
     <br/>
+    {{ Form::label('solution_code', 'Solution Code') }}
     {{ Form::file('solution_code', array('class' => 'form-control')) }}
     <br/>
     {{ Form::submit('Submit', array('class' => 'btn btn-info'))}}

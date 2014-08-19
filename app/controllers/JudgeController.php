@@ -22,7 +22,6 @@ class JudgeController extends BaseController {
         $this->bindContestName();
 
 		return View::make('solutions_judge')
-            ->with('contest_name', $contest_name)
 			->with('unjudged_solutions', $this->solutions->judgeableForContest())
 			->with('claimed_solutions', $this->solutions->claimedByJudgeInContest(Auth::user()))
 			->with('api_key', Auth::user()->api_key);
