@@ -3,13 +3,12 @@
         Options -MultiViews
     </IfModule>
 
-    RewriteEngine On
+	DirectoryIndex index.php
 
-    # Redirect Trailing Slashes...
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
-
-    # Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+   RewriteEngine on
+   RewriteBase /
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond $1 !^(index\.php|robots\.txt)
+   RewriteRule ^(.*)$ index.php?/$1 [QSA]
 </IfModule>
