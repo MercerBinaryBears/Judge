@@ -20,7 +20,9 @@
                 <dt>Judged By</dt>
                 <dd>
                     @if($solution->claiming_judge_id != null)
-                        Judged by {{$solution->claimingJudge->username}}
+                        {{$solution->claimingJudge->username}}
+                    @else
+                        No one yet
                     @endif
                 </dd>
             </dl>
