@@ -16,17 +16,6 @@
 			<div class='row'>
 				@include('partials.nav')
 			</div>
-			<div class='row'>
-				<div class='logo col-md-1'>
-					<img src='/logo.png' alt='Judge Logo'/>
-				</div>
-				<div class='col-md-11'>
-					<h1>
-						@section('contest_name')
-						@show
-					</h1>
-				</div>
-			</div>
 			{{ HTML::flash() }}
 			<div id='content' class='row'>
 				@section('content')
