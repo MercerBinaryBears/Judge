@@ -5,7 +5,17 @@ class JudgeController extends BaseController {
 	 * the judge to claim that problem.
 	 */
 	public function index() {
+        View::share('contest_name', 'Judge');
+        $contest_name = 'Judge';
+
+        if (!is_null($contest_name)) {
+            $contest_name = $this->contests
+                ->firstCurrent()
+                ->name;
+        }
+
 		return View::make('solutions_judge')
+            ->with('contest_name', $contest_name)
 			->with('unjudged_solutions', $this->solutions->judgeableForContest())
 			->with('claimed_solutions', $this->solutions->claimedByJudgeInContest(Auth::user()))
 			->with('api_key', Auth::user()->api_key);
