@@ -1,7 +1,7 @@
 <div class='navbar navbar-default' role="navigation">
 	@if(Auth::check())
-		<a class='brand'>{{ Auth::user()->username }}</a>
-		<ul class='nav'>
+		<a class='navbar-brand'>{{ Auth::user()->username }}</a>
+		<ul class='nav navbar-nav'>
 			<li>{{ link_to('/', 'Scoreboard') }}</li>
 			@if(Auth::user()->admin)
 				<li> {{ link_to_route('admin_dashboard', 'Admin', array(), array()) }} </li>
