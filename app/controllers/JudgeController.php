@@ -1,11 +1,8 @@
 <?php
 class JudgeController extends BaseController {
-	/**
-	 * The index for a judge. Display the current unjudged problems, and allows
-	 * the judge to claim that problem.
-	 */
-	public function index() {
-        View::share('contest_name', 'Judge');
+
+    protected function bindContestName()
+    {
         $contest_name = 'Judge';
 
         if (!is_null($contest_name)) {
@@ -13,6 +10,16 @@ class JudgeController extends BaseController {
                 ->firstCurrent()
                 ->name;
         }
+
+        View::share('contest_name', $contest_name);
+    }
+
+	/**
+	 * The index for a judge. Display the current unjudged problems, and allows
+	 * the judge to claim that problem.
+	 */
+	public function index() {
+        $this->bindContestName();
 
 		return View::make('solutions_judge')
             ->with('contest_name', $contest_name)
@@ -32,6 +39,8 @@ class JudgeController extends BaseController {
 	 */
 	public function edit($id)
 	{
+        $this->bindContestName();
+
 		// get the solution passed
 		$solution = $this->solutions->find($id);
 
