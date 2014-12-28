@@ -25,6 +25,7 @@ class EloquentSolutionRepository implements SolutionRepository {
 		return Solution::whereIn('problem_id', $problems->lists('id'))
 			->whereSolutionStateId($this->solution_states->firstPendingId())
 			->whereClaimingJudgeId(null)
+            ->orderBy('created_at')
 			->get();
 	}
 
