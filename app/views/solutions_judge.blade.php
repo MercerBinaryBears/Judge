@@ -27,7 +27,7 @@
                 <dt>Problem</dt>
                 <dd>{{ $solution->problem->name }}</dt>
                 <dt>Submitted</dt>
-                <dd>{{ $solution->created_at }}</dd>
+                <dd>{{ $solution->submissionPrettyDiff() }}</dd>
                 <dt>Team</dt>
                 <dd>{{ $solution->user->username}}</dd>
                 <dt>Judged as</dt>
