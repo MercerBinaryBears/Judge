@@ -2,26 +2,17 @@
 <html>
 	<head>
 		<title>Judge</title>
-		@section('scripts')
-			<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-		@show
 		@section('styles')
-			<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <style rel="stylesheet" type="text/css">
+        body {
+            padding-top: 70px;
+        }
+        </style>
 		@show
 	</head>
 	<body>
 		<div class='container'>
-			<div class='row'>
-				<div class='logo span1'>
-					<img src='logo.png' alt='Judge Logo'/>
-				</div>
-				<div class='span11'>
-					<h1>
-						@section('contest_name')
-						@show
-					</h1>
-				</div>
-			</div>
 			<div class='row'>
 				@include('partials.nav')
 			</div>
@@ -31,5 +22,9 @@
 				@show
 			</div>
 		</div>
+		@section('scripts')
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		@show
 	</body>
 </html>

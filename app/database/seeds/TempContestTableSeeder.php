@@ -116,8 +116,8 @@ class TempContestTableSeeder extends Seeder {
 		$p = new Problem();
 		$p->name = "Problem $i";
 		$p->contest_id = $this->contest->id;
-		$p->judging_input = 'INPUT';
-		$p->judging_output = 'OUTPUT';
+		$p->judging_input = $this->createRandomFile('judging_input');
+		$p->judging_output = $this->createRandomFile('judging_output');
 		$p->created_at = Carbon::now()->toDateTimeString();
 		$p->updated_at = Carbon::now()->toDateTimeString();
 
@@ -128,9 +128,9 @@ class TempContestTableSeeder extends Seeder {
 		$s = new Solution();
 		$s->problem_id = $problem_id;
 		$s->user_id = $user_id;
-		$s->solution_code = 'hello world';
+		$s->solution_code = $this->createRandomFile('solution_code');
 		$s->language_id = $language_id;
-		$s->solution_filename = 'filename';
+		$s->solution_filename = 'solution.txt';
 		$s->solution_state_id = $solution_state_id; 
 
 		if($solution_state_id != 7) {
@@ -148,12 +148,32 @@ class TempContestTableSeeder extends Seeder {
 		return $s;
 	}
 
-	private function saveOrErr($model, $message='Invalid Model') {
-			if($model->save()) {
-					return $model;
-			}
-			else {
-					throw new Exception($message . ' ' . $model->errors()->toJson());
-			}
+    private function saveOrErr($model, $message='Invalid Model') {
+        if($model->save()) {
+            return $model;
         }
+        else {
+            throw new Exception($message . ' ' . $model->errors()->toJson());
+        }
+    }
+
+    private function createRandomFile($storage_directory)
+    {
+        $file_name = app_path() . '/storage/' . $storage_directory;
+        $file_name .= '/' . $this->randomString(8) . '.txt';
+
+        $handle = fopen($file_name, 'w');
+        fwrite($handle, 'Hello world');
+        fclose($handle);
+
+        return basename($file_name);
+    }
+
+    private function randomString($length = 10)
+    {
+        $letters = 'abcdefghijklmnopqrstuvwxyz1234567890';
+        $many_letters = str_repeat($letters, $length);
+        $shuffled_letters = str_shuffle($many_letters);
+        return substr($shuffled_letters, 0, $length);
+    }
 }

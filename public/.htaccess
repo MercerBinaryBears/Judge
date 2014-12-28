@@ -1,7 +1,14 @@
 <IfModule mod_rewrite.c>
-	Options -MultiViews
-	RewriteEngine On
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
 
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^ index.php [L]
+	DirectoryIndex index.php
+
+   RewriteEngine on
+   RewriteBase /
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond $1 !^(index\.php|robots\.txt)
+   RewriteRule ^(.*)$ index.php?/$1 [QSA]
 </IfModule>

@@ -18,4 +18,16 @@ class SolutionState extends Base {
 	public static function pending() {
 		return static::where('pending', true)->firstOrFail();
 	}
+
+    public function getBootstrapColorAttribute() {
+        if($this->pending) {
+            return 'info';
+        }
+
+        if($this->is_correct) {
+            return 'success';
+        }
+
+        return 'danger';
+    }
 }

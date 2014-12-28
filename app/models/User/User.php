@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Auth\UserInterface as UserInterface;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
 use Carbon\Carbon as Carbon;
 
-class User extends Base implements UserInterface {
+class User extends Base implements UserInterface, RemindableInterface {
 
 	/**
 	 * The database table used by the model.
@@ -130,11 +131,15 @@ class User extends Base implements UserInterface {
 		 */
 		User::creating(function($user) {
 			$user->api_key = User::generateApiKey();
+            \Log::debug('Current password: ' . $user->password);
 			$user->password = Hash::make($user->password);
+            \Log::debug('New password: ' . $user->password);
 		});
 
 		User::updating(function($user) {
-			$user->password = Hash::make($user->password);
+            if (Hash::needsRehash($user->password)) {
+                $user->password = Hash::make($user->password);
+            }
 		});
 	}
 
@@ -274,4 +279,20 @@ class User extends Base implements UserInterface {
 
 		return $this->cached_solutions;
 	}
+
+    public function getRememberToken() {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($value) {
+        $this->remember_token = $value;
+    }
+
+    public function getRememberTokenName() {
+        return 'remember_token';
+    }
+
+    public function getReminderEmail() {
+        return $this->email;
+    }
 }
