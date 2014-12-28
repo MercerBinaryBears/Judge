@@ -42,7 +42,6 @@ publish
 /bootstrap/compiled.php
 /vendor
 composer.phar
-composer.lock
 /app/database/*.sqlite
 
 # Build Stuff
