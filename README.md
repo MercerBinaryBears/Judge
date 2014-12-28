@@ -1,5 +1,6 @@
 Judge
 =====
+[![Build Status](https://travis-ci.org/chipbell4/Judge.svg?branch=develop)](https://travis-ci.org/chipbell4/Judge)
 
 ## Menu ##
 * [Setup](#setup)
