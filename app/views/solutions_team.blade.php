@@ -8,9 +8,9 @@
     </div>
     <div class="col-md-8">
         @foreach($solutions as $solution)
-            <div class="row">
+            <div class="row bg-{{ $solution->solutionState->bootstrap_color }}">
                 <div class="col-md-12">
-                    <dl class='dl-horizontal'>
+                    <dl class="dl-horizontal">
                         <dt>Problem</dt>
                         <dd>{{ $solution->problem->name }}</dt>
                         <dt>Submitted</dt>

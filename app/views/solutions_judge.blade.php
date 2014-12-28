@@ -23,7 +23,7 @@
 	<div class="col-md-6">
 		<h3>Your Judged Solutions</h3>
 		@foreach($claimed_solutions as $solution)
-            <dl class='dl-horizontal'>
+            <dl class='dl-horizontal bg-{{ $solution->solution_state->bootstrap_color }}'>
                 <dt>Problem</dt>
                 <dd>{{ $solution->problem->name }}</dt>
                 <dt>Submitted</dt>
