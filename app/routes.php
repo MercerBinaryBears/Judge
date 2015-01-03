@@ -21,6 +21,8 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
         Route::post('/judge/solutions/{id}/edit', array('as'=>'update_solution', 'uses'=>'JudgeController@update'));
         Route::post('/judge/solutions/{id}/unclaim', array('as'=>'unclaim_solution', 'uses'=>'JudgeController@unclaim'));
         Route::get('/judge/solutions/{id}/package', array('as'=>'solution_package', 'uses'=>'JudgeController@package'));
+
+        Route::get('/judge/messages', array('uses' => 'MessagesController@index'));
     });
 
     // team routes
@@ -30,6 +32,8 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
         // TODO: Perhaps we should embed the user's id into the URL, to be RESTful? However, this
         // means we have more validation to do in that route...
         Route::post('/team/solutions/store', array('as'=>'store_solution', 'uses'=>'TeamController@store'));
+        
+        Route::get('/team/messages', array('uses' => 'MessagesController@index'));
     });
 
     // Authentication routes
