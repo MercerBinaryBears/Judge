@@ -1,24 +1,28 @@
 <?php
 
-class EloquentSolutionRepository implements SolutionRepository {
+class EloquentSolutionRepository implements SolutionRepository
+{
     
-    public function __construct(ContestRepository $contests, ProblemRepository $problems, SolutionStateRepository $solution_states) {
+    public function __construct(ContestRepository $contests, ProblemRepository $problems, SolutionStateRepository $solution_states)
+    {
         $this->contests = $contests;
         $this->problems = $problems;
         $this->solution_states = $solution_states;
     }
 
-    public function find($id) {
+    public function find($id)
+    {
         return Solution::find($id);
-    }   
+    }
 
-    public function judgeableForContest(Contest $c = null) {
-        if($c == null) {
+    public function judgeableForContest(Contest $c = null)
+    {
+        if ($c == null) {
             $c = $this->contests->firstCurrent();
         }
         $problems = $this->contests->problemsForContest($c);
 
-        if($problems->count() < 1) {
+        if ($problems->count() < 1) {
             return Illuminate\Support\Collection::make(array());
         }
 
@@ -29,14 +33,15 @@ class EloquentSolutionRepository implements SolutionRepository {
             ->get();
     }
 
-    public function claimedByJudgeInContest(User $u, Contest $c = null) {
-        if($c == null) {
+    public function claimedByJudgeInContest(User $u, Contest $c = null)
+    {
+        if ($c == null) {
             $c = $this->contests->firstCurrent();
         }
 
         $problems = $this->contests->problemsForContest();
 
-        if($problems->count() < 1) {
+        if ($problems->count() < 1) {
             return Illuminate\Support\Collection::make(array());
         }
 
@@ -45,14 +50,15 @@ class EloquentSolutionRepository implements SolutionRepository {
             ->get();
     }
 
-    public function forUserInContest(User $u, Contest $c = null) {
-        if($c == null) {
+    public function forUserInContest(User $u, Contest $c = null)
+    {
+        if ($c == null) {
             $c = $this->contests->firstCurrent();
         }
 
         $problems = $this->contests->problemsForContest();
 
-        if($problems->count() < 1) {
+        if ($problems->count() < 1) {
             return Illuminate\Support\Collection::make(array());
         }
 

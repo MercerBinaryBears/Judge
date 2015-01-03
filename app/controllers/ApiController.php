@@ -1,32 +1,36 @@
 <?php
 
-class ApiController extends BaseController {
+class ApiController extends BaseController
+{
 
     /**
      * API function to get all SolutionTypes as an id:name pair
      */
-    public function getSolutionStates() {
+    public function getSolutionStates()
+    {
         return ApiController::formatJSend($this->solution_states->all()->toArray());
     }
 
     /**
      * public function to get all unclaimed solutions
      */
-    public function show() {
+    public function show()
+    {
         return ApiController::formatJSend(
             $this->solutions->judgeableForContest()
-            );
+        );
     }
 
     /**
      * API function to claim and retrieve a problem
      */
-    public function claim($id) {
+    public function claim($id)
+    {
         $user_id = Auth::user()->id;
 
         // Attempt to claim, returning an error if it occurs
         $solution = $this->solutions->find($id);
-        if(!$solution->claim()) {
+        if (!$solution->claim()) {
             App::abort(403, 'You cannot claim that solution');
         }
 
@@ -34,7 +38,7 @@ class ApiController extends BaseController {
         // we update the record. If the save failed we flash the error
         // and redirect to the judge index
         $solution->claiming_judge_id = $user_id;
-        if(!$solution->save()) {
+        if (!$solution->save()) {
             App::abort(400, $solution->errors());
         }
 
@@ -55,13 +59,12 @@ class ApiController extends BaseController {
         // Check that this current judge has claimed the problem
         // Check validation on save, and report errors if any. There shouldn't be, but
         // malicious input could cause it.
-        if($s->ownedByCurrentUser()) {
+        if ($s->ownedByCurrentUser()) {
             $s->solution_state_id = Input::get('solution_state_id');
-            if(!$s->save()) {
+            if (!$s->save()) {
                 App::abort(400, $s->errors());
             }
-        }
-        else {
+        } else {
             App::abort(403, 'You are not the claiming judge for this problem any more');
         }
 
@@ -71,18 +74,18 @@ class ApiController extends BaseController {
     /**
      * API function to unclaim a problem
      */
-    public function unclaim($id) {
+    public function unclaim($id)
+    {
         $s = $this->solutions->find($id);
 
-        if($s->ownedByCurrentUser()) {
+        if ($s->ownedByCurrentUser()) {
             // the user is the claiming judge, he can edit this solution
             $s->claiming_judge_id = null;
             $s->solution_state_id = $this->solution_states->firstPendingId();
-            if(!$s->save()) {
+            if (!$s->save()) {
                 App::abort(400, $s->errors());
             }
-        }
-        else {
+        } else {
             App::abort(403, 'You are not the claiming judge for this problem');
         }
 
@@ -93,7 +96,8 @@ class ApiController extends BaseController {
      * Download route for packages
      * TODO: This is duplicate code from the judge controller, find a way to NOT duplicate
      */
-    public function package($id) {
+    public function package($id)
+    {
         $s = $this->solutions->find($id);
 
         $solution_package = new SolutionPackage($s);
@@ -109,12 +113,13 @@ class ApiController extends BaseController {
      * @param int $code The HTTP status code of the response. Defaults to 200
      * @param string $message The message to send to the user
      */
-    public static function formatJSend($data=array(), $success=true, $code=200, $message='') {
+    public static function formatJSend($data = array(), $success = true, $code = 200, $message = '')
+    {
 
         /*
          * Convert the data to an array if not an instance
          */
-        if($data instanceof Illuminate\Support\Contracts\ArrayableInterface) {
+        if ($data instanceof Illuminate\Support\Contracts\ArrayableInterface) {
             $data = $data->toArray();
         }
 

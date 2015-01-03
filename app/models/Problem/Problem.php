@@ -1,6 +1,7 @@
 <?php
 
-class Problem extends Base {
+class Problem extends Base
+{
     public static $rules = array(
         'name' => 'required',
         'contest_id' => 'required',
@@ -11,23 +12,26 @@ class Problem extends Base {
     /**
      * Gets the contest that this problem belongs to
      */
-    public function contest() {
+    public function contest()
+    {
         return $this->belongsTo('Contest');
     }
 
     /**
      * Gets all solutions for this problem
      */
-    public function solutions() {
+    public function solutions()
+    {
         return $this->hasMany('Solution');
     }
 
     /**
      * Gets the problems for the current contest
      */
-    public function scopeForCurrentContest($query) {
+    public function scopeForCurrentContest($query)
+    {
         $contests = Contest::current()->first();
-        if($contests == null) {
+        if ($contests == null) {
             return Problem::where('id', null);
         }
         return $query->where('contest_id', $contests->id)->orderBy('created_at');

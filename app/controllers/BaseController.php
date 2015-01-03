@@ -2,14 +2,15 @@
 
 use Illuminate\Routing\Controller;
 
-class BaseController extends Controller {
+class BaseController extends Controller
+{
 
     public function __construct(
-            ContestRepository $contests, 
-            LanguageRepository $languages, 
-            ProblemRepository $problems,
-            SolutionRepository $solutions,
-            SolutionStateRepository $solution_states
+        ContestRepository $contests,
+        LanguageRepository $languages,
+        ProblemRepository $problems,
+        SolutionRepository $solutions,
+        SolutionStateRepository $solution_states
     ) {
             
         $this->contests = $contests;
@@ -26,10 +27,8 @@ class BaseController extends Controller {
      */
     protected function setupLayout()
     {
-        if ( ! is_null($this->layout))
-        {
+        if (! is_null($this->layout)) {
             $this->layout = View::make($this->layout);
         }
     }
-
 }

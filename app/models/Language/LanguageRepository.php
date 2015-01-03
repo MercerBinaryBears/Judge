@@ -1,5 +1,6 @@
 <?php
 
-interface LanguageRepository {
+interface LanguageRepository
+{
     public function all();
 }

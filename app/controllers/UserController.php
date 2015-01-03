@@ -1,6 +1,7 @@
 <?php
 
-class UserController extends BaseController {
+class UserController extends BaseController
+{
     /**
      * Attempt login for a user.
      *
@@ -8,7 +9,7 @@ class UserController extends BaseController {
      */
     public function login()
     {
-        if(Auth::attempt(Input::only('username', 'password'))) {
+        if (Auth::attempt(Input::only('username', 'password'))) {
             return Redirect::route('index');
         }
 

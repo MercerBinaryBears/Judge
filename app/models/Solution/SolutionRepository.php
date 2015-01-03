@@ -1,6 +1,7 @@
 <?php
 
-interface SolutionRepository {
+interface SolutionRepository
+{
     public function find($id);
 
     /*

@@ -1,9 +1,9 @@
 <?php
 use \LaravelBook\Ardent\Ardent as Ardent;
 
-
 // a base class for all models
-class Base extends Ardent {
+class Base extends Ardent
+{
 
     /**
      * A method for processing uploads. Reads an uploaded and assigns class properties automagically
@@ -14,13 +14,14 @@ class Base extends Ardent {
      * @param string $extension_attribute The model's attribute to store the file's extension
      * @return bool A boolean indicating success or failure
      */
-    public function processUpload($input_field, $path_attribute, $original_name_attribute, $extension_attribute) {
+    public function processUpload($input_field, $path_attribute, $original_name_attribute, $extension_attribute)
+    {
         /**
          * Pulls the Symfony\Component\HttpFoundation\File\UploadedFile from Post input. If the file
          * doesn't exists, we return false, indicating a failure
          */
         $file = Input::file($input_field);
-        if($file == null) {
+        if ($file == null) {
             return false;
         }
 
@@ -28,12 +29,12 @@ class Base extends Ardent {
         $this->$path_attribute = $this->generateRandomString();
 
         // If the function's caller passed an $original_name_attribute, populate it on the model for them
-        if($original_name_attribute != null) {
+        if ($original_name_attribute != null) {
             $this->$original_name_attribute = $file->getClientOriginalName();
         }
 
         // If the function's caller passed an $extension_attribute, populate it on the model for them
-        if($extension_attribute != null) {
+        if ($extension_attribute != null) {
             $split = explode('.', $file->getClientOriginalName());
             $this->$extension_attribute = array_pop($split);
         }
@@ -52,12 +53,13 @@ class Base extends Ardent {
      * @param int $length An optional string length.
      * @return string A nice random string of the length you provided
      */
-    public function generateRandomString($length=64) {
+    public function generateRandomString($length = 64)
+    {
         // some path safe characters
         $abc = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
 
         // clamp the $length to positive, if there was any weird problem...
-        if($length < 0) {
+        if ($length < 0) {
             $length = 64;
         }
 
@@ -73,7 +75,8 @@ class Base extends Ardent {
      * @param string $path_attribute The attribute on the model to build a download directory for
      * @return string a fully qualified directory for this resource
      */
-    public function getDirectoryForResource($path_attribute) {
+    public function getDirectoryForResource($path_attribute)
+    {
         return storage_path() . "/$path_attribute/";
     }
 
@@ -82,7 +85,8 @@ class Base extends Ardent {
      * @param string $path_attribute The attribute on the model to build a download directory fo
      * @return string the fully qualified path for this resource
      */
-    public function getPathForResource($path_attribute) {
+    public function getPathForResource($path_attribute)
+    {
         return $this->getDirectoryForResource($path_attribute) . $this->$path_attribute;
     }
 }

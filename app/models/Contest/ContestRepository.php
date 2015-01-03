@@ -1,6 +1,7 @@
 <?php
 
-interface ContestRepository {
+interface ContestRepository
+{
     /**
      * Returns all problems associated with the passed contest
      * If the contest is null, it defaults to the first current

@@ -1,6 +1,7 @@
 <?php
 
-class SolutionState extends Base {
+class SolutionState extends Base
+{
     /**
      * The validation rules for a solution state
      */
@@ -11,20 +12,23 @@ class SolutionState extends Base {
     /**
      * Gets all of the solutions with a give solution state
      */
-    public function solutions() {
+    public function solutions()
+    {
         return $this->hasMany('Solution');
     }
 
-    public static function pending() {
+    public static function pending()
+    {
         return static::where('pending', true)->firstOrFail();
     }
 
-    public function getBootstrapColorAttribute() {
-        if($this->pending) {
+    public function getBootstrapColorAttribute()
+    {
+        if ($this->pending) {
             return 'info';
         }
 
-        if($this->is_correct) {
+        if ($this->is_correct) {
             return 'success';
         }
 

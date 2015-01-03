@@ -1,13 +1,15 @@
 <?php
 
-class TeamController extends BaseController {
+class TeamController extends BaseController
+{
 
     /**
      * The index page for a team. Displays their current submitted problems,
      * the current state of those problems, and a form for submitting a new
      * problem
      */
-    public function teamIndex() {
+    public function teamIndex()
+    {
         View::share('contest_name', 'Judge');
         $contest_name = 'Judge';
 
@@ -20,7 +22,7 @@ class TeamController extends BaseController {
         return View::make('solutions_team')
             ->with('solutions', $this->solutions->forUserInContest(Auth::user()))
             ->with('problems', $this->contests->problemsForContest())
-            ->with('languages', $this->languages->all() );
+            ->with('languages', $this->languages->all());
     }
 
     /**
@@ -50,7 +52,7 @@ class TeamController extends BaseController {
 
         // Save, (attempting validation). If validation fails, we show the errors before saving.
         // Otherwise, the team will see the file in their list of submitted problems
-        if(!$solution->save()) {
+        if (!$solution->save()) {
             Session::flash('error', $solution->errors());
         }
 

@@ -2,7 +2,8 @@
 
 use Carbon\Carbon;
 
-class Solution extends Base {
+class Solution extends Base
+{
     /**
      * The validation rules for a solution
      */
@@ -23,35 +24,40 @@ class Solution extends Base {
     /**
      * Gets the problem that this solution solves
      */
-    public function problem() {
+    public function problem()
+    {
         return $this->belongsTo('Problem');
     }
 
     /**
      * Gets the user that submitted this solution
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('User');
     }
 
     /**
      * Gets the current solution state of this problem
      */
-    public function solutionState() {
+    public function solutionState()
+    {
         return $this->belongsTo('SolutionState');
     }
 
     /**
      * Gets the judge that claimed this problem
      */
-    public function claimingJudge() {
+    public function claimingJudge()
+    {
         return $this->belongsTo('User', 'claiming_judge_id');
     }
 
     /**
      * Gets the language this problem was submitted in
      */
-    public function language() {
+    public function language()
+    {
         return $this->belongsTo('Language');
     }
 
@@ -76,7 +82,8 @@ class Solution extends Base {
     /**
      * Gets the solutions for the current contest
      */
-    public function scopeForCurrentContest($query) {
+    public function scopeForCurrentContest($query)
+    {
         $problems = Problem::forCurrentContest()->get();
         return $query->whereIn('problem_id', $problems->modelKeys())->orderBy('created_at');
     }
@@ -84,7 +91,8 @@ class Solution extends Base {
     /**
      * Gets the unjudged problems for this contest
      */
-    public function scopeUnjudged($query) {
+    public function scopeUnjudged($query)
+    {
         $unjudged_state = SolutionState::pending();
         return $query->where('solution_state_id', $unjudged_state->id);
     }
@@ -92,7 +100,8 @@ class Solution extends Base {
     /**
      * Gets the unclaimed problems for this contest
      */
-    public function scopeUnclaimed($query) {
+    public function scopeUnclaimed($query)
+    {
         return $query->whereNull('claiming_judge_id');
     }
 
@@ -100,16 +109,17 @@ class Solution extends Base {
      * Determines if the current user can alter a solution (claim it,
      * unclaim it, edit, or update it)
      */
-    public function canBeAltered() {
+    public function canBeAltered()
+    {
         $user = Auth::user();
 
         // check if the user is logged in
-        if($user == null) {
+        if ($user == null) {
             return false;
         }
 
         // if the user is not a judge or an admin, they can't edit
-        if(!$user->judge && !$user->admin) {
+        if (!$user->judge && !$user->admin) {
             return false;
         }
 
@@ -119,17 +129,19 @@ class Solution extends Base {
     /**
      * Checks if the current user owns this solution at this time
      */
-    public function ownedByCurrentUser() {
+    public function ownedByCurrentUser()
+    {
         return $this->claiming_judge_id == Auth::user()->id;
     }
 
     /**
      * Claims a problem for the current logged in user
      */
-    public function claim() {
+    public function claim()
+    {
 
         // check that the user can alter the problem first
-        if(!$this->canBeAltered()) {
+        if (!$this->canBeAltered()) {
             return false;
         }
 
@@ -143,10 +155,11 @@ class Solution extends Base {
     /**
      * Unclaims a solution, if the judge has permission
      */
-    public function unclaim() {
+    public function unclaim()
+    {
 
         // check that the judge has permission
-        if(!$this->canBeAltered()) {
+        if (!$this->canBeAltered()) {
             return false;
         }
 
@@ -160,7 +173,8 @@ class Solution extends Base {
     /**
      * Prints a pretty diff of the solution since the contest start
      */
-    public function submissionPrettyDiff() {
+    public function submissionPrettyDiff()
+    {
         // get the contest for this solution
 
         $current_contest = App::make('ContestRepository')->firstCurrent();
@@ -171,5 +185,4 @@ class Solution extends Base {
         return $submission_time->diffInMinutes($contest_start)
             . ' minutes after contest start';
     }
-
 }

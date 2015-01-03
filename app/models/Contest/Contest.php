@@ -2,7 +2,8 @@
 
 use Carbon\Carbon as Carbon;
 
-class Contest extends Base {
+class Contest extends Base
+{
     /**
      * Validation rules for a contest
      */
@@ -14,14 +15,16 @@ class Contest extends Base {
     /**
      * Gets the problems associated with a contest
      */
-    public function problems() {
+    public function problems()
+    {
         return $this->hasMany('Problem');
     }
 
     /**
      * Gets the users associated with a contest
      */
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany('User');
     }
 
@@ -31,7 +34,8 @@ class Contest extends Base {
      * Perhaps in the future, we should also check the end time, and make
      * a contest inactive if its been x seconds after the end time.
      */
-    public function scopeCurrent($query) {
+    public function scopeCurrent($query)
+    {
         return $query->where('starts_at', '<=', Carbon::now()->format('Y-m-d H:i:s'))
             ->orderBy('starts_at', 'desc');
     }

@@ -1,5 +1,6 @@
 <?php
-class JudgeController extends BaseController {
+class JudgeController extends BaseController
+{
 
     protected function bindContestName()
     {
@@ -18,7 +19,8 @@ class JudgeController extends BaseController {
      * The index for a judge. Display the current unjudged problems, and allows
      * the judge to claim that problem.
      */
-    public function index() {
+    public function index()
+    {
         $this->bindContestName();
 
         return View::make('solutions_judge')
@@ -44,7 +46,7 @@ class JudgeController extends BaseController {
         $solution = $this->solutions->find($id);
 
         // claim the problem, reporting errors if the user couldn't claim it
-        if(!$solution->claim()) {
+        if (!$solution->claim()) {
             Session::flash('error', 'You cannot claim that solution');
             return Redirect::route('judge_index');
         }
@@ -68,13 +70,12 @@ class JudgeController extends BaseController {
         // Check that this current judge has claimed the problem
         // Check validation on save, and report errors if any. There shouldn't be, but
         // malicious input could cause it.
-        if($solution->ownedByCurrentUser()) {
+        if ($solution->ownedByCurrentUser()) {
             $solution->solution_state_id = Input::get('solution_state_id');
-            if(!$solution->save()) {
+            if (!$solution->save()) {
                 Session::flash('error', $s->errors());
             }
-        }
-        else {
+        } else {
             Session::flash('error', 'You are not the claiming judge for this problem any more');
         }
 
@@ -86,10 +87,11 @@ class JudgeController extends BaseController {
      *
      * @param int $id The id of the solution to unclaim
      */
-    public function unclaim($id) {
+    public function unclaim($id)
+    {
         $solution = $this->solutions->find($id);
 
-        if(!$solution->unclaim()) {
+        if (!$solution->unclaim()) {
             Session::flash('error', 'You are not the claiming judge for this problem');
         }
         return Redirect::route('judge_index');
@@ -98,7 +100,8 @@ class JudgeController extends BaseController {
     /**
      * Creates a download package for judges to judge a problem
      */
-    public function package($id) {
+    public function package($id)
+    {
         // get the requested solution
         $solution = $this->solutions->find($id);
 

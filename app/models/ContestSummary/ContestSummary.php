@@ -1,6 +1,7 @@
 <?php
 
-class ContestSummary {
+class ContestSummary
+{
     /**
      * The user this contest summary represents
      */
@@ -24,24 +25,23 @@ class ContestSummary {
     /**
      * The main comparison function for two contest summaries
      */
-    public static function compare(ContestSummary $c1, ContestSummary $c2) {
+    public static function compare(ContestSummary $c1, ContestSummary $c2)
+    {
         /*
          * Check problems solved first
          */
-        if($c1->problems_solved < $c2->problems_solved) {
+        if ($c1->problems_solved < $c2->problems_solved) {
             return 1;
-        }
-        else if($c1->problems_solved > $c2->problems_solved) {
+        } elseif ($c1->problems_solved > $c2->problems_solved) {
             return -1;
         }
 
         /*
          * Check penalty points next
          */
-        if($c1->penalty_points < $c2->penalty_points) {
+        if ($c1->penalty_points < $c2->penalty_points) {
             return -1;
-        }
-        else if($c1->penalty_points > $c2->penalty_points) {
+        } elseif ($c1->penalty_points > $c2->penalty_points) {
             return 1;
         }
 

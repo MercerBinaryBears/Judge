@@ -1,11 +1,14 @@
 <?php
 
-class ContestSummaryCollection implements Iterator {
-    public function __construct() {
+class ContestSummaryCollection implements Iterator
+{
+    public function __construct()
+    {
         $this->summaries = array();
     }
 
-    public function add(ContestSummary $c) {
+    public function add(ContestSummary $c)
+    {
         $this->summaries[] = $c;
     }
 
@@ -13,25 +16,29 @@ class ContestSummaryCollection implements Iterator {
      * Iterator methods
      */
 
-    function rewind() {
+    function rewind()
+    {
         $this->k = 0;
         usort($this->summaries, array('ContestSummary', 'compare'));
     }
 
-    function current() {
+    function current()
+    {
         return $this->summaries[$this->k];
     }
 
-    function key() {
+    function key()
+    {
         return $this->k;
     }
 
-    function next() {
+    function next()
+    {
         ++$this->k;
     }
 
-    function valid() {
+    function valid()
+    {
         return $this->k < count($this->summaries);
     }
-
 }
