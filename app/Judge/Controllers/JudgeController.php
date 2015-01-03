@@ -1,8 +1,13 @@
 <?php namespace Judge\Controllers;
 
+use \Auth;
+use \Redirect;
+use \Response;
+use \Session;
+use \View;
+
 class JudgeController extends BaseController
 {
-
     protected function bindContestName()
     {
         $contest_name = 'Judge';
