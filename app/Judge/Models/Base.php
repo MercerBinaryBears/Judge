@@ -11,7 +11,8 @@ class Base extends Ardent
      *
      * @param string $input_field The input field name that points to the uploaded file
      * @param string $path_attribute The name of the model's attribute to store the file's new location on disk
-     * @param string $original_name_attribute The name of the model's attribute to store the client's original name for the file
+     * @param string $original_name_attribute The name of the model's attribute to store the client's original name for
+     *        the file
      * @param string $extension_attribute The model's attribute to store the file's extension
      * @return bool A boolean indicating success or failure
      */

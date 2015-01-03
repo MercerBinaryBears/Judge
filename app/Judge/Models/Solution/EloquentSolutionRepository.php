@@ -2,9 +2,11 @@
 
 class EloquentSolutionRepository implements SolutionRepository
 {
-    
-    public function __construct(ContestRepository $contests, ProblemRepository $problems, SolutionStateRepository $solution_states)
-    {
+    public function __construct(
+        ContestRepository $contests,
+        ProblemRepository $problems,
+        SolutionStateRepository $solution_states
+    ) {
         $this->contests = $contests;
         $this->problems = $problems;
         $this->solution_states = $solution_states;

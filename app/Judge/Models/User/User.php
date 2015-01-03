@@ -171,7 +171,8 @@ class User extends Base implements UserInterface, RemindableInterface
         foreach ($contest->problems as $problem) {
             $problem_info = array();
             $problem_info['points_for_problem'] = $this->pointsForProblem($problem);
-            $problem_info['num_submissions'] = $this->incorrectSubmissionCountForProblem($problem) + $this->solvedProblem($problem);
+            $problem_info['num_submissions'] = $this->incorrectSubmissionCountForProblem($problem)
+                + $this->solvedProblem($problem);
 
             $summary->problem_summaries[] = $problem_info;
         }
