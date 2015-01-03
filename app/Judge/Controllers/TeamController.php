@@ -3,6 +3,7 @@
 use \Auth;
 use \Input;
 use \Redirect;
+use \Session;
 use \View;
 
 use Judge\Models\Solution\Solution;
@@ -48,6 +49,7 @@ class TeamController extends BaseController
         $solution->user_id = Auth::user()->id;
         $solution->solution_state_id = $solution_state_id;
         $solution->language_id = Input::get('language_id');
+        Session::put('language_preference', Input::get('language_id')); 
 
         /*
         | Take the uploaded file, save it to a permanent path, reading the file
