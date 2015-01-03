@@ -251,7 +251,7 @@ class User extends Base implements UserInterface, RemindableInterface
     {
         $correct_solution = null;
         
-        $solved_state_id = App::make('SolutionStateRepository')->firstCorrectId();
+        $solved_state_id = App::make('Judge\Models\SolutionState\SolutionStateRepository')->firstCorrectId();
 
         foreach ($this->cachedSolutions() as $solution) {
             $is_solved = $solution->solution_state_id == $solved_state_id ;
