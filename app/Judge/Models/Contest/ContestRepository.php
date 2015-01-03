@@ -1,4 +1,4 @@
-<?php namespace Judge\Contest\ContestRepository;
+<?php namespace Judge\Models\Contest;
 
 interface ContestRepository
 {

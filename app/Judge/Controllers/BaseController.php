@@ -2,9 +2,14 @@
 
 use Illuminate\Routing\Controller;
 
+use Judge\Models\Contest\ContestRepository;
+use Judge\Models\Language\LanguageRepository;
+use Judge\Models\Problem\ProblemRepository;
+use Judge\Models\Solution\SolutionRepository;
+use Judge\Models\SolutionState\SolutionStateRepository;
+
 class BaseController extends Controller
 {
-
     public function __construct(
         ContestRepository $contests,
         LanguageRepository $languages,

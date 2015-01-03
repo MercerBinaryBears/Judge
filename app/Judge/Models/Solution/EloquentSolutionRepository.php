@@ -1,5 +1,9 @@
 <?php namespace Judge\Models\Solution;
 
+use Judge\Models\Contest\ContestRepository;
+use Judge\Models\Problem\ProblemRepository;
+use Judge\Models\SolutionState\SolutionStateRepository;
+
 class EloquentSolutionRepository implements SolutionRepository
 {
     public function __construct(
