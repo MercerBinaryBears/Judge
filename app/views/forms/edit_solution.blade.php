@@ -25,7 +25,7 @@
     </style>
 	{{ Form::open(array('route'=>array("edit_solution", $solution->id), 'class' => 'form-inline')) }}
 	{{ Form::label('solution_state_id', 'Solution State: ') }}
-	{{ Form::select('solution_state_id', $solution_states->lists('name','id'), '', array('class' => 'form-control'))}}
+	{{ Form::select('solution_state_id', $solution_states->lists('name','id'), $solution->solution_state->id, array('class' => 'form-control'))}}
 	{{ Form::submit('Save', array('class' => 'btn btn-info'))}}
 	{{ Form::close() }}
 
