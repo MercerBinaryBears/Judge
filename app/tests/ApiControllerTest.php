@@ -22,15 +22,13 @@ class ApiControllerTest extends TestCase {
 	}
 
 	public function testFormatJsendAcceptsCollectionData() {
-		$data = array(1,2,3);
+		$data = Collection::make([1, 2, 3]);
 
-		$collection = Collection::make($data);
-
-		$response = ApiController::formatJsend($collection);
+		$response = ApiController::formatJsend($data);
 
 		$actual = json_decode($response->getContent(), true)['data'];
 
-		$this->assertEquals($data, $actual);
+		$this->assertEquals([1, 2, 3], $actual);
 	}
 
 }

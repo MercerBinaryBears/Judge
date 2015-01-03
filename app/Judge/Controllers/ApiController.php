@@ -1,6 +1,7 @@
 <?php namespace Judge\Controllers;
 
-use \Response;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Contracts\ArrayableInterface;
 
 class ApiController extends BaseController
 {
@@ -116,11 +117,8 @@ class ApiController extends BaseController
      */
     public static function formatJSend($data = array(), $success = true, $code = 200, $message = '')
     {
-
-        /*
-         * Convert the data to an array if not an instance
-         */
-        if ($data instanceof Illuminate\Support\Contracts\ArrayableInterface) {
+        // Convert the data to an array if not an instance
+        if ($data instanceof ArrayableInterface) {
             $data = $data->toArray();
         }
 
