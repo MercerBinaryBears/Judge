@@ -296,7 +296,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_solutions;
         }
 
-        $this->cached_solutions = App::make('Judge\Models\Contest\SolutionRepository')->forUserInContest($this, $c);
+        $this->cached_solutions = App::make('Judge\Models\Solution\SolutionRepository')->forUserInContest($this, $c);
 
         return $this->cached_solutions;
     }
