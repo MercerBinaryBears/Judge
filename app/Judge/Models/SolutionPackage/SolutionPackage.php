@@ -54,7 +54,8 @@ class SolutionPackage
         $open_result = $this->zip_file->open($this->zip_path, ZIPARCHIVE::CREATE);
 
         if ($open_result !== true) {
-            throw new Exception("Could not open the zip file at " . $this->zip_path . ": " . $this->zip_file->getStatusString());
+            $message = "Could not open the zip file at " . $this->zip_path . ": " . $this->zip_file->getStatusString();
+            throw new Exception($message);
         }
 
     }
