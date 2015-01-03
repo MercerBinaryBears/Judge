@@ -1,6 +1,7 @@
 <?php namespace Judge\Models\User;
 
-use Illuminate\Support\Facades\App;
+use \App;
+use \Hash;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;

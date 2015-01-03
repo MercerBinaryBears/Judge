@@ -1,5 +1,9 @@
 <?php namespace Judge\Controllers;
 
+use \Auth;
+use \Input;
+use \Redirect;
+
 class UserController extends BaseController
 {
     /**
