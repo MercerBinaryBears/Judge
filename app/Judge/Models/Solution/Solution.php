@@ -2,6 +2,10 @@
 
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\App;
+
+use Judge\Models\Base;
+
 class Solution extends Base
 {
     /**

@@ -1,8 +1,12 @@
 <?php namespace Judge\Models\User;
 
+use Illuminate\Support\Facades\App;
+
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Carbon\Carbon as Carbon;
+
+use Judge\Models\Base;
 
 class User extends Base implements UserInterface, RemindableInterface
 {

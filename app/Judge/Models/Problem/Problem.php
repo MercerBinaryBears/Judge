@@ -1,5 +1,7 @@
 <?php namespace Judge\Models\Problem;
 
+use Judge\Models\Base;
+
 class Problem extends Base
 {
     public static $rules = array(

@@ -1,6 +1,7 @@
 <?php
 
 use Judge\Models\ContestSummary\ContestSummary;
+use Judge\Models\User\User;
 
 class ContestSummaryTest extends TestCase {
 

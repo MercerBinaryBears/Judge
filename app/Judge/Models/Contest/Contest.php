@@ -2,6 +2,8 @@
 
 use Carbon\Carbon as Carbon;
 
+use Judge\Models\Base;
+
 class Contest extends Base
 {
     /**

@@ -1,8 +1,9 @@
 <?php namespace Judge\Controllers;
 
+use \Response;
+
 class ApiController extends BaseController
 {
-
     /**
      * API function to get all SolutionTypes as an id:name pair
      */
