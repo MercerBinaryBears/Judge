@@ -274,7 +274,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_contest;
         }
 
-        $this->cached_contest = App::make('ContestRepository')->firstCurrent();
+        $this->cached_contest = App::make('Judge\Models\Contest\ContestRepository')->firstCurrent();
 
         return $this->cached_contest;
     }
@@ -285,7 +285,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_problems;
         }
 
-        $this->cached_problems = App::make('ContestRepository')->problemsForContest($c);
+        $this->cached_problems = App::make('Judge\Models\Contest\ContestRepository')->problemsForContest($c);
 
         return $this->cached_problems;
     }
@@ -296,7 +296,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_solutions;
         }
 
-        $this->cached_solutions = App::make('SolutionRepository')->forUserInContest($this, $c);
+        $this->cached_solutions = App::make('Judge\Models\Contest\SolutionRepository')->forUserInContest($this, $c);
 
         return $this->cached_solutions;
     }
