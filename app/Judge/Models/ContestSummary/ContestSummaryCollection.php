@@ -1,5 +1,7 @@
 <?php namespace Judge\Models\ContestSummary;
 
+use \Iterator;
+
 class ContestSummaryCollection implements Iterator
 {
     public function __construct()

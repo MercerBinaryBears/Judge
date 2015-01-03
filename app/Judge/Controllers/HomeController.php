@@ -1,5 +1,10 @@
 <?php namespace Judge\Controllers;
 
+use Judge\Models\ContestSummary\ContestSummaryCollection;
+
+use \View;
+
+
 class HomeController extends BaseController
 {
     /**
