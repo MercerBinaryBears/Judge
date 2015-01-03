@@ -20,7 +20,7 @@
 			"app/database/seeds",
 			"app/tests/TestCase.php"
 		],
-        "psr4" : {
+        "psr-4" : {
             "Judge\\" : "app/Judge"
         }
 	},
