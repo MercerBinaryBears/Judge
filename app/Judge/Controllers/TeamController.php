@@ -1,5 +1,8 @@
 <?php namespace Judge\Controllers;
 
+use \Auth;
+use \View;
+
 class TeamController extends BaseController
 {
 

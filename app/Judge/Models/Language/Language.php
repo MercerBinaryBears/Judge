@@ -1,5 +1,5 @@
 <?php namespace Judge\Models\Language;
 
-class Language extends Eloquent
+class Language extends \Eloquent
 {
 }
