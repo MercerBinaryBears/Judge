@@ -5,7 +5,7 @@ return array(
 
 	'single' => 'User',
 
-	'model' => 'User',
+	'model' => 'Judge\Models\User\User',
 
 	'columns' => array(
 		'username' => array(

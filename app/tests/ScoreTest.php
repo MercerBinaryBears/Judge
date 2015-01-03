@@ -4,6 +4,11 @@ use \Mockery;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
+use Judge\Models\Contest\Contest;
+use Judge\Models\Score\Score;
+use Judge\Models\Problem\Problem;
+use Judge\Models\User\User;
+
 class ScoreTest extends TestCase {
 
 	public function setUp() {
@@ -140,7 +145,7 @@ class ScoreTest extends TestCase {
 	public function testTotalScore() {
 
 		// mock out the score per problem function
-		$this->user = Mockery::mock('User[pointsForProblem]');
+		$this->user = Mockery::mock('Judge\Models\User\User[pointsForProblem]');
 		$this->user->shouldReceive('pointsForProblem')->twice()->andReturn(10);
 
 		$this->assertEquals(20, $this->user->totalPoints(new Contest));
@@ -201,7 +206,8 @@ class ScoreTest extends TestCase {
 	protected function createCollection($class_name, $models) {
 		$ary = array();
 		foreach($models as $m) {
-			$model_instance = new $class_name;
+            $full_class = "Judge\\Models\\$class_name\\$class_name";
+			$model_instance = new $full_class;
 			$model_instance->unguard();
 			$model_instance->fill($m);
 			$ary[] = $model_instance;
