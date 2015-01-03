@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 use Judge\Models\Base;
 

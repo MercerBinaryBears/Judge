@@ -145,7 +145,7 @@ class ScoreTest extends TestCase {
 	public function testTotalScore() {
 
 		// mock out the score per problem function
-		$this->user = Mockery::mock('User[pointsForProblem]');
+		$this->user = Mockery::mock('Judge\Models\User\User[pointsForProblem]');
 		$this->user->shouldReceive('pointsForProblem')->twice()->andReturn(10);
 
 		$this->assertEquals(20, $this->user->totalPoints(new Contest));

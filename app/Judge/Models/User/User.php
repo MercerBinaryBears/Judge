@@ -7,6 +7,8 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 use Carbon\Carbon as Carbon;
 
 use Judge\Models\Base;
+use Judge\Models\Contest\Contest;
+use Judge\Models\Problem\Problem;
 
 class User extends Base implements UserInterface, RemindableInterface
 {

@@ -11,10 +11,9 @@ class SolutionTest extends TestCase {
 	}
 
 	public function mockSolution($methods_to_mock) {
-		$this->solution = Mockery::mock("Solution[$methods_to_mock]");
+		$this->solution = Mockery::mock("Judge\\Models\\Solution\\Solution[$methods_to_mock]");
 		$this->solution->shouldReceive('save')->andReturn(true);
 	}
-
 
 	/*
 	 * An Easy way to mock the auth function
