@@ -1,6 +1,7 @@
 <?php namespace Judge\Controllers;
 
 use \Auth;
+use \Input;
 use \Redirect;
 use \Response;
 use \Session;
