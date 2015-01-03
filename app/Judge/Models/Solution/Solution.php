@@ -31,7 +31,7 @@ class Solution extends Base
      */
     public function problem()
     {
-        return $this->belongsTo('Problem');
+        return $this->belongsTo('Judge\Models\Problem\Problem');
     }
 
     /**
@@ -39,7 +39,7 @@ class Solution extends Base
      */
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('Judge\Models\User\User');
     }
 
     /**
@@ -47,7 +47,7 @@ class Solution extends Base
      */
     public function solutionState()
     {
-        return $this->belongsTo('SolutionState');
+        return $this->belongsTo('Judge\Models\SolutionState\SolutionState');
     }
 
     /**
@@ -55,7 +55,7 @@ class Solution extends Base
      */
     public function claimingJudge()
     {
-        return $this->belongsTo('User', 'claiming_judge_id');
+        return $this->belongsTo('Judge\Models\User\User', 'claiming_judge_id');
     }
 
     /**
@@ -63,7 +63,7 @@ class Solution extends Base
      */
     public function language()
     {
-        return $this->belongsTo('Language');
+        return $this->belongsTo('Judge\Models\Language\Language');
     }
 
     /**

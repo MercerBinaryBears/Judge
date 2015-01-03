@@ -14,7 +14,7 @@ class SolutionState extends Base
      */
     public function solutions()
     {
-        return $this->hasMany('Solution');
+        return $this->hasMany('Judge\Models\Solution\Solution');
     }
 
     public static function pending()
