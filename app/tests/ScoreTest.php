@@ -18,8 +18,8 @@ class ScoreTest extends TestCase {
 		$this->correct_solution_state_id = 1;
 
 		// mock the repositories	
-		$this->solution_repository = Mockery::mock('SolutionRepository');
-		App::instance('SolutionRepository', $this->solution_repository);
+		$this->solution_repository = Mockery::mock('Judge\Models\Solution\SolutionRepository');
+		App::instance('Judge\Models\Solution\SolutionRepository', $this->solution_repository);
 
 		$this->mockSolutionStates();
 
@@ -178,19 +178,19 @@ class ScoreTest extends TestCase {
 	 * Creates a mock of the solution state repository
 	 */
 	protected function mockSolutionStates() {
-		$this->solution_state_repository = Mockery::mock('SolutionStateRepository');
+		$this->solution_state_repository = Mockery::mock('Judge\Models\Solution\SolutionStateRepository');
 		$this->solution_state_repository
 			->shouldReceive('firstCorrectId')
 			->zeroOrMoreTimes()
 			->andReturn(1);
-		App::instance('SolutionStateRepository', $this->solution_state_repository);
+		App::instance('Judge\Models\SolutionState\SolutionStateRepository', $this->solution_state_repository);
 	}
 
 	/**
 	 * Creates a mock of the contest repository
 	 */
 	protected function mockContest() {
-		$this->contest_repository = Mockery::mock('ContestRepository');
+		$this->contest_repository = Mockery::mock('Judge\Models\Contest\ContestRepository');
 		$raw_problems = array(
 			array('id' => 1),
 			array('id' => 2)
@@ -199,7 +199,7 @@ class ScoreTest extends TestCase {
 			->shouldReceive('problemsForContest')
 			->zeroOrMoreTimes()
 			->andReturn( $this->createCollection('Problem', $raw_problems));
-		App::instance('ContestRepository', $this->contest_repository);
+		App::instance('Judge\Models\Contest\ContestRepository', $this->contest_repository);
 	
 	}
 	
