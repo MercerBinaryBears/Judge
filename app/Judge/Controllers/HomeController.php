@@ -4,7 +4,6 @@ use Judge\Models\ContestSummary\ContestSummaryCollection;
 
 use \View;
 
-
 class HomeController extends BaseController
 {
     /**
