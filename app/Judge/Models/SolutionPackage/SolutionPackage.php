@@ -1,5 +1,9 @@
 <?php namespace Judge\Models\SolutionPackage;
 
+use \ZipArchive;
+
+use Judge\Models\Solution\Solution;
+
 class SolutionPackage {
 
 	/**

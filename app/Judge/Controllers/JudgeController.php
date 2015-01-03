@@ -6,6 +6,8 @@ use \Response;
 use \Session;
 use \View;
 
+use Judge\Models\SolutionPackage\SolutionPackage;
+
 class JudgeController extends BaseController
 {
     protected function bindContestName()
