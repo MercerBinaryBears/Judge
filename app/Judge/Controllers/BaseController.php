@@ -1,6 +1,7 @@
 <?php namespace Judge\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\View;
 
 use Judge\Models\Contest\ContestRepository;
 use Judge\Models\Language\LanguageRepository;
