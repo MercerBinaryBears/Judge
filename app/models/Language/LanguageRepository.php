@@ -1,5 +1,5 @@
 <?php
 
 interface LanguageRepository {
-	public function all();
+    public function all();
 }

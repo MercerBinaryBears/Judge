@@ -1,7 +1,7 @@
 <?php
 
 class EloquentLanguageRepository implements LanguageRepository {
-	public function all() {
-		return Language::all();
-	}
+    public function all() {
+        return Language::all();
+    }
 }

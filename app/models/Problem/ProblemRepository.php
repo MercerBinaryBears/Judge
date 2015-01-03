@@ -1,5 +1,5 @@
 <?php
 
 interface ProblemRepository {
-	public function forContest(Contest $c = null);
+    public function forContest(Contest $c = null);
 }
