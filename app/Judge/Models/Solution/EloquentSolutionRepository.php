@@ -1,8 +1,11 @@
 <?php namespace Judge\Models\Solution;
 
+use Judge\Models\Contest\Contest;
 use Judge\Models\Contest\ContestRepository;
 use Judge\Models\Problem\ProblemRepository;
+use Judge\Models\Solution\Solution;
 use Judge\Models\SolutionState\SolutionStateRepository;
+use Judge\Models\User\User;
 
 class EloquentSolutionRepository implements SolutionRepository
 {

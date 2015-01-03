@@ -1,5 +1,8 @@
 <?php namespace Judge\Models\Solution;
 
+use Judge\Models\Contest\Contest;
+use Judge\Models\User\User;
+
 interface SolutionRepository
 {
     public function find($id);
