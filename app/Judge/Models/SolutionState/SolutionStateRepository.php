@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\SolutionState;
 
 interface SolutionStateRepository
 {

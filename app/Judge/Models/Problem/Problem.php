@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\Problem;
 
 class Problem extends Base
 {

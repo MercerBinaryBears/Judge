@@ -1,4 +1,5 @@
-<?php
+<?php namespace Judge\Models;
+
 use \LaravelBook\Ardent\Ardent as Ardent;
 
 // a base class for all models

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\User;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;

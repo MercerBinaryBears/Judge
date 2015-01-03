@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\SolutionState;
 
 class EloquentSolutionStateRepository implements SolutionStateRepository
 {

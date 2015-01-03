@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Controllers;
 
 class ApiController extends BaseController
 {

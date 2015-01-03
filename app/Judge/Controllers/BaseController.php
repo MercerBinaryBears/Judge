@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Controllers;
 
 use Illuminate\Routing\Controller;
 

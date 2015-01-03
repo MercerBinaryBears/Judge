@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\ContestSummary;
 
 class ContestSummary
 {

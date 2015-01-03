@@ -1,4 +1,5 @@
-<?php
+<?php namespace Judge\Controllers;
+
 class JudgeController extends BaseController
 {
 

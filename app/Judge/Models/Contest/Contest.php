@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\Contest;
 
 use Carbon\Carbon as Carbon;
 

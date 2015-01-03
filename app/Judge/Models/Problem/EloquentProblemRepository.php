@@ -1,4 +1,4 @@
-<?php
+<?php namespace Judge\Models\Problem;
 
 class EloquentProblemRepository implements ProblemRepository
 {
