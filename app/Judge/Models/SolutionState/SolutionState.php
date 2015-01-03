@@ -1,5 +1,7 @@
 <?php namespace Judge\Models\SolutionState;
 
+use Judge\Models\Base;
+
 class SolutionState extends Base
 {
     /**
