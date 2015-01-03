@@ -132,7 +132,7 @@ class SolutionTest extends TestCase {
 			->once()->andReturn($contest)
 			->getMock();
 
-		App::shouldReceive('make')->once()->with('ContestRepository')
+		App::shouldReceive('make')->once()->with('Judge\Models\Contest\ContestRepository')
 			->andReturn($contest_repo);
 
 		$s = new Solution();
