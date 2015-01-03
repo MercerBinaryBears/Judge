@@ -3,6 +3,8 @@
 use Illuminate\Support\Collection as Collection;
 use Illuminate\Support\Facades\Response;
 
+use Judge\Controllers\ApiController;
+
 class ApiControllerTest extends TestCase {
 
 	public function testFormatJsendAcceptsArrayData() {

@@ -4,6 +4,8 @@ use \Mockery;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
+use Judge\Models\Score\Score;
+
 class ScoreTest extends TestCase {
 
 	public function setUp() {
