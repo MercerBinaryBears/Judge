@@ -12,32 +12,28 @@ class ContestSummaryCollection implements Iterator
         $this->summaries[] = $c;
     }
 
-    /*
-     * Iterator methods
-     */
-
-    function rewind()
+    public function rewind()
     {
         $this->k = 0;
         usort($this->summaries, array('ContestSummary', 'compare'));
     }
 
-    function current()
+    public function current()
     {
         return $this->summaries[$this->k];
     }
 
-    function key()
+    public function key()
     {
         return $this->k;
     }
 
-    function next()
+    public function next()
     {
         ++$this->k;
     }
 
-    function valid()
+    public function valid()
     {
         return $this->k < count($this->summaries);
     }
