@@ -42,7 +42,7 @@ class BaseController extends Controller
 
     /**
      * Binds a contest name for any view, so that the layout works
-     * 
+     *
      * @return void
      */
     protected function bindContestName()
