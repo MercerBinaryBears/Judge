@@ -1,7 +1,11 @@
 <?php namespace Judge\Controllers;
 
 use \Auth;
+use \Input;
+use \Redirect;
 use \View;
+
+use Judge\Models\Solution\Solution;
 
 class TeamController extends BaseController
 {

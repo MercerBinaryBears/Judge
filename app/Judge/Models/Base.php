@@ -2,6 +2,8 @@
 
 use \LaravelBook\Ardent\Ardent as Ardent;
 
+use \Input;
+
 // a base class for all models
 class Base extends Ardent
 {
