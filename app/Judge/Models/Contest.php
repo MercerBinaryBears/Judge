@@ -17,7 +17,7 @@ class Contest extends Base
      */
     public function problems()
     {
-        return $this->hasMany('Judge\Models\Problem\Problem');
+        return $this->hasMany('Judge\Models\Problem');
     }
 
     /**
@@ -25,7 +25,7 @@ class Contest extends Base
      */
     public function users()
     {
-        return $this->belongsToMany('Judge\Models\User\User');
+        return $this->belongsToMany('Judge\Models\User');
     }
 
     /**

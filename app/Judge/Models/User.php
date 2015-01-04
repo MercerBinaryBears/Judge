@@ -48,7 +48,7 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function contests()
     {
-        return $this->belongsToMany('Judge\Models\Contest\Contest');
+        return $this->belongsToMany('Judge\Models\Contest');
     }
 
     /**
@@ -83,7 +83,7 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function solutions()
     {
-        return $this->hasMany('Judge\Models\Solutions\Solution');
+        return $this->hasMany('Judge\Models\Solution');
     }
 
     /**

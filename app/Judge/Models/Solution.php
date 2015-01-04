@@ -5,6 +5,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
+use Judge\Models\Problem;
+use Judge\Models\SolutionState;
+
 class Solution extends Base
 {
     /**
@@ -29,7 +32,7 @@ class Solution extends Base
      */
     public function problem()
     {
-        return $this->belongsTo('Judge\Models\Problem\Problem');
+        return $this->belongsTo('Judge\Models\Problem');
     }
 
     /**
@@ -37,7 +40,7 @@ class Solution extends Base
      */
     public function user()
     {
-        return $this->belongsTo('Judge\Models\User\User');
+        return $this->belongsTo('Judge\Models\User');
     }
 
     /**
@@ -45,7 +48,7 @@ class Solution extends Base
      */
     public function solutionState()
     {
-        return $this->belongsTo('Judge\Models\SolutionState\SolutionState');
+        return $this->belongsTo('Judge\Models\SolutionState');
     }
 
     /**
@@ -53,7 +56,7 @@ class Solution extends Base
      */
     public function claimingJudge()
     {
-        return $this->belongsTo('Judge\Models\User\User', 'claiming_judge_id');
+        return $this->belongsTo('Judge\Models\User', 'claiming_judge_id');
     }
 
     /**
@@ -61,7 +64,7 @@ class Solution extends Base
      */
     public function language()
     {
-        return $this->belongsTo('Judge\Models\Language\Language');
+        return $this->belongsTo('Judge\Models\Language');
     }
 
     /**

@@ -2,6 +2,8 @@
 
 use Carbon\Carbon as Carbon;
 
+use Judge\Models\Contest;
+
 class ContestRepository
 {
     public function problemsForContest(Contest $c = null)

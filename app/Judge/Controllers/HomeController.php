@@ -1,6 +1,6 @@
 <?php namespace Judge\Controllers;
 
-use Judge\Models\ContestSummary\ContestSummaryCollection;
+use Judge\Models\ContestSummaryCollection;
 
 use \View;
 

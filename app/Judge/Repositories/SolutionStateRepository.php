@@ -1,5 +1,7 @@
 <?php namespace Judge\Repositories;
 
+use Judge\Models\SolutionState;
+
 class SolutionStateRepository
 {
     /**

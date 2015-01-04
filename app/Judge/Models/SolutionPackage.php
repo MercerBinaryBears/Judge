@@ -4,7 +4,6 @@ use \ZipArchive;
 
 class SolutionPackage
 {
-
     /**
      * The path to the temporary zip file
      *

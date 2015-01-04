@@ -17,7 +17,7 @@ class ContestSummaryCollection implements Iterator
     public function rewind()
     {
         $this->k = 0;
-        usort($this->summaries, array('Judge\Models\ContestSummary\ContestSummary', 'compare'));
+        usort($this->summaries, array('Judge\Models\ContestSummary', 'compare'));
     }
 
     public function current()
