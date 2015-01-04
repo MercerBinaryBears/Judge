@@ -1,4 +1,4 @@
-<?php namespace Judge\Models\Message;
+<?php namespace Judge\Models;
 
 use Judge\Models\Base;
 
