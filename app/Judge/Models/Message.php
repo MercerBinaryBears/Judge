@@ -13,16 +13,16 @@ class Message extends Base
 
     public function problem()
     {
-        return $this->belongsTo('Judge\Models\Problem\Problem');
+        return $this->belongsTo('Judge\Models\Problem');
     }
 
     public function sender()
     {
-        return $this->belongsTo('Judge\Models\User\User', 'sender_id');
+        return $this->belongsTo('Judge\Models\User', 'sender_id');
     }
 
     public function responder()
     {
-        return $this->belongsTo('Judge\Models\User\User', 'responder_id');
+        return $this->belongsTo('Judge\Models\User', 'responder_id');
     }
 }
