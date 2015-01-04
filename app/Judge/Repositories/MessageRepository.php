@@ -14,7 +14,7 @@ class MessageRepository
     public function unresponded()
     {
         return Message::whereIsGlobal(false)
-            ->whereIsNull('responder_id')
+            ->whereResponderId(null)
             ->get();
     }
 }
