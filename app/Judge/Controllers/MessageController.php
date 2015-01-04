@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
-class MessagesController extends BaseController
+class MessageController extends BaseController
 {
     public function index()
     {

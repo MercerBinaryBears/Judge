@@ -8,7 +8,7 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
     Route::group(array('before' => 'auth'), function () {
         Route::get('/solutions', array('as' => 'solutions.index', 'uses' => 'SolutionController@index'));
 
-        Route::get('/messages', array('as' => 'messages.index', 'uses' => 'MessagesController@index'));
+        Route::get('/messages', array('as' => 'messages.index', 'uses' => 'MessageController@index'));
     });
 
     // judge routes
