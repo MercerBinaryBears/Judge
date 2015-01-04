@@ -10,5 +10,6 @@
     @if(Auth::user()->team)
         <li> {{ link_to_route('solutions.index', 'Submit Problems', array(), array()) }} </li>
     @endif
+    <li> {{ link_to_route('messages.index', 'Messages', array(), array()) }} </li>
     <li>{{ link_to_route('logout', 'Logout') }}</li>
 </ul>
