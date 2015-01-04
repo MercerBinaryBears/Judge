@@ -12,7 +12,10 @@ class MessageController extends BaseController
         if ($user->judge || $user->admin) {
             return View::make('Messages.judge');
         } elseif ($user->team) {
-            return View::make('Messages.team');
+            return View::make('Messages.team')
+                ->withProblems($this->problems->forContest())
+                ->withMessages(Auth::user()->sent_messages)
+                ->withGlobalMessages($this->messages->allGlobal());
         }
     }
 }
