@@ -1,6 +1,4 @@
-<?php namespace Judge\Models\Problem;
-
-use Judge\Models\Base;
+<?php namespace Judge\Models;
 
 class Problem extends Base
 {

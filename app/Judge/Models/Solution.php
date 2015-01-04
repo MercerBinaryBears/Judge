@@ -1,11 +1,9 @@
-<?php namespace Judge\Models\Solution;
+<?php namespace Judge\Models;
 
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-
-use Judge\Models\Base;
 
 class Solution extends Base
 {

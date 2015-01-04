@@ -1,4 +1,4 @@
-<?php namespace Judge\Models\User;
+<?php namespace Judge\Models;
 
 use \App;
 use \Hash;
@@ -6,11 +6,6 @@ use \Hash;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Carbon\Carbon as Carbon;
-
-use Judge\Models\Base;
-use Judge\Models\Contest\Contest;
-use Judge\Models\ContestSummary\ContestSummary;
-use Judge\Models\Problem\Problem;
 
 class User extends Base implements UserInterface, RemindableInterface
 {

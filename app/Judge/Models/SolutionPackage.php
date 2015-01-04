@@ -1,8 +1,6 @@
-<?php namespace Judge\Models\SolutionPackage;
+<?php namespace Judge\Models;
 
 use \ZipArchive;
-
-use Judge\Models\Solution\Solution;
 
 class SolutionPackage
 {
