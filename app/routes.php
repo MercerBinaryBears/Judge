@@ -27,6 +27,7 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
         // TODO: Perhaps we should embed the user's id into the URL, to be RESTful? However, this
         // means we have more validation to do in that route...
         Route::post('/team/solutions/store', array('as'=>'store_solution', 'uses'=>'SolutionController@store'));
+        Route::post('/messages', array('uses' => 'MessageController@store'));
     });
 
     // Authentication routes
