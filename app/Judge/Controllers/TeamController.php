@@ -27,7 +27,7 @@ class TeamController extends BaseController
                 ->name;
         }
 
-        return View::make('solutions_team')
+        return View::make('Solutions.team')
             ->with('solutions', $this->solutions->forUserInContest(Auth::user()))
             ->with('problems', $this->contests->problemsForContest())
             ->with('languages', $this->languages->all());
