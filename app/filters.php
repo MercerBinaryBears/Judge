@@ -31,9 +31,10 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('auth', function()
-{
-	return Auth::check();
+Route::filter('auth', function() {
+    if (!Auth::check()) {
+        return Redirect::to('/');
+    }
 });
 
 Route::filter('admin', function(){
