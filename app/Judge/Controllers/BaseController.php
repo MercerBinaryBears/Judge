@@ -8,6 +8,7 @@ use Judge\Repositories\LanguageRepository;
 use Judge\Repositories\ProblemRepository;
 use Judge\Repositories\SolutionRepository;
 use Judge\Repositories\SolutionStateRepository;
+use Judge\Repositories\MessageRepository;
 
 class BaseController extends Controller
 {
@@ -16,7 +17,8 @@ class BaseController extends Controller
         LanguageRepository $languages,
         ProblemRepository $problems,
         SolutionRepository $solutions,
-        SolutionStateRepository $solution_states
+        SolutionStateRepository $solution_states,
+        MessageRepository $messages
     ) {
             
         $this->contests = $contests;
@@ -24,6 +26,7 @@ class BaseController extends Controller
         $this->problems = $problems;
         $this->solutions = $solutions;
         $this->solution_states = $solution_states;
+        $this->messages = $messages;
 
         $this->bindContestName();
     }
