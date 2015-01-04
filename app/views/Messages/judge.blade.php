@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="row">
-    Hello JUDGE
+    <div class="col-md-4">
+        <h3>Post Global Message</h3>
+        @include('forms.create_message')
+
+    </div>
 </div>
 @stop
