@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'model' => 'Judge\Models\User\User',
+	'model' => 'Judge\Models\User',
 
 	/*
 	|--------------------------------------------------------------------------

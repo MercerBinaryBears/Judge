@@ -1,6 +1,8 @@
-<?php namespace Judge\Models\SolutionState;
+<?php namespace Judge\Repositories;
 
-class EloquentSolutionStateRepository implements SolutionStateRepository
+use Judge\Models\SolutionState;
+
+class SolutionStateRepository
 {
     /**
      * Gets the solution state in the database representing a

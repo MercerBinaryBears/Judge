@@ -1,12 +1,5 @@
 <?php
 
-// IOC Binding
-App::bind('Judge\Models\Contest\ContestRepository', 'Judge\Models\Contest\EloquentContestRepository');
-App::bind('Judge\Models\Language\LanguageRepository', 'Judge\Models\Language\EloquentLanguageRepository');
-App::bind('Judge\Models\Problem\ProblemRepository', 'Judge\Models\Problem\EloquentProblemRepository');
-App::bind('Judge\Models\Solution\SolutionRepository', 'Judge\Models\Solution\EloquentSolutionRepository');
-App::bind('Judge\Models\SolutionState\SolutionStateRepository', 'Judge\Models\SolutionState\EloquentSolutionStateRepository');
-
 Route::group(array('namespace' => 'Judge\Controllers'), function () {
 
     // home route. This is where the scoreboard lives.

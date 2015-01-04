@@ -1,10 +1,11 @@
-<?php namespace Judge\Models\Contest;
+<?php namespace Judge\Repositories;
 
 use Carbon\Carbon as Carbon;
 
-class EloquentContestRepository implements ContestRepository
-{
+use Judge\Models\Contest;
 
+class ContestRepository
+{
     public function problemsForContest(Contest $c = null)
     {
         if ($c == null) {

@@ -1,8 +1,6 @@
-<?php namespace Judge\Models\Contest;
+<?php namespace Judge\Models;
 
 use Carbon\Carbon as Carbon;
-
-use Judge\Models\Base;
 
 class Contest extends Base
 {
@@ -19,7 +17,7 @@ class Contest extends Base
      */
     public function problems()
     {
-        return $this->hasMany('Judge\Models\Problem\Problem');
+        return $this->hasMany('Judge\Models\Problem');
     }
 
     /**
@@ -27,7 +25,7 @@ class Contest extends Base
      */
     public function users()
     {
-        return $this->belongsToMany('Judge\Models\User\User');
+        return $this->belongsToMany('Judge\Models\User');
     }
 
     /**

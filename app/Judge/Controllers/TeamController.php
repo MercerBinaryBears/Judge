@@ -6,7 +6,7 @@ use \Redirect;
 use \Session;
 use \View;
 
-use Judge\Models\Solution\Solution;
+use Judge\Models\Solution;
 
 class TeamController extends BaseController
 {

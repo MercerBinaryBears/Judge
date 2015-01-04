@@ -2,11 +2,11 @@
 
 use Illuminate\Routing\Controller;
 
-use Judge\Models\Contest\ContestRepository;
-use Judge\Models\Language\LanguageRepository;
-use Judge\Models\Problem\ProblemRepository;
-use Judge\Models\Solution\SolutionRepository;
-use Judge\Models\SolutionState\SolutionStateRepository;
+use Judge\Repositories\ContestRepository;
+use Judge\Repositories\LanguageRepository;
+use Judge\Repositories\ProblemRepository;
+use Judge\Repositories\SolutionRepository;
+use Judge\Repositories\SolutionStateRepository;
 
 class BaseController extends Controller
 {

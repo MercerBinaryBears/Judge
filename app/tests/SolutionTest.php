@@ -3,7 +3,7 @@
 use \Mockery;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
-use Judge\Models\Solution\Solution;
+use Judge\Models\Solution;
 
 class SolutionTest extends TestCase {
 	public function setUp() {
@@ -11,7 +11,7 @@ class SolutionTest extends TestCase {
 	}
 
 	public function mockSolution($methods_to_mock) {
-		$this->solution = Mockery::mock("Judge\\Models\\Solution\\Solution[$methods_to_mock]");
+		$this->solution = Mockery::mock("Judge\\Models\\Solution[$methods_to_mock]");
 		$this->solution->shouldReceive('save')->andReturn(true);
 	}
 
@@ -132,7 +132,7 @@ class SolutionTest extends TestCase {
 			->once()->andReturn($contest)
 			->getMock();
 
-		App::shouldReceive('make')->once()->with('Judge\Models\Contest\ContestRepository')
+		App::shouldReceive('make')->once()->with('Judge\Repositories\ContestRepository')
 			->andReturn($contest_repo);
 
 		$s = new Solution();
