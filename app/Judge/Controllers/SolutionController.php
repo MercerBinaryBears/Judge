@@ -7,8 +7,8 @@ use \Response;
 use \Session;
 use \View;
 
-use Judge\Models\Solution\Solution;
-use Judge\Models\SolutionPackage\SolutionPackage;
+use Judge\Models\Solution;
+use Judge\Models\SolutionPackage;
 
 class SolutionController extends BaseController
 {

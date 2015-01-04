@@ -1,11 +1,12 @@
-<?php namespace Judge\Models\Solution;
+<?php namespace Judge\Models;
 
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
-use Judge\Models\Base;
+use Judge\Models\Problem;
+use Judge\Models\SolutionState;
 
 class Solution extends Base
 {
@@ -31,7 +32,7 @@ class Solution extends Base
      */
     public function problem()
     {
-        return $this->belongsTo('Judge\Models\Problem\Problem');
+        return $this->belongsTo('Judge\Models\Problem');
     }
 
     /**
@@ -39,7 +40,7 @@ class Solution extends Base
      */
     public function user()
     {
-        return $this->belongsTo('Judge\Models\User\User');
+        return $this->belongsTo('Judge\Models\User');
     }
 
     /**
@@ -47,7 +48,7 @@ class Solution extends Base
      */
     public function solutionState()
     {
-        return $this->belongsTo('Judge\Models\SolutionState\SolutionState');
+        return $this->belongsTo('Judge\Models\SolutionState');
     }
 
     /**
@@ -55,7 +56,7 @@ class Solution extends Base
      */
     public function claimingJudge()
     {
-        return $this->belongsTo('Judge\Models\User\User', 'claiming_judge_id');
+        return $this->belongsTo('Judge\Models\User', 'claiming_judge_id');
     }
 
     /**
@@ -63,7 +64,7 @@ class Solution extends Base
      */
     public function language()
     {
-        return $this->belongsTo('Judge\Models\Language\Language');
+        return $this->belongsTo('Judge\Models\Language');
     }
 
     /**
@@ -182,7 +183,7 @@ class Solution extends Base
     {
         // get the contest for this solution
 
-        $current_contest = App::make('Judge\Models\Contest\ContestRepository')->firstCurrent();
+        $current_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         $submission_time = new Carbon($this->created_at);
         $contest_start = new Carbon($current_contest->starts_at);

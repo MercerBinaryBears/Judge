@@ -1,13 +1,13 @@
-<?php namespace Judge\Models\Solution;
+<?php namespace Judge\Repositories;
 
-use Judge\Models\Contest\Contest;
-use Judge\Models\Contest\ContestRepository;
-use Judge\Models\Problem\ProblemRepository;
-use Judge\Models\Solution\Solution;
-use Judge\Models\SolutionState\SolutionStateRepository;
-use Judge\Models\User\User;
+use Judge\Models\Contest;
+use Judge\Repositories\ContestRepository;
+use Judge\Repositories\ProblemRepository;
+use Judge\Models\Solution;
+use Judge\Repositories\SolutionStateRepository;
+use Judge\Models\User;
 
-class EloquentSolutionRepository implements SolutionRepository
+class SolutionRepository
 {
     public function __construct(
         ContestRepository $contests,
