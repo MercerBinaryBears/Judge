@@ -10,4 +10,11 @@ class MessageRepository
         return Message::whereIsGlobal(true)
             ->get();
     }
+
+    public function unresponded()
+    {
+        return Message::whereIsGlobal(false)
+            ->whereIsNull('responder_id')
+            ->get();
+    }
 }
