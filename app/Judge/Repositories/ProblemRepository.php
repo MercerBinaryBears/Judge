@@ -2,7 +2,7 @@
 
 use Judge\Repositories\ContestRepository;
 
-class EloquentProblemRepository implements ProblemRepository
+class ProblemRepository
 {
     public function __construct(ContestRepository $contests)
     {
