@@ -220,7 +220,7 @@ class User extends Base implements UserInterface, RemindableInterface
     public function solvedProblem(Problem $problem)
     {
         // TODO: Cache this so we don't have to query all the time!
-        $solved_state_id = App::make('Judge\Models\SolutionState\SolutionStateRepository')->firstCorrectId();
+        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
 
         foreach ($this->cachedSolutions() as $solution) {
             if ($solution->problem_id == $problem->id && $solution->solution_state_id == $solved_state_id) {
@@ -237,7 +237,7 @@ class User extends Base implements UserInterface, RemindableInterface
     public function incorrectSubmissionCountForProblem(Problem $p)
     {
         $solutions = $this->cachedSolutions();
-        $solved_state_id = App::make('Judge\Models\SolutionState\SolutionStateRepository')->firstCorrectId();
+        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
 
         $incorrect_count = 0;
         foreach ($solutions as $solution) {
@@ -252,7 +252,7 @@ class User extends Base implements UserInterface, RemindableInterface
     {
         $correct_solution = null;
         
-        $solved_state_id = App::make('Judge\Models\SolutionState\SolutionStateRepository')->firstCorrectId();
+        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
 
         foreach ($this->cachedSolutions() as $solution) {
             $is_solved = $solution->solution_state_id == $solved_state_id ;
@@ -275,7 +275,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_contest;
         }
 
-        $this->cached_contest = App::make('Judge\Models\Contest\ContestRepository')->firstCurrent();
+        $this->cached_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         return $this->cached_contest;
     }
@@ -286,7 +286,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_problems;
         }
 
-        $this->cached_problems = App::make('Judge\Models\Contest\ContestRepository')->problemsForContest($c);
+        $this->cached_problems = App::make('Judge\Repositories\ContestRepository')->problemsForContest($c);
 
         return $this->cached_problems;
     }
@@ -297,7 +297,7 @@ class User extends Base implements UserInterface, RemindableInterface
             return $this->cached_solutions;
         }
 
-        $this->cached_solutions = App::make('Judge\Models\Solution\SolutionRepository')->forUserInContest($this, $c);
+        $this->cached_solutions = App::make('Judge\Repositories\SolutionRepository')->forUserInContest($this, $c);
 
         return $this->cached_solutions;
     }

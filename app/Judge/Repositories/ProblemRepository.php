@@ -1,6 +1,6 @@
-<?php namespace Judge\Models\Problem;
+<?php namespace Judge\Repositories;
 
-use Judge\Models\Contest\ContestRepository;
+use Judge\Repositories\ContestRepository;
 
 class EloquentProblemRepository implements ProblemRepository
 {

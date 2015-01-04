@@ -182,7 +182,7 @@ class Solution extends Base
     {
         // get the contest for this solution
 
-        $current_contest = App::make('Judge\Models\Contest\ContestRepository')->firstCurrent();
+        $current_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         $submission_time = new Carbon($this->created_at);
         $contest_start = new Carbon($current_contest->starts_at);
