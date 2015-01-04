@@ -16,14 +16,14 @@ class SolutionController extends BaseController
     {
         // If the user is a judge, show them the judging page
         if (Auth::user()->judge || Auth::user()->admin) {
-            return View::make('solutions_judge')
+            return View::make('Solutions.judge')
                 ->with('unjudged_solutions', $this->solutions->judgeableForContest())
                 ->with('claimed_solutions', $this->solutions->claimedByJudgeInContest(Auth::user()))
                 ->with('api_key', Auth::user()->api_key);
         }
 
         // otherwise, show a team submission page page
-        return View::make('solutions_team')
+        return View::make('Solutions.team')
             ->with('solutions', $this->solutions->forUserInContest(Auth::user()))
             ->with('problems', $this->contests->problemsForContest())
             ->with('languages', $this->languages->all());
