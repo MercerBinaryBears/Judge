@@ -9,10 +9,10 @@ class MessagesController extends BaseController
     {
         $user = Auth::user();
 
-        if ($user->judge) {
-            return View::make('messages_judge');
+        if ($user->judge || $user->admin) {
+            return View::make('Messages.judge');
         } elseif ($user->team) {
-            return View::make('messages_team');
+            return View::make('Messages.team');
         }
     }
 }
