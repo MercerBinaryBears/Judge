@@ -19,6 +19,7 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
         Route::post('/judge/solutions/{id}/edit', array('as'=>'update_solution', 'uses'=>'SolutionController@update'));
         Route::post('/judge/solutions/{id}/unclaim', array('as'=>'unclaim_solution', 'uses'=>'SolutionController@unclaim'));
         Route::get('/judge/solutions/{id}/package', array('as'=>'solution_package', 'uses'=>'SolutionController@package'));
+        Route::post('/messages/{id}', array('uses' => 'MessageController@update'));
     });
 
     // team routes
