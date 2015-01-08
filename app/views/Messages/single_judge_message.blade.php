@@ -21,7 +21,7 @@ From {{ $message->sender->username }}
         </div>
         <div id="respond-form-{{ $message->id }}" class="collapse">
             <div class="panel-body">
-                Hello
+                @include('forms.respond_to_message')
             </div>
         </div>
     </div>
