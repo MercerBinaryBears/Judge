@@ -25,4 +25,14 @@ class Message extends Base
     {
         return $this->belongsTo('Judge\Models\User', 'responder_id');
     }
+
+    public function getResponseTextAttribute()
+    {
+        return nl2br($this->attributes['response_text']);
+    }
+
+    public function getTextAttribute()
+    {
+        return nl2br($this->attributes['text']);
+    }
 }
