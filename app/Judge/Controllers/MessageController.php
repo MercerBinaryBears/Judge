@@ -40,10 +40,8 @@ class MessageController extends BaseController
 
     public function update($id)
     {
-        $input = Input::only('responder_id', 'response_text');
-
         $message = Message::find($id);
-        $message->fill($input);
+        $message->fill(Input::only('responder_id', 'response_text'));
         $message->save();
 
         return Redirect::to('/messages');
