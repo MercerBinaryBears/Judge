@@ -7,37 +7,28 @@ use \Response;
 use \Session;
 use \View;
 
-use Judge\Models\SolutionPackage\SolutionPackage;
+use Judge\Models\Solution;
+use Judge\Models\SolutionPackage;
 
-class JudgeController extends BaseController
+class SolutionController extends BaseController
 {
-    protected function bindContestName()
-    {
-        $contest_name = 'Judge';
-
-        if (!is_null($contest_name)) {
-            $contest_name = $this->contests
-                ->firstCurrent()
-                ->name;
-        }
-
-        View::share('contest_name', $contest_name);
-    }
-
-    /**
-     * The index for a judge. Display the current unjudged problems, and allows
-     * the judge to claim that problem.
-     */
     public function index()
     {
-        $this->bindContestName();
+        // If the user is a judge, show them the judging page
+        if (Auth::user()->judge || Auth::user()->admin) {
+            return View::make('Solutions.judge')
+                ->with('unjudged_solutions', $this->solutions->judgeableForContest())
+                ->with('claimed_solutions', $this->solutions->claimedByJudgeInContest(Auth::user()))
+                ->with('api_key', Auth::user()->api_key);
+        }
 
-        return View::make('Solutions.judge')
-            ->with('unjudged_solutions', $this->solutions->judgeableForContest())
-            ->with('claimed_solutions', $this->solutions->claimedByJudgeInContest(Auth::user()))
-            ->with('api_key', Auth::user()->api_key);
+        // otherwise, show a team submission page page
+        return View::make('Solutions.team')
+            ->with('solutions', $this->solutions->forUserInContest(Auth::user()))
+            ->with('problems', $this->contests->problemsForContest())
+            ->with('languages', $this->languages->all());
     }
-
+    
     /**
      * Shows the update form for a submission (only viewable by judges), also
      * forces a judge to "claim" the submission, so no other judge can edit
@@ -49,15 +40,13 @@ class JudgeController extends BaseController
      */
     public function edit($id)
     {
-        $this->bindContestName();
-
         // get the solution passed
         $solution = $this->solutions->find($id);
 
         // claim the problem, reporting errors if the user couldn't claim it
         if (!$solution->claim()) {
             Session::flash('error', 'You cannot claim that solution');
-            return Redirect::route('judge_index');
+            return Redirect::route('solutions.index');
         }
 
         // All saved well, show the judge the form for them to judge
@@ -65,7 +54,42 @@ class JudgeController extends BaseController
             ->with('solution', $solution)
             ->with('solution_states', $this->solution_states->all());
     }
+    
+    /**
+     * Saves a team's uploaded submission. Only accessable by teams
+     *
+     * @return Response
+     */
+    public function store()
+    {
+        $solution_state_id = $this->solution_states->firstPendingId();
 
+        $solution = new Solution();
+
+        // populate with form fields
+        $solution->problem_id = Input::get('problem_id');
+        $solution->user_id = Auth::user()->id;
+        $solution->solution_state_id = $solution_state_id;
+        $solution->language_id = Input::get('language_id');
+        Session::put('language_preference', Input::get('language_id'));
+
+        /*
+        | Take the uploaded file, save it to a permanent path, reading the file
+        | from Input::file('solution_code'), saving the path to
+        | $solution->solution_code, the client's name for the file in
+        | $solution->solution_filename, ignoring the file extension
+        */
+        $solution->processUpload('solution_code', 'solution_code', 'solution_filename', null);
+
+        // Save, (attempting validation). If validation fails, we show the errors before saving.
+        // Otherwise, the team will see the file in their list of submitted problems
+        if (!$solution->save()) {
+            Session::flash('error', $solution->errors());
+        }
+
+        return Redirect::route('solutions.index');
+    }
+    
     /**
      * Updates the status of a submission, only allowed by judges
      *
@@ -88,7 +112,7 @@ class JudgeController extends BaseController
             Session::flash('error', 'You are not the claiming judge for this problem any more');
         }
 
-        return Redirect::route('judge_index');
+        return Redirect::route('solutions.index');
     }
 
     /**
@@ -103,7 +127,7 @@ class JudgeController extends BaseController
         if (!$solution->unclaim()) {
             Session::flash('error', 'You are not the claiming judge for this problem');
         }
-        return Redirect::route('judge_index');
+        return Redirect::route('solutions.index');
     }
 
     /**

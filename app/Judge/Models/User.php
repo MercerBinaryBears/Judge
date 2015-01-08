@@ -316,4 +316,9 @@ class User extends Base implements UserInterface, RemindableInterface
     {
         return $this->email;
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany('Judge\Models\Message', 'sender_id');
+    }
 }
