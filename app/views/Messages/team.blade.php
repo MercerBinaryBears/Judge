@@ -9,7 +9,7 @@
     <div class="col-md-4">
         <h3>My Messages</h3> 
         @foreach($messages as $message)
-            @include('Messages.single_message')
+            @include('Messages.single_team_message')
         @endforeach
     </div>
     <div class="col-md-4">

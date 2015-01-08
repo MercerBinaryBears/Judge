@@ -9,7 +9,7 @@
     <div class="col-md-4">
         <h3>Unresponded Messages</h3>
         @foreach($unresponded_messages as $message)
-            @include('Messages.single_message')
+            @include('Messages.single_judge_message')
         @endforeach
     </div>
 </div>
