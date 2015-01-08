@@ -1,19 +1,18 @@
-<div>
-@if($message->problem)
-    For {{ $message->problem->name }}
-@else
-    General Question
-@endif
-<br/>
-<pre>{{ $message->text }}</pre>
-<br/>
-From {{ $message->sender->username }}
+<blockquote>
+    <h4>
+    @if($message->problem)
+        Re: {{ $message->problem->name }}
+    @else
+        General Question
+    @endif
+    </h4>
+    <p>{{ $message->text }}</p>
 
 @if($message->responder)
-    <br/>
-    <pre>{{ $message->response_text }}</pre>
-    <br/>
-    From {{ $message->responder->username }}
+    <blockquote>
+        {{ $message->response_text }}
+        <footer>{{ $message->responder->username }}</footer>
+    </blockquote>
 @endif
-
-</div>
+</blockquote>
+<hr/>
