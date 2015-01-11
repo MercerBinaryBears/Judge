@@ -26,13 +26,10 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
-			"php setup.php"
-		],
-		"pre-update-cmd": [
-			"php setup.php"
+			"bash setup.sh"
 		],
 		"post-update-cmd": [
-			"php setup.php"
+			"bash setup.sh"
 		],
 		"post-create-project-cmd": [
 			"php artisan key:generate"
