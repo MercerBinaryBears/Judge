@@ -6,4 +6,4 @@ default:
             goutte:
                 guzzle_parameters:
                     ssl.certificate_authority: false
-            base_url: http://localhost:8000
+            base_url: http://localhost:10000

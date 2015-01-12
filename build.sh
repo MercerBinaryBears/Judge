@@ -14,9 +14,9 @@ function unit() {
 
 function acceptance() {
     # start the server, and save the pid
-    php artisan serve &
+    php artisan serve --port=10000 &
     sleep 1
-    ps -o pid,command | grep -v grep | grep server.php | cut -d' ' -f1 > .artisan_id.txt
+    ps -o pid,command | grep -v grep | grep server.php | grep 10000 | cut -d' ' -f1 > .artisan_id.txt
 
     # run tests
     vendor/bin/behat
