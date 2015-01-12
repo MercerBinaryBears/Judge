@@ -1,0 +1,9 @@
+default:
+    paths:
+        features: app/tests/acceptance
+    extensions:
+        Behat\MinkExtension\Extension:
+            goutte:
+                guzzle_parameters:
+                    ssl.certificate_authority: false
+            base_url: http://localhost:8000
