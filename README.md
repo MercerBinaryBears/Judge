@@ -4,39 +4,33 @@ Judge
 
 ## Menu ##
 * [Setup](#setup)
-* [Judge Client](#judge-client)
+* [Tutorial](#tutorial)
 
 ## <a name='setup'/> Setup
-
 Steps to set up Judge on your machine:
 
-1. Make sure you have PHP 5.4 with PDO and SQlite enabled.
+1. Make sure you have PHP 5.4 with PDO, SQlite, and MCrypt enabled.
 2. Have [Composer](http://getcomposer.org) installed and in your PATH.
-3. Run ```composer install``` 
-4. Run ```php artisan asset:publish```
-5. Run ```php artisan migrate```
-6. Run ```php artisan db:seed```
-7. Run ```php artisan serve``` to start the server.
+3. Run ```composer install``` to install any dependencies. This will also run a couple of extra steps within ```setup.sh```
+4. Run ```php artisan migrate --seed``` which will setup the database, and fill with some dummy data.
+5. Run ```php artisan serve``` to start the server on port 8000.
 
-NOTE: For us developers, if your latest pull included a new migration, make sure that you run
-```composer dumpautoload``` so that Laravel can find the new migration.
+NOTE: If you are developing on the project, I'd recommend a ```composer install``` after any pull, followed by a
+```php artisan migrate``` to capture any new packages/database changes that have been included in the application.
 
+## <a name='tutorial' /> Tutorial
+### Admins
+A default install (even without seeding with the ```--seed``` flag) will create a user in the database with username
+and password ```admin```. From here, you can log in, and create users along with contests and problem sets. Also,
+you can see any submitted solutions, undo judging status for a solution, or even delete the submission if necessary.
 
-## <a name='judge-client'/> Judge Client
+### Judges
+Users with judging permissions can view the judging page. From here, they can see a list of solutions they have judged,
+and solutions awaiting judging. In order to judge a solution, the judge must first "claim" the problem. This will
+prevent any other judge from changing the judged status while the current judge is editing it. When viewing the 
+problem, the judge can download a solution package which contains the teams code and judging input and output.
+Currently, the application relies on the judge to run the code manually. In the future, I'll improve the judge client
+to deal with this better. Once the judge has ran the code and decided, he/she can set the status of the problem and
+save it, which will simultaneously update the scoreboard.
 
-To use the judge client, you need to 
-* ```curl``` (or ```wget```) this root url of the site: ```/judge_client.zip```. Unzip this to a directory where you want to work.
-* Run ```judge setup``` and follow the prompts. You'll need to provide the api url of the site, and your api key.
-* Claim a solution ```judge claim```. The client will let you know if it was successful.
-* Judge the solution ```judge judge```. Redundant yes, but it automates the judging process.
-* Push the results back up to the server ```judge push```. This actually saves your changes to the server and allows to claim another solution.
-
-Some other commands you might need
-* ```judge unclaim``` This essentially "gives up" the solution you are judging, allowing other judges to judge it, and allow you to judge other problems.
-* ```judge override``` This allows to to override the automated judging result that the judge script calculated (for presentation errors, etc.)
-
-This covers it. If something totally screws up when you're judging, you can complete delete the ```config.json``` file
-that gets created upon setup. This file essentially stores your api key, api url, and information on the problem
-you are currently judging. You'll need to check with an admin that you're no longer the owner of a solution,
-and re-enter your credentials. You can, of course, manually edit your ```config.json``` to remove your judging data,
-but that's pretty prone to user error (spoken from experience).
+Judges can also respond to messages sent by teams, or simply send a global message.

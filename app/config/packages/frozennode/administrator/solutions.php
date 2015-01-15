@@ -5,7 +5,7 @@ return array(
 
 	'single' => 'Solution',
 
-	'model' => 'Solution',
+	'model' => 'Judge\Models\Solution\Solution',
 
 	'columns' => array(
 		'problem' => array(

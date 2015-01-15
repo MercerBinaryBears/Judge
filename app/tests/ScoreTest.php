@@ -4,6 +4,11 @@ use \Mockery;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
+use Judge\Models\Contest;
+use Judge\Models\Score;
+use Judge\Models\Problem;
+use Judge\Models\User;
+
 class ScoreTest extends TestCase {
 
 	public function setUp() {
@@ -13,8 +18,8 @@ class ScoreTest extends TestCase {
 		$this->correct_solution_state_id = 1;
 
 		// mock the repositories	
-		$this->solution_repository = Mockery::mock('SolutionRepository');
-		App::instance('SolutionRepository', $this->solution_repository);
+		$this->solution_repository = Mockery::mock('Judge\Repositories\SolutionRepository');
+		App::instance('Judge\Repositories\SolutionRepository', $this->solution_repository);
 
 		$this->mockSolutionStates();
 
@@ -140,7 +145,7 @@ class ScoreTest extends TestCase {
 	public function testTotalScore() {
 
 		// mock out the score per problem function
-		$this->user = Mockery::mock('User[pointsForProblem]');
+		$this->user = Mockery::mock('Judge\Models\User[pointsForProblem]');
 		$this->user->shouldReceive('pointsForProblem')->twice()->andReturn(10);
 
 		$this->assertEquals(20, $this->user->totalPoints(new Contest));
@@ -173,19 +178,19 @@ class ScoreTest extends TestCase {
 	 * Creates a mock of the solution state repository
 	 */
 	protected function mockSolutionStates() {
-		$this->solution_state_repository = Mockery::mock('SolutionStateRepository');
+		$this->solution_state_repository = Mockery::mock('Judge\Repositories\SolutionStateRepository');
 		$this->solution_state_repository
 			->shouldReceive('firstCorrectId')
 			->zeroOrMoreTimes()
 			->andReturn(1);
-		App::instance('SolutionStateRepository', $this->solution_state_repository);
+		App::instance('Judge\Repositories\SolutionStateRepository', $this->solution_state_repository);
 	}
 
 	/**
 	 * Creates a mock of the contest repository
 	 */
 	protected function mockContest() {
-		$this->contest_repository = Mockery::mock('ContestRepository');
+		$this->contest_repository = Mockery::mock('Judge\Repositories\ContestRepository');
 		$raw_problems = array(
 			array('id' => 1),
 			array('id' => 2)
@@ -194,14 +199,15 @@ class ScoreTest extends TestCase {
 			->shouldReceive('problemsForContest')
 			->zeroOrMoreTimes()
 			->andReturn( $this->createCollection('Problem', $raw_problems));
-		App::instance('ContestRepository', $this->contest_repository);
+		App::instance('Judge\Repositories\ContestRepository', $this->contest_repository);
 	
 	}
 	
 	protected function createCollection($class_name, $models) {
 		$ary = array();
 		foreach($models as $m) {
-			$model_instance = new $class_name;
+            $full_class = "Judge\\Models\\$class_name";
+			$model_instance = new $full_class;
 			$model_instance->unguard();
 			$model_instance->fill($m);
 			$ary[] = $model_instance;
