@@ -5,7 +5,7 @@ return array(
 
 	'single' => 'Contest',
 
-	'model' => 'Judge\Models\Contest\Contest',
+	'model' => 'Judge\Models\Contest',
 
 	'columns' => array(
 		'name' => array(
