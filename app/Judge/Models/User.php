@@ -9,6 +9,8 @@ use Carbon\Carbon as Carbon;
 
 class User extends Base implements UserInterface, RemindableInterface
 {
+    protected $fillable = ['username', 'password', 'admin', 'judge', 'team', 'api_key'];
+
     /**
      * The database table used by the model.
      *

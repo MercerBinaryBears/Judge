@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Judge\Models\User;
 
 class CreateUsersTable extends Migration {
 
@@ -23,11 +24,12 @@ class CreateUsersTable extends Migration {
 		});
 
 		// add the initial user, an admin
-		$u = new User();
-		$u->username = 'admin';
-		$u->password = 'admin';
-		$u->admin = true;
-		$u->save();
+        User::create([
+            'username' => 'admin',
+            'password' => 'admin',
+            'admin' => true,
+            'api_key' => 'admin'
+        ]);
 	}
 
 	/**
