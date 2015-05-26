@@ -29,7 +29,6 @@ class HomeController extends BaseController
 
         foreach ($this->contests->teamsForContest($current_contest) as $user) {
             $contest_summaries->add($user->contestSummary($current_contest));
-
         }
 
         return View::make('index')
