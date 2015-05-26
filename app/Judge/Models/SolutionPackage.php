@@ -75,22 +75,22 @@ class SolutionPackage
      */
     protected function buildZip()
     {
-     // open the zip file
+        // open the zip file
         $this->openZip();
 
-     // add the solution code
+        // add the solution code
         $solution_full_path = $this->solution->getPathForResource('solution_code');
         $this->addToZip($this->solution->solution_filename, $solution_full_path);
 
-     // add the judging input
+        // add the judging input
         $judging_input_full_path = $this->solution->problem->getPathForResource('judging_input');
         $this->addToZip('judge.in', $judging_input_full_path);
 
-     // add the judging output
+        // add the judging output
         $judging_output_full_path = $this->solution->problem->getPathForResource('judging_output');
         $this->addToZip('judge.out', $judging_output_full_path);
 
-     // close the file
+        // close the file
         $this->closeZip();
     }
 
