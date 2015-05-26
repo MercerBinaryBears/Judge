@@ -25,7 +25,15 @@ class Solution extends Base
      * The set of attributes that can be mass-assigned onto a solution via
      * $solution->fill($input_array);
      */
-    protected $fillable = array('problem_id', 'user_id', 'solution_code', 'language_id', 'solution_state_id', 'claiming_judge_id', 'solution_filename');
+    protected $fillable = array(
+        'problem_id',
+        'user_id',
+        'solution_code',
+        'language_id',
+        'solution_state_id',
+        'claiming_judge_id',
+        'solution_filename'
+    );
 
     /**
      * Gets the problem that this solution solves
