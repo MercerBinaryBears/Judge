@@ -2,6 +2,8 @@
 
 class Problem extends Base
 {
+    protected $fillable = ['name', 'contest_id', 'judging_input', 'judging_output'];
+
     public static $rules = array(
         'name' => 'required',
         'contest_id' => 'required',
