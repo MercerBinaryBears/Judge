@@ -1,42 +1,13 @@
 <?php namespace Judge\Models;
 
-use \Iterator;
+use Illuminate\Support\Collection;
 
-class ContestSummaryCollection implements Iterator
+class ContestSummaryCollection extends Collection
 {
-    public function __construct()
+    public function contestRankingSort()
     {
-        $this->summaries = array();
-    }
+        usort($this->items, array('Judge\Models\ContestSummary', 'compare'));
 
-    public function add(ContestSummary $c)
-    {
-        $this->summaries[] = $c;
-    }
-
-    public function rewind()
-    {
-        $this->k = 0;
-        usort($this->summaries, array('Judge\Models\ContestSummary', 'compare'));
-    }
-
-    public function current()
-    {
-        return $this->summaries[$this->k];
-    }
-
-    public function key()
-    {
-        return $this->k;
-    }
-
-    public function next()
-    {
-        ++$this->k;
-    }
-
-    public function valid()
-    {
-        return $this->k < count($this->summaries);
+        return $this;
     }
 }

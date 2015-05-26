@@ -25,11 +25,12 @@ class HomeController extends BaseController
 
         View::share($current_contest->name);
 
-        $contest_summaries = new ContestSummaryCollection();
 
+        $contest_summaries = new ContestSummaryCollection();
         foreach ($this->contests->teamsForContest($current_contest) as $user) {
-            $contest_summaries->add($user->contestSummary($current_contest));
+            $contest_summaries->push($user->contestSummary($current_contest));
         }
+        $contest_summaries->contestRankingSort();
 
         return View::make('index')
             ->with('contest_name', $current_contest->name)
