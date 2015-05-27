@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Judge\Models\User;
 
 class UserTest extends TestCase
@@ -9,6 +10,49 @@ class UserTest extends TestCase
         $user = new User();
         $user->id = 1;
         $this->assertEquals(1, $user->getAuthIdentifier());
+    }
+
+    public function testPointsForProblemIsZeroIfNoSolutionYet()
+    {
+        $contest = Mockery::mock();
+        $contest->starts_at = '2015-01-01 00:00:00';
+        $user = Mockery::mock('Judge\Models\User[cachedContest,solvedProblem]');
+        $user->shouldReceive('cachedContest')->once()->andReturn($contest);
+        $user->shouldReceive('solvedProblem')->once()->andReturn(false);
+
+        $problem = Mockery::mock('Judge\Models\Problem');
+
+        $this->assertEquals(0, $user->pointsForProblem($problem));
+    }
+
+    public function testPointsForProblemCalculatedCorrectly()
+    {
+        $contest = Mockery::mock();
+        $contest->starts_at = '2015-01-01 00:00:00';
+        $user = Mockery::mock('Judge\Models\User[cachedContest,solvedProblem,incorrectSubmissionCountForProblem,earliestCorrectSolutionForProblem]');
+        $user->shouldReceive('cachedContest')->once()->andReturn($contest);
+        $user->shouldReceive('solvedProblem')->once()->andReturn(true);
+
+        // two incorrect submissions
+        $user->shouldReceive('incorrectSubmissionCountForProblem')->once()->andReturn(2);
+
+        // 50 minutes after contest start
+        $solution = Mockery::mock();
+        $solution->created_at = Carbon::create(2015, 1, 1, 0, 50, 0);
+        $user->shouldReceive('earliestCorrectSolutionForProblem')->once()->andReturn($solution);
+        
+        $problem = Mockery::mock('Judge\Models\Problem');
+
+        $this->assertEquals(20 + 20 + 50, $user->pointsForProblem($problem));
+    }
+
+    public function testSolvedProblem()
+    {
+        $repo = Mockery::mock()->shouldReceive('hasCorrectSolutionFromUser')->andReturn('TEST')->getMock();
+        App::shouldReceive('make')->once()->andReturn($repo);
+
+        $user = new User();
+        $this->assertEquals('TEST', $user->solvedProblem(Mockery::mock('Judge\Models\Problem')));
     }
 
     public function testGetAuthPassword()
