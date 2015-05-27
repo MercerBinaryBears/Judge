@@ -16,7 +16,7 @@ class SolutionPackageFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException Judge\Exceptions\ZipException
      */
     public function testOpenZipWithErrors()
     {
