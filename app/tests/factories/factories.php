@@ -28,3 +28,10 @@ $factory('Judge\Models\User', 'team', [
     'team' => true,
     'api_key' => $faker->word,
 ]);
+
+$factory('Judge\Models\User', 'judge', [
+    'username' => $faker->word,
+    'password' => 'password',
+    'judge' => true,
+    'api_key' => $faker->word,
+]);
