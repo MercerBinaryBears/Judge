@@ -2,7 +2,7 @@
 
 use \ZipArchive;
 
-class SolutionPackage
+class SolutionPackageFactory
 {
     /**
      * The path to the temporary zip file
@@ -27,14 +27,16 @@ class SolutionPackage
 
 
     /**
-     * Creates a solution package for a file
+     * Creates a solution package factory
      */
-    public function __construct(Solution $s)
+    public function __construct(ZipArchive $zip)
+    {
+        $this->zip_file = $zip;
+    }
+
+    public function setSolution(Solution $s)
     {
         $this->solution = $s;
-
-        $this->zip_file = new ZipArchive();
-
         $this->buildZip();
     }
 

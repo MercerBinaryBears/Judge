@@ -1,5 +1,6 @@
 <?php namespace Judge\Controllers;
 
+use \App;
 use \Auth;
 use \Input;
 use \Redirect;
@@ -8,7 +9,6 @@ use \Session;
 use \View;
 
 use Judge\Models\Solution;
-use Judge\Models\SolutionPackage;
 
 class SolutionController extends BaseController
 {
@@ -138,9 +138,11 @@ class SolutionController extends BaseController
         // get the requested solution
         $solution = $this->solutions->find($id);
 
-        $solution_package = new SolutionPackage($solution);
+        $zip_path = App::make('Judge\Models\SolutionPackageFactory')
+            ->setSolution($solution)
+            ->getPath();
 
         // download the zip file
-        return Response::download($solution_package->getPath());
+        return Response::download($zip_path);
     }
 }
