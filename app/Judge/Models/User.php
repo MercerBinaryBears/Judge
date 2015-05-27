@@ -220,16 +220,7 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function incorrectSubmissionCountForProblem(Problem $p)
     {
-        $solutions = $this->cachedSolutions();
-        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
-
-        $incorrect_count = 0;
-        foreach ($solutions as $solution) {
-            if ($solution->problem_id == $p->id && $solution->solution_state_id != $solved_state_id) {
-                $incorrect_count++;
-            }
-        }
-        return $incorrect_count;
+        return App::make('Judge\Repositories\SolutionRepository')->incorrectSubmissionCountForProblem($this, $p);
     }
 
     public function earliestCorrectSolutionForProblem(Problem $problem)
