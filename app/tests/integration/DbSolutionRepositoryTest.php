@@ -18,6 +18,31 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->repo = \App::make('Judge\Repositories\SolutionRepository');
     }
 
+    public function testForUserInEmptyContest()
+    {
+        $contest = Factory::create('contest');
+        $user = Factory::create('team');
+
+        $this->assertCount(0, $this->repo->forUserInContest($user, $contest));
+    }
+
+    public function testForUserInContest()
+    {
+        $solution = Factory::create('solution');
+        $contest = $solution->problem->contest;
+        $user = $solution->user;
+
+        $this->assertCount(1, $this->repo->forUserInContest($user, $contest));
+    }
+
+    public function testForUserInDefaultContest()
+    {
+        $solution = Factory::create('solution');
+        $user = $solution->user;
+
+        $this->assertCount(1, $this->repo->forUserInContest($user));
+    }
+
     public function testHasCorrectSolutionFromUser()
     {
         $solution = Factory::create('solution', [
