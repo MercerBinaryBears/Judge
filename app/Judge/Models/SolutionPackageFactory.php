@@ -37,7 +37,6 @@ class SolutionPackageFactory
     public function setSolution(Solution $s)
     {
         $this->solution = $s;
-        $this->buildZip();
     }
 
     /**
@@ -53,7 +52,7 @@ class SolutionPackageFactory
 
         if ($open_result !== true) {
             $message = "Could not open the zip file at " . $this->zip_path . ": " . $this->zip_file->getStatusString();
-            throw new Exception($message);
+            throw new \Exception($message);
         }
     }
 
