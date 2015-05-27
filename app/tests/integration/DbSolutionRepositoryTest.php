@@ -18,6 +18,45 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->repo = \App::make('Judge\Repositories\SolutionRepository');
     }
 
+    public function testFind()
+    {
+        $solution = Factory::create('solution');
+        $this->assertNotNull($this->repo->find($solution->id));
+    }
+
+    public function testJudgeableForContestWithEmptyContest()
+    {
+        $contest = Factory::create('contest');
+
+        $this->assertCount(0, $this->repo->judgeableForContest($contest));
+    }
+
+    public function testJudgeableForContest()
+    {
+        Factory::create('solution', [
+            'solution_state_id' => SolutionState::wherePending(true)->first()->id,
+        ]);
+
+        $this->assertCount(1, $this->repo->judgeableForContest());
+    }
+
+    public function testClaimedByJudgeInEmptyContest()
+    {
+        $judge = Factory::create('judge');
+        $contest = Factory::create('contest');
+        $solution = Factory::create('solution', ['claiming_judge_id' => $judge->id]);
+
+        $this->assertCount(0, $this->repo->claimedByJudgeInContest($judge, $contest));
+    }
+
+    public function testClaimedByJudgeInContest()
+    {
+        $judge = Factory::create('judge');
+        Factory::create('solution', ['claiming_judge_id' => $judge->id]);
+
+        $this->assertCount(1, $this->repo->claimedByJudgeInContest($judge));
+    }
+
     public function testForUserInEmptyContest()
     {
         $contest = Factory::create('contest');

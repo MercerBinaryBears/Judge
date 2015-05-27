@@ -34,7 +34,7 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest($c);
 
         if ($problems->count() < 1) {
-            return Illuminate\Support\Collection::make(array());
+            return \Illuminate\Support\Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
@@ -53,7 +53,7 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest();
 
         if ($problems->count() < 1) {
-            return Illuminate\Support\Collection::make(array());
+            return \Illuminate\Support\Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
