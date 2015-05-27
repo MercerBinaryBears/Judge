@@ -43,7 +43,7 @@ class SolutionPackageFactory
     /**
      * Opens the zip file for writing
      */
-    protected function openZip()
+    public function openZip()
     {
         // TODO: refactor this to not be a hard coded directory
         $this->zip_path = '/tmp/solution_' . $this->solution->id . '_' . time() . '.zip';
@@ -60,7 +60,7 @@ class SolutionPackageFactory
     /**
      * Closes the zip file, writing it to the temporary directory
      */
-    protected function closeZip()
+    public function closeZip()
     {
         // close, checking for errors
         $close_result = $this->zip_file->close();
@@ -73,7 +73,7 @@ class SolutionPackageFactory
     /**
      * Builds the zip file, writing the judging package files to teh
      */
-    protected function buildZip()
+    public function buildZip()
     {
         // open the zip file
         $this->openZip();
@@ -94,7 +94,7 @@ class SolutionPackageFactory
         $this->closeZip();
     }
 
-    protected function addToZip($short_path, $full_path)
+    public function addToZip($short_path, $full_path)
     {
         $result = $this->zip_file->addFile($full_path, $short_path);
         if ($result !== true) {
