@@ -53,7 +53,6 @@ class SolutionPackage
             $message = "Could not open the zip file at " . $this->zip_path . ": " . $this->zip_file->getStatusString();
             throw new Exception($message);
         }
-
     }
 
     /**
