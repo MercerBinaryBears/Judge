@@ -194,7 +194,6 @@ class User extends Base implements UserInterface, RemindableInterface
     public function problemsSolved(Contest $c = null)
     {
         $problems = $this->cachedProblems($c);
-        $solutions = $this->cachedSolutions($c);
 
         /*
          * Loop over every problem, checking if there is a solution
