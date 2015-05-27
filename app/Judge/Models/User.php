@@ -256,7 +256,7 @@ class User extends Base implements UserInterface, RemindableInterface
         return $correct_solution;
     }
 
-    protected function cachedContest()
+    public function cachedContest()
     {
         if (isset($this->cached_contest)) {
             return $this->cached_contest;
@@ -267,7 +267,7 @@ class User extends Base implements UserInterface, RemindableInterface
         return $this->cached_contest;
     }
 
-    protected function cachedProblems(Contest $c = null)
+    public function cachedProblems(Contest $c = null)
     {
         if (isset($this->cached_problems)) {
             return $this->cached_problems;
@@ -278,7 +278,7 @@ class User extends Base implements UserInterface, RemindableInterface
         return $this->cached_problems;
     }
 
-    protected function cachedSolutions(Contest $c = null)
+    public function cachedSolutions(Contest $c = null)
     {
         if (isset($this->cached_solutions)) {
             return $this->cached_solutions;
