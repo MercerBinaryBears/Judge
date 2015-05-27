@@ -2,6 +2,8 @@
 
 class SolutionState extends Base
 {
+    protected $fillable = ['pending', 'is_correct'];
+
     /**
      * The validation rules for a solution state
      */
