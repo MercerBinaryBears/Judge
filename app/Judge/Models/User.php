@@ -135,23 +135,20 @@ class User extends Base implements UserInterface, RemindableInterface
     {
         parent::boot();
 
-        /*
-         * Before a user is about to be created, 
-         * Create an api key for that user. Before any updates
-         * or creations, be sure to hash the password
-         */
-        User::creating(function($user) {
-            $user->api_key = User::generateApiKey();
-            \Log::debug('Current password: ' . $user->password);
-            $user->password = Hash::make($user->password);
-            \Log::debug('New password: ' . $user->password);
-        });
+        $addApiKeyAndPassword = function ($user) {
+            if (!$user->api_key) {
+                $user->api_key = User::generateApiKey();
+            }
 
-        User::updating(function($user) {
             if (Hash::needsRehash($user->password)) {
                 $user->password = Hash::make($user->password);
             }
-        });
+        };
+
+        // Before a user is about to be created, 
+        // Create an api key for that user. Before any updates
+        // or creations, be sure to hash the password
+        User::saving($addApiKeyAndPassword);
     }
 
     /**
