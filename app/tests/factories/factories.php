@@ -18,11 +18,13 @@ $factory('Judge\Models\Solution', 'solution', [
     'user_id' => 'factory:team',
     'language_id' => 1,
     'solution_state_id' => 1,
+    'solution_code' => $faker->word,
     'solution_filename' => $faker->word
 ]);
 
 $factory('Judge\Models\User', 'team', [
     'username' => $faker->word,
     'password' => 'password',
-    'team' => true
+    'team' => true,
+    'api_key' => $faker->word,
 ]);
