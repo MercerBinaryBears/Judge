@@ -145,7 +145,7 @@ class User extends Base implements UserInterface, RemindableInterface
             }
         };
 
-        // Before a user is about to be created, 
+        // Before a user is about to be created,
         // Create an api key for that user. Before any updates
         // or creations, be sure to hash the password
         User::saving($addApiKeyAndPassword);
