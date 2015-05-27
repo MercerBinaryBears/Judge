@@ -216,16 +216,7 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function solvedProblem(Problem $problem)
     {
-        // TODO: Cache this so we don't have to query all the time!
-        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
-
-        foreach ($this->cachedSolutions() as $solution) {
-            if ($solution->problem_id == $problem->id && $solution->solution_state_id == $solved_state_id) {
-                return true;
-            }
-        }
-
-        return false;
+        return App::make('Judge\Repositories\SolutionRepository')->hasCorrectSolutionFromUser($this, $problem);
     }
 
     /**
