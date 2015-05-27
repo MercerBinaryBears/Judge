@@ -66,7 +66,7 @@ class SolutionPackageFactory
         $close_result = $this->zip_file->close();
 
         if ($close_result !== true) {
-            throw new Exception("Could not close the zip file: " . $this->zip_file->getStatusString());
+            throw new ZipException("Could not close the zip file: " . $this->zip_file->getStatusString());
         }
     }
 
@@ -98,7 +98,7 @@ class SolutionPackageFactory
     {
         $result = $this->zip_file->addFile($full_path, $short_path);
         if ($result !== true) {
-            throw new Exception("Could not add the zip file at $full_path, " . $this->zip_file->getStatusString());
+            throw new ZipException("Could not add the zip file at $full_path, " . $this->zip_file->getStatusString());
         }
     }
 
