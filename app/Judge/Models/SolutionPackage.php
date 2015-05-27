@@ -43,11 +43,10 @@ class SolutionPackage
      */
     protected function openZip()
     {
-
-     // TODO: refactor this to not be a hard coded directory
+        // TODO: refactor this to not be a hard coded directory
         $this->zip_path = '/tmp/solution_' . $this->solution->id . '_' . time() . '.zip';
 
-     // open, checking for errors
+        // open, checking for errors
         $open_result = $this->zip_file->open($this->zip_path, ZIPARCHIVE::CREATE);
 
         if ($open_result !== true) {
@@ -62,7 +61,7 @@ class SolutionPackage
      */
     protected function closeZip()
     {
-     // close, checking for errors
+        // close, checking for errors
         $close_result = $this->zip_file->close();
 
         if ($close_result !== true) {
