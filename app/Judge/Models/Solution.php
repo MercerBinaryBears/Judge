@@ -19,6 +19,7 @@ class Solution extends Base
         'solution_code' => 'required',
         'language_id' => 'required',
         'solution_state_id' => 'required',
+        'solution_filename' => 'required',
         );
 
     /**
