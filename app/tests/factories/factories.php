@@ -6,6 +6,15 @@ $factory('Judge\Models\Contest', 'contest', [
     'ends_at' => Carbon\Carbon::now()->addDay()
 ]);
 
+$factory('Judge\Models\Message', 'message', [
+    'problem_id' => 'factory:problem',
+    'text' => $faker->paragraph,
+    'sender_id' => 'factory:team',
+    'response_text' => $faker->paragraph,
+    'responder_id' => 'factory:judge',
+    'is_global' => false,
+]);
+
 $factory('Judge\Models\Problem', 'problem', [
     'name' => $faker->sentence(2),
     'contest_id' => 'factory:contest',
