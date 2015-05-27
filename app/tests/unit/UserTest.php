@@ -57,4 +57,26 @@ class UserTest extends TestCase
         $this->assertEquals(10, $result->problem_summaries[0]['points_for_problem']);
         $this->assertEquals(2, $result->problem_summaries[0]['num_submissions']);
     }
+
+    public function testProblemsSolvedWithUnsolvedProblems()
+    {
+        $user = Mockery::mock('Judge\Models\User[cachedProblems,solvedProblem]');
+        $user->shouldReceive('cachedProblems')->once()->andReturn([
+            Mockery::mock('Judge\Models\Problem')
+        ]);
+        $user->shouldReceive('solvedProblem')->once()->andReturn(false);
+
+        $this->assertEquals(0, $user->problemsSolved());
+    }
+
+    public function testProblemsSolvedWithSolvedProblems()
+    {
+        $user = Mockery::mock('Judge\Models\User[cachedProblems,solvedProblem]');
+        $user->shouldReceive('cachedProblems')->once()->andReturn([
+            Mockery::mock('Judge\Models\Problem')
+        ]);
+        $user->shouldReceive('solvedProblem')->once()->andReturn(true);
+
+        $this->assertEquals(1, $user->problemsSolved());
+    }
 }
