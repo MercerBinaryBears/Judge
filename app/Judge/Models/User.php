@@ -196,12 +196,14 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function incorrectSubmissionCountForProblem(Problem $p)
     {
-        return App::make('Judge\Repositories\SolutionRepository')->incorrectSubmissionCountFromUserFromProblem($this, $p);
+        return App::make('Judge\Repositories\SolutionRepository')
+            ->incorrectSubmissionCountFromUserFromProblem($this, $p);
     }
 
     public function earliestCorrectSolutionForProblem(Problem $problem)
     {
-        return App::make('Judge\Repositories\SolutionRepository')->earliestCorrectSolutionFromUserForProblem($this, $problem);
+        return App::make('Judge\Repositories\SolutionRepository')
+            ->earliestCorrectSolutionFromUserForProblem($this, $problem);
     }
 
     public function cachedContest()
