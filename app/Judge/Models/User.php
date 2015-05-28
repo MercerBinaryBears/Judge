@@ -1,7 +1,6 @@
 <?php namespace Judge\Models;
 
 use \App;
-use \Hash;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
@@ -126,29 +125,6 @@ class User extends Base implements UserInterface, RemindableInterface
 
         // trim off the excess
         return substr($s, 0, $length);
-    }
-
-    /**
-     * Startup code for the model. We can register some events to the model here.
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        $addApiKeyAndPassword = function ($user) {
-            if (!$user->api_key) {
-                $user->api_key = User::generateApiKey();
-            }
-
-            if (Hash::needsRehash($user->password)) {
-                $user->password = Hash::make($user->password);
-            }
-        };
-
-        // Before a user is about to be created,
-        // Create an api key for that user. Before any updates
-        // or creations, be sure to hash the password
-        User::saving($addApiKeyAndPassword);
     }
 
     /**
