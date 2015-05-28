@@ -92,6 +92,8 @@ class SolutionPackageFactory
 
         // close the file
         $this->closeZip();
+
+        return $this->zip_file;
     }
 
     public function addToZip($short_path, $full_path)
