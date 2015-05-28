@@ -222,33 +222,27 @@ class User extends Base implements UserInterface, RemindableInterface
 
     public function cachedContest()
     {
-        if (isset($this->cached_contest)) {
-            return $this->cached_contest;
+        if (!isset($this->cached_contest)) {
+            $this->cached_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
         }
-
-        $this->cached_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         return $this->cached_contest;
     }
 
     public function cachedProblems(Contest $c = null)
     {
-        if (isset($this->cached_problems)) {
-            return $this->cached_problems;
+        if (!isset($this->cached_problems)) {
+            $this->cached_problems = App::make('Judge\Repositories\ContestRepository')->problemsForContest($c);
         }
-
-        $this->cached_problems = App::make('Judge\Repositories\ContestRepository')->problemsForContest($c);
 
         return $this->cached_problems;
     }
 
     public function cachedSolutions(Contest $c = null)
     {
-        if (isset($this->cached_solutions)) {
-            return $this->cached_solutions;
+        if (!isset($this->cached_solutions)) {
+            $this->cached_solutions = App::make('Judge\Repositories\SolutionRepository')->forUserInContest($this, $c);
         }
-
-        $this->cached_solutions = App::make('Judge\Repositories\SolutionRepository')->forUserInContest($this, $c);
 
         return $this->cached_solutions;
     }
