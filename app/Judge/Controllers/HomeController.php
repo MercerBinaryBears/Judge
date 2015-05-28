@@ -28,6 +28,6 @@ class HomeController extends BaseController
 
         return View::make('index')
             ->with('contest_summaries', $contest_summaries)
-            ->with('problems', $this->contests->problemsForContest($current_contest));
+            ->with('problems', $current_contest->problems);
     }
 }
