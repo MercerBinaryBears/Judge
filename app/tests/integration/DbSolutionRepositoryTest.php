@@ -117,4 +117,33 @@ class DbSolutionRepositoryTest extends DbTestCase
 
         $this->assertEquals(0, $this->repo->incorrectSubmissionCountFromUserFromProblem($solution->user, $solution->problem));
     }
+
+    public function testEarliestCorrectSolutionFromUserForProblemWithMultipleMatches()
+    {
+        $team = Factory::create('team');
+        $problem = Factory::create('problem');
+        $firstSolution = Factory::create('solution', [
+            'problem_id' => $problem->id,
+            'user_id' => $team->id,
+            'solution_state_id' => SolutionState::whereIsCorrect(true)->first()->id,
+            'created_at' => Carbon::now()->subMinute()
+        ]);
+        $secondSolution = Factory::create('solution', [
+            'problem_id' => $problem->id,
+            'user_id' => $team->id,
+            'solution_state_id' => SolutionState::whereIsCorrect(true)->first()->id,
+            'created_at' => Carbon::now()
+        ]);
+
+        $this->assertEquals($firstSolution->id, $this->repo->earliestCorrectSolutionFromUserForProblem($team, $problem)->id);
+    }
+
+    public function testEarliestCorrectSolutionFromUserForProblemWithNoCorrect()
+    {
+        $solution = Factory::create('solution', [
+            'solution_state_id' => SolutionState::whereIsCorrect(false)->first()->id
+        ]);
+
+        $this->assertNull($this->repo->earliestCorrectSolutionFromUserForProblem($solution->user, $solution->problem));
+    }
 }
