@@ -94,7 +94,7 @@ class User extends Base implements UserInterface, RemindableInterface
      * @param contest $contest the contest to score points on
      * @return int the total number of points for this user
      */
-    public function totalPoints($contest)
+    public function totalPoints($contest = null)
     {
         $problems = $this->cachedProblems($contest);
         $points = 0;

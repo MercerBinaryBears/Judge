@@ -149,4 +149,14 @@ class UserTest extends TestCase
         $user = new User();
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $user->sentMessages());
     }
+
+    public function testTotalPoints()
+    {
+        $user = Mockery::mock('Judge\Models\User[cachedProblems,pointsForProblem]');
+        $problem = Mockery::mock('Judge\Models\Problem');
+        $user->shouldReceive('cachedProblems')->once()->andReturn([$problem]);
+        $user->shouldReceive('pointsForProblem')->once()->andReturn(123);
+
+        $this->assertEquals(123, $user->totalPoints());
+    }
 }
