@@ -201,23 +201,7 @@ class User extends Base implements UserInterface, RemindableInterface
 
     public function earliestCorrectSolutionForProblem(Problem $problem)
     {
-        $correct_solution = null;
-        
-        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
-
-        foreach ($this->cachedSolutions() as $solution) {
-            $is_solved = $solution->solution_state_id == $solved_state_id ;
-            if ($is_solved && $solution->problem_id == $problem->id) {
-                if ($correct_solution == null) {
-                    $correct_solution = $solution;
-                } elseif ($correct_solution->created_at > $solution->created_at) {
-                    $correct_solution = $solution;
-                }
-            }
-
-        }
-
-        return $correct_solution;
+        return App::make('Judge\Repositories\SolutionRepository')->earliestCorrectSolutionForProblem($problem);
     }
 
     public function cachedContest()
