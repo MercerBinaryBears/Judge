@@ -15,6 +15,12 @@ class SolutionPackageFactoryTest extends TestCase
         $this->factory->setSolution($this->solution);
     }
 
+    public function testSetSolution()
+    {
+        // Make sure that the setter passes the factory back, for method chaining
+        $this->assertEquals($this->factory, $this->factory->setSolution($this->solution));
+    }
+
     /**
      * @expectedException Judge\Exceptions\ZipException
      */

@@ -38,6 +38,8 @@ class SolutionPackageFactory
     public function setSolution(Solution $s)
     {
         $this->solution = $s;
+
+        return $this;
     }
 
     /**
