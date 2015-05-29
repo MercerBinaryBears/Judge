@@ -62,23 +62,19 @@ class SolutionController extends BaseController
      */
     public function store()
     {
-        $solution_state_id = $this->solution_states->firstPendingId();
+        $solution = new Solution([
+            'problem_id' => Input::get('problem_id'),
+            'language_id' => Input::get('language_id'),
+            'user_id' => Auth::id(),
+            'solution_state_id' => $this->solution_states->firstPendingId()
+        ]);
 
-        $solution = new Solution();
-
-        // populate with form fields
-        $solution->problem_id = Input::get('problem_id');
-        $solution->user_id = Auth::user()->id;
-        $solution->solution_state_id = $solution_state_id;
-        $solution->language_id = Input::get('language_id');
         Session::put('language_preference', Input::get('language_id'));
 
-        /*
-        | Take the uploaded file, save it to a permanent path, reading the file
-        | from Input::file('solution_code'), saving the path to
-        | $solution->solution_code, the client's name for the file in
-        | $solution->solution_filename, ignoring the file extension
-        */
+        // Take the uploaded file, save it to a permanent path, reading the file
+        // from Input::file('solution_code'), saving the path to
+        // $solution->solution_code, the client's name for the file in
+        // $solution->solution_filename, ignoring the file extension
         $solution->processUpload('solution_code', 'solution_code', 'solution_filename', null);
 
         // Save, (attempting validation). If validation fails, we show the errors before saving.
