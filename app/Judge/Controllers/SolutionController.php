@@ -96,16 +96,19 @@ class SolutionController extends BaseController
     {
         $solution = $this->solutions->find($id);
 
-        // Check that this current judge has claimed the problem
-        // Check validation on save, and report errors if any. There shouldn't be, but
-        // malicious input could cause it.
-        if ($solution->ownedByCurrentUser()) {
-            $solution->solution_state_id = Input::get('solution_state_id');
-            if (!$solution->save()) {
-                Session::flash('error', $s->errors());
-            }
-        } else {
+        $redirect = Redirect::route('solutions.index');
+
+        // Only allow the current user to update if they're the claiming judge for the problem
+        if (!$solution->ownedByCurrentUser()) {
             Session::flash('error', 'You are not the claiming judge for this problem any more');
+            return $redirect;
+        }
+        
+        $solution->solution_state_id = Input::get('solution_state_id');
+
+        // Attempt to save, reporting any errors
+        if (!$solution->save()) {
+            Session::flash('error', $s->errors());
         }
 
         return Redirect::route('solutions.index');
