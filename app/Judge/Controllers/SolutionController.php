@@ -111,7 +111,7 @@ class SolutionController extends BaseController
             Session::flash('error', $s->errors());
         }
 
-        return Redirect::route('solutions.index');
+        return $redirect;
     }
 
     /**
