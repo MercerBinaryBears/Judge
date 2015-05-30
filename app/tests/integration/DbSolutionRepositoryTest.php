@@ -109,6 +109,15 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->assertEquals(1, $this->repo->incorrectSubmissionCountFromUserFromProblem($solution->user, $solution->problem));
     }
 
+    public function testIncorrectSubmissionCountWithPending()
+    {
+        $solution = Factory::create('solution', [
+            'solution_state_id' => SolutionState::wherePending(true)->first()->id
+        ]);
+
+        $this->assertEquals(0, $this->repo->incorrectSubmissionCountFromUserFromProblem($solution->user, $solution->problem));
+    }
+
     public function testIncorrectSubmissionCountWithNoIncorrect()
     {
         $solution = Factory::create('solution', [

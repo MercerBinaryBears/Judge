@@ -91,11 +91,13 @@ class SolutionRepository
 
     public function incorrectSubmissionCountFromUserFromProblem(User $user, Problem $problem)
     {
-        $solved_solution_state = SolutionState::whereIsCorrect(true)->firstOrFail()->id;
+        $non_incorrect_ids = SolutionState::where('is_correct', true)
+            ->orWhere('pending', true)
+            ->lists('id');
 
         return Solution::whereUserId($user->id)
             ->whereProblemId($problem->id)
-            ->where('solution_state_id', '<>', $solved_solution_state)
+            ->whereNotIn('solution_state_id', $non_incorrect_ids)
             ->count();
     }
 
