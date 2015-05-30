@@ -137,7 +137,7 @@ class SolutionController extends BaseController
         // get the requested solution
         $solution = $this->solutions->find($id);
 
-        $factory = App::make('Judge\Models\SolutionPackageFactory');
+        $factory = App::make('Judge\Factories\SolutionPackageFactory');
         $factory->setSolution($solution);
         $factory->buildZip();
 

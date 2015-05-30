@@ -1,5 +1,6 @@
-<?php namespace Judge\Models;
+<?php namespace Judge\Factories;
 
+use Judge\Models\Solution;
 use Judge\Exceptions\ZipException;
 use \ZipArchive;
 
