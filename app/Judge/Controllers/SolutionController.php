@@ -108,7 +108,7 @@ class SolutionController extends BaseController
 
         // Attempt to save, reporting any errors
         if (!$solution->save()) {
-            Session::flash('error', $s->errors());
+            Session::flash('error', $solution->errors());
         }
 
         return $redirect;
@@ -137,11 +137,11 @@ class SolutionController extends BaseController
         // get the requested solution
         $solution = $this->solutions->find($id);
 
-        $zip_path = App::make('Judge\Models\SolutionPackageFactory')
-            ->setSolution($solution)
-            ->getPath();
+        $factory = App::make('Judge\Models\SolutionPackageFactory');
+        $factory->setSolution($solution);
+        $factory->buildZip();
 
         // download the zip file
-        return Response::download($zip_path);
+        return Response::download($factory->getPath());
     }
 }
