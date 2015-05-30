@@ -17,12 +17,12 @@ class MessageController extends BaseController
             return View::make('Messages.judge')
                 ->withProblems($this->problems->forContest())
                 ->withUnrespondedMessages($this->messages->unresponded());
-        } elseif ($user->team) {
-            return View::make('Messages.team')
-                ->withProblems($this->problems->forContest())
-                ->withMessages(Auth::user()->sent_messages)
-                ->withGlobalMessages($this->messages->allGlobal());
         }
+        
+        return View::make('Messages.team')
+            ->withProblems($this->problems->forContest())
+            ->withMessages(Auth::user()->sent_messages)
+            ->withGlobalMessages($this->messages->allGlobal());
     }
 
     public function store()

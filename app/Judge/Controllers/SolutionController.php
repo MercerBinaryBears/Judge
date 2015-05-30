@@ -1,5 +1,6 @@
 <?php namespace Judge\Controllers;
 
+use \App;
 use \Auth;
 use \Input;
 use \Redirect;
@@ -8,7 +9,6 @@ use \Session;
 use \View;
 
 use Judge\Models\Solution;
-use Judge\Models\SolutionPackage;
 
 class SolutionController extends BaseController
 {
@@ -62,23 +62,19 @@ class SolutionController extends BaseController
      */
     public function store()
     {
-        $solution_state_id = $this->solution_states->firstPendingId();
+        $solution = new Solution([
+            'problem_id' => Input::get('problem_id'),
+            'language_id' => Input::get('language_id'),
+            'user_id' => Auth::id(),
+            'solution_state_id' => $this->solution_states->firstPendingId()
+        ]);
 
-        $solution = new Solution();
-
-        // populate with form fields
-        $solution->problem_id = Input::get('problem_id');
-        $solution->user_id = Auth::user()->id;
-        $solution->solution_state_id = $solution_state_id;
-        $solution->language_id = Input::get('language_id');
         Session::put('language_preference', Input::get('language_id'));
 
-        /*
-        | Take the uploaded file, save it to a permanent path, reading the file
-        | from Input::file('solution_code'), saving the path to
-        | $solution->solution_code, the client's name for the file in
-        | $solution->solution_filename, ignoring the file extension
-        */
+        // Take the uploaded file, save it to a permanent path, reading the file
+        // from Input::file('solution_code'), saving the path to
+        // $solution->solution_code, the client's name for the file in
+        // $solution->solution_filename, ignoring the file extension
         $solution->processUpload('solution_code', 'solution_code', 'solution_filename', null);
 
         // Save, (attempting validation). If validation fails, we show the errors before saving.
@@ -100,19 +96,22 @@ class SolutionController extends BaseController
     {
         $solution = $this->solutions->find($id);
 
-        // Check that this current judge has claimed the problem
-        // Check validation on save, and report errors if any. There shouldn't be, but
-        // malicious input could cause it.
-        if ($solution->ownedByCurrentUser()) {
-            $solution->solution_state_id = Input::get('solution_state_id');
-            if (!$solution->save()) {
-                Session::flash('error', $s->errors());
-            }
-        } else {
+        $redirect = Redirect::route('solutions.index');
+
+        // Only allow the current user to update if they're the claiming judge for the problem
+        if (!$solution->ownedByCurrentUser()) {
             Session::flash('error', 'You are not the claiming judge for this problem any more');
+            return $redirect;
+        }
+        
+        $solution->solution_state_id = Input::get('solution_state_id');
+
+        // Attempt to save, reporting any errors
+        if (!$solution->save()) {
+            Session::flash('error', $solution->errors());
         }
 
-        return Redirect::route('solutions.index');
+        return $redirect;
     }
 
     /**
@@ -138,9 +137,11 @@ class SolutionController extends BaseController
         // get the requested solution
         $solution = $this->solutions->find($id);
 
-        $solution_package = new SolutionPackage($solution);
+        $factory = App::make('Judge\Models\SolutionPackageFactory');
+        $factory->setSolution($solution);
+        $factory->buildZip();
 
         // download the zip file
-        return Response::download($solution_package->getPath());
+        return Response::download($factory->getPath());
     }
 }

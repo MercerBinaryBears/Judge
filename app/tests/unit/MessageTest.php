@@ -17,6 +17,21 @@ class MessageTest extends TestCase
         Mockery::close();
     }
 
+    public function testProblemRelationship()
+    {
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $this->message->problem());
+    }
+
+    public function testSenderRelationship()
+    {
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $this->message->sender());
+    }
+
+    public function testResponderRelationship()
+    {
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $this->message->responder());
+    }
+
     public function testTextAttribute()
     {
         $this->message->text = "hello\nworld";

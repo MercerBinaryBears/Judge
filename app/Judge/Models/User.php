@@ -1,7 +1,6 @@
 <?php namespace Judge\Models;
 
 use \App;
-use \Hash;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
@@ -9,6 +8,8 @@ use Carbon\Carbon as Carbon;
 
 class User extends Base implements UserInterface, RemindableInterface
 {
+    protected $fillable = ['username', 'password', 'admin', 'judge', 'team', 'api_key'];
+
     /**
      * The database table used by the model.
      *
@@ -93,7 +94,7 @@ class User extends Base implements UserInterface, RemindableInterface
      * @param contest $contest the contest to score points on
      * @return int the total number of points for this user
      */
-    public function totalPoints($contest)
+    public function totalPoints($contest = null)
     {
         $problems = $this->cachedProblems($contest);
         $points = 0;
@@ -124,32 +125,6 @@ class User extends Base implements UserInterface, RemindableInterface
 
         // trim off the excess
         return substr($s, 0, $length);
-    }
-
-    /**
-     * Startup code for the model. We can register some events to the model here.
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        /*
-         * Before a user is about to be created, 
-         * Create an api key for that user. Before any updates
-         * or creations, be sure to hash the password
-         */
-        User::creating(function($user) {
-            $user->api_key = User::generateApiKey();
-            \Log::debug('Current password: ' . $user->password);
-            $user->password = Hash::make($user->password);
-            \Log::debug('New password: ' . $user->password);
-        });
-
-        User::updating(function($user) {
-            if (Hash::needsRehash($user->password)) {
-                $user->password = Hash::make($user->password);
-            }
-        });
     }
 
     /**
@@ -192,7 +167,6 @@ class User extends Base implements UserInterface, RemindableInterface
     public function problemsSolved(Contest $c = null)
     {
         $problems = $this->cachedProblems($c);
-        $solutions = $this->cachedSolutions($c);
 
         /*
          * Loop over every problem, checking if there is a solution
@@ -214,16 +188,7 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function solvedProblem(Problem $problem)
     {
-        // TODO: Cache this so we don't have to query all the time!
-        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
-
-        foreach ($this->cachedSolutions() as $solution) {
-            if ($solution->problem_id == $problem->id && $solution->solution_state_id == $solved_state_id) {
-                return true;
-            }
-        }
-
-        return false;
+        return App::make('Judge\Repositories\SolutionRepository')->hasCorrectSolutionFromUser($this, $problem);
     }
 
     /**
@@ -231,68 +196,39 @@ class User extends Base implements UserInterface, RemindableInterface
      */
     public function incorrectSubmissionCountForProblem(Problem $p)
     {
-        $solutions = $this->cachedSolutions();
-        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
-
-        $incorrect_count = 0;
-        foreach ($solutions as $solution) {
-            if ($solution->problem_id == $p->id && $solution->solution_state_id != $solved_state_id) {
-                $incorrect_count++;
-            }
-        }
-        return $incorrect_count;
+        return App::make('Judge\Repositories\SolutionRepository')
+            ->incorrectSubmissionCountFromUserFromProblem($this, $p);
     }
 
     public function earliestCorrectSolutionForProblem(Problem $problem)
     {
-        $correct_solution = null;
-        
-        $solved_state_id = App::make('Judge\Repositories\SolutionStateRepository')->firstCorrectId();
-
-        foreach ($this->cachedSolutions() as $solution) {
-            $is_solved = $solution->solution_state_id == $solved_state_id ;
-            if ($is_solved && $solution->problem_id == $problem->id) {
-                if ($correct_solution == null) {
-                    $correct_solution = $solution;
-                } elseif ($correct_solution->created_at > $solution->created_at) {
-                    $correct_solution = $solution;
-                }
-            }
-
-        }
-
-        return $correct_solution;
+        return App::make('Judge\Repositories\SolutionRepository')
+            ->earliestCorrectSolutionFromUserForProblem($this, $problem);
     }
 
-    protected function cachedContest()
+    public function cachedContest()
     {
-        if (isset($this->cached_contest)) {
-            return $this->cached_contest;
+        if (!isset($this->cached_contest)) {
+            $this->cached_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
         }
-
-        $this->cached_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         return $this->cached_contest;
     }
 
-    protected function cachedProblems(Contest $c = null)
+    public function cachedProblems(Contest $c = null)
     {
-        if (isset($this->cached_problems)) {
-            return $this->cached_problems;
+        if (!isset($this->cached_problems)) {
+            $this->cached_problems = App::make('Judge\Repositories\ContestRepository')->problemsForContest($c);
         }
-
-        $this->cached_problems = App::make('Judge\Repositories\ContestRepository')->problemsForContest($c);
 
         return $this->cached_problems;
     }
 
-    protected function cachedSolutions(Contest $c = null)
+    public function cachedSolutions(Contest $c = null)
     {
-        if (isset($this->cached_solutions)) {
-            return $this->cached_solutions;
+        if (!isset($this->cached_solutions)) {
+            $this->cached_solutions = App::make('Judge\Repositories\SolutionRepository')->forUserInContest($this, $c);
         }
-
-        $this->cached_solutions = App::make('Judge\Repositories\SolutionRepository')->forUserInContest($this, $c);
 
         return $this->cached_solutions;
     }

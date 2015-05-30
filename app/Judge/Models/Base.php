@@ -7,7 +7,6 @@ use \Input;
 // a base class for all models
 class Base extends Ardent
 {
-
     /**
      * A method for processing uploads. Reads an uploaded and assigns class properties automagically
      *

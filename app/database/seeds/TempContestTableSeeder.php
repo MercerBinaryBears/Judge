@@ -1,6 +1,12 @@
 <?php
 
 use Carbon\Carbon as Carbon;
+use Judge\Models\Contest;
+use Judge\Models\Problem;
+use Judge\Models\Solution;
+use Judge\Models\User;
+use Judge\Models\Language;
+use Judge\Models\SolutionState;
 
 class TempContestTableSeeder extends Seeder {
 

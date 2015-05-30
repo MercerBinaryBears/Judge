@@ -1,9 +1,11 @@
 <?php namespace Judge\Models;
 
-use Carbon\Carbon as Carbon;
+use Carbon\Carbon;
 
 class Contest extends Base
 {
+    protected $fillable = array('name', 'starts_at', 'ends_at');
+
     /**
      * Validation rules for a contest
      */

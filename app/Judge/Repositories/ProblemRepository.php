@@ -1,6 +1,7 @@
 <?php namespace Judge\Repositories;
 
 use Judge\Repositories\ContestRepository;
+use Judge\Models\Contest;
 use Judge\Models\Problem;
 
 class ProblemRepository
