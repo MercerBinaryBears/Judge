@@ -1,6 +1,10 @@
 <?php namespace Judge\Factories;
 
+use Carbon\Carbon;
+
 use Judge\Models\Contest;
+use Judge\Models\ContestSummary;
+use Judge\Models\Problem;
 use Judge\Models\User;
 
 use Judge\Repositories\ContestRepository;
@@ -14,15 +18,12 @@ class ContestSummaryFactory
 {
     public function __construct(
         ContestRepository $contests,
-        LanguageRepository $languages,
         ProblemRepository $problems,
         SolutionRepository $solutions,
-        SolutionStateRepository $solution_states,
-        MessageRepository $messages
+        SolutionStateRepository $solution_states
     ) {
             
         $this->contests = $contests;
-        $this->languages = $languages;
         $this->problems = $problems;
         $this->solutions = $solutions;
         $this->solution_states = $solution_states;
@@ -30,6 +31,7 @@ class ContestSummaryFactory
 
     public function make(Contest $contest)
     {
+        $x = 1;
     }
 
     public function makeForTeam(Contest $contest, User $user)
@@ -40,15 +42,15 @@ class ContestSummaryFactory
         
         $summary->problems_solved = $this->problemsSolved($contest, $user);
 
-        $summary->penalty_points = $this->totalPoints($contest);
+        $summary->penalty_points = $this->totalPoints($contest, $user);
 
         $summary->problem_summaries = array();
 
         foreach ($contest->problems as $problem) {
             $problem_info = array();
-            $problem_info['points_for_problem'] = $this->pointsForProblem($problem);
-            $problem_info['num_submissions'] = $this->incorrectSubmissionCountForProblem($problem)
-                + $this->solvedProblem($problem);
+            $problem_info['points_for_problem'] = $this->pointsForProblem($problem, $user);
+            $problem_info['num_submissions'] = $this->solutions->incorrectSubmissionCountForProblem($user, $problem)
+                + $this->solutions->hasCorrectSolutionFromUser($user, $problem);
 
             $summary->problem_summaries[] = $problem_info;
         }
@@ -103,9 +105,6 @@ class ContestSummaryFactory
      */
     public function pointsForProblem(Problem $problem, User $user)
     {
-        // get the start time for the contest
-        $starts_at = new Carbon($this->cachedContest()->starts_at);
-
         // if they didn't solve it, return 0
         if (! $this->problems->hasCorrectSolutionFromUser($user, $problem)) {
             return 0;
@@ -115,7 +114,7 @@ class ContestSummaryFactory
 
         $earliest_solution = $this->solutions->earliestCorrectSolutionFromUserForProblem($user, $problem);
 
-        $minutes_since_contest = $earliest_solution->created_at->diffInMinutes($starts_at);
+        $minutes_since_contest = $earliest_solution->created_at->diffInMinutes($problem->contest->starts_at);
         
         return $incorrect_count * 20 + $minutes_since_contest;
     }

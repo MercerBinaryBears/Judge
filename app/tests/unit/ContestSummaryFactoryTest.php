@@ -1,64 +1,74 @@
 <?php
 
+use Carbon\Carbon;
+use Judge\Models\Contest;
+use Judge\Models\Problem;
+use Judge\Models\User;
+
 class ContestSummaryFactoryTest extends DbTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->contests = Mockery::mock('Judge\Repositories\ContestRepository');
+        $this->problems = Mockery::mock('Judge\Repositories\ProblemRepository');
+        $this->solutions = Mockery::mock('Judge\Repositories\SolutionRepository');
+        $this->solution_states = Mockery::mock('Judge\Repositories\SolutionStateRepository');
+        $this->factory = new Judge\Factories\ContestSummaryFactory(
+            $this->contests,
+            $this->problems,
+            $this->solutions,
+            $this->solution_states
+        );
+    }
+
     public function testPointsForProblemIsZeroIfNoSolutionYet()
     {
-        $contest = Mockery::mock();
-        $contest->starts_at = '2015-01-01 00:00:00';
-        $user = Mockery::mock('Judge\Models\User[cachedContest,solvedProblem]');
-        $user->shouldReceive('cachedContest')->once()->andReturn($contest);
-        $user->shouldReceive('solvedProblem')->once()->andReturn(false);
+        $problem = new Problem();
+        $user = new User();
+        $this->problems->shouldReceive('hasCorrectSolutionFromUser')->once()->with($user, $problem)->andReturn(false);
 
-        $problem = Mockery::mock('Judge\Models\Problem');
-
-        $this->assertEquals(0, $user->pointsForProblem($problem));
+        $this->assertEquals(0, $this->factory->pointsForProblem($problem, $user));
     }
 
     public function testPointsForProblemCalculatedCorrectly()
     {
-        $contest = Mockery::mock();
-        $contest->starts_at = '2015-01-01 00:00:00';
-        $user = Mockery::mock('Judge\Models\User[cachedContest,solvedProblem,incorrectSubmissionCountForProblem,earliestCorrectSolutionForProblem]');
-        $user->shouldReceive('cachedContest')->once()->andReturn($contest);
-        $user->shouldReceive('solvedProblem')->once()->andReturn(true);
+        $problem = new Problem();
+        $problem->contest = Mockery::mock();
+        $problem->contest->starts_at = Carbon::create(2015, 1, 1, 0, 0, 0);
+        $user = new User();
 
-        // two incorrect submissions
-        $user->shouldReceive('incorrectSubmissionCountForProblem')->once()->andReturn(2);
+        $this->problems->shouldReceive('hasCorrectSolutionFromUser')->once()->with($user, $problem)->andReturn(true);
 
-        // 50 minutes after contest start
+        $this->solutions->shouldReceive('incorrectSubmissionCountForProblem')->once()->with($user, $problem)->andReturn(2);
+
         $solution = Mockery::mock();
         $solution->created_at = Carbon::create(2015, 1, 1, 0, 50, 0);
-        $user->shouldReceive('earliestCorrectSolutionForProblem')->once()->andReturn($solution);
-        
-        $problem = Mockery::mock('Judge\Models\Problem');
+        $this->solutions->shouldReceive('earliestCorrectSolutionFromUserForProblem')->once()->with($user, $problem)->andReturn($solution);
 
-        $this->assertEquals(20 + 20 + 50, $user->pointsForProblem($problem));
-    }
-
-    public function testSolvedProblem()
-    {
-        $repo = Mockery::mock()->shouldReceive('hasCorrectSolutionFromUser')->andReturn('TEST')->getMock();
-        App::shouldReceive('make')->once()->andReturn($repo);
-
-        $user = new User();
-        $this->assertEquals('TEST', $user->solvedProblem(Mockery::mock('Judge\Models\Problem')));
+        $this->assertEquals(20 + 20 + 50, $this->factory->pointsForProblem($problem, $user));
     }
 
     public function testContestSummary()
     {
-        $user = Mockery::mock('Judge\Models\User[problemsSolved,totalPoints,pointsForProblem,incorrectSubmissionCountForProblem,solvedProblem]');
-
-        $user->shouldReceive('problemsSolved')->once()->andReturn(1);
-        $user->shouldReceive('totalPoints')->once()->andReturn(100);
-        $user->shouldReceive('pointsForProblem')->once()->andReturn(10);
-        $user->shouldReceive('incorrectSubmissionCountForProblem')->once()->andReturn(1);
-        $user->shouldReceive('solvedProblem')->once()->andReturn(1);
+        $this->factory = Mockery::mock('Judge\Factories\ContestSummaryFactory[problemsSolved, totalPoints, pointsForProblem]', [
+            $this->contests,
+            $this->problems,
+            $this->solutions,
+            $this->solution_states
+        ]);
+        $this->factory->shouldReceive('problemsSolved')->once()->andReturn(1);
+        $this->factory->shouldReceive('totalPoints')->once()->andReturn(100);
+        $this->factory->shouldReceive('pointsForProblem')->once()->andReturn(10);
+        $this->solutions->shouldReceive('incorrectSubmissionCountForProblem')->once()->andReturn(1);
+        $this->solutions->shouldReceive('hasCorrectSolutionFromUser')->once()->andReturn(1);
 
         $contest = Mockery::mock('Judge\Models\Contest');
         $contest->shouldReceive('getAttribute')->once()->with('problems')->andReturn([Mockery::mock('Judge\Models\Problem')]);
+        $user = Mockery::mock('Judge\Models\User');
 
-        $result = $user->contestSummary($contest);
+        $result = $this->factory->makeForTeam($contest, $user);
 
         $this->assertEquals(1, $result->problems_solved);
         $this->assertEquals(100, $result->penalty_points);
@@ -68,33 +78,29 @@ class ContestSummaryFactoryTest extends DbTestCase
 
     public function testProblemsSolvedWithUnsolvedProblems()
     {
-        $user = Mockery::mock('Judge\Models\User[cachedProblems,solvedProblem]');
-        $user->shouldReceive('cachedProblems')->once()->andReturn([
-            Mockery::mock('Judge\Models\Problem')
+        $contest = new Contest();
+        $user = new User();
+        $this->problems->shouldReceive('forContest')->once()->andReturn([
+            new Problem()
         ]);
-        $user->shouldReceive('solvedProblem')->once()->andReturn(false);
+        $this->problems->shouldReceive('hasCorrectSolutionFromUser')->once()->andReturn(false);
 
-        $this->assertEquals(0, $user->problemsSolved());
-    }
-
-    public function testProblemsSolvedWithSolvedProblems()
-    {
-        $user = Mockery::mock('Judge\Models\User[cachedProblems,solvedProblem]');
-        $user->shouldReceive('cachedProblems')->once()->andReturn([
-            Mockery::mock('Judge\Models\Problem')
-        ]);
-        $user->shouldReceive('solvedProblem')->once()->andReturn(true);
-
-        $this->assertEquals(1, $user->problemsSolved());
+        $this->assertEquals(0, $this->factory->problemsSolved($contest, $user));
     }
 
     public function testTotalPoints()
     {
-        $user = Mockery::mock('Judge\Models\User[cachedProblems,pointsForProblem]');
-        $problem = Mockery::mock('Judge\Models\Problem');
-        $user->shouldReceive('cachedProblems')->once()->andReturn([$problem]);
-        $user->shouldReceive('pointsForProblem')->once()->andReturn(123);
+        $this->factory = Mockery::mock('Judge\Factories\ContestSummaryFactory[pointsForProblem]', [
+            $this->contests,
+            $this->problems,
+            $this->solutions,
+            $this->solution_states
+        ]);
+        $contest = new Contest();
+        $user = new User();
+        $this->problems->shouldReceive('forContest')->once()->andReturn([ new Problem() ]);
+        $this->factory->shouldReceive('pointsForProblem')->once()->andReturn(123);
 
-        $this->assertEquals(123, $user->totalPoints());
+        $this->assertEquals(123, $this->factory->totalPoints($contest, $user));
     }
 }
