@@ -128,7 +128,7 @@ class DbSolutionControllerTest extends DbTestCase
         $factory->shouldReceive('setSolution')->once();
         $factory->shouldReceive('buildZip')->once();
         $factory->shouldReceive('getPath')->once()->andReturn('/tmp/downloadtest');
-        App::shouldReceive('make')->once()->with('Judge\Models\SolutionPackageFactory')->andReturn($factory);
+        App::shouldReceive('make')->once()->with('Judge\Factories\SolutionPackageFactory')->andReturn($factory);
 
         $result = $this->action('GET', 'Judge\Controllers\SolutionController@package', [$solution->id]);
 

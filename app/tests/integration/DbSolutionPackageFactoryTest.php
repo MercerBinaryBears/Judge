@@ -30,7 +30,7 @@ class DbSolutionPackageFactoryTest extends DbTestCase
         ]);
 
         // run the zip building process
-        $factory = App::make('Judge\Models\SolutionPackageFactory');
+        $factory = App::make('Judge\Factories\SolutionPackageFactory');
         $factory->setSolution($solution);
         $factory->buildZip();
 

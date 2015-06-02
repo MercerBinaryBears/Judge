@@ -1,7 +1,7 @@
 <?php
 
 use Judge\Models\Solution;
-use Judge\Models\SolutionPackageFactory;
+use Judge\Factories\SolutionPackageFactory;
 
 class SolutionPackageFactoryTest extends TestCase
 {

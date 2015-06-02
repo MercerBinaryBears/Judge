@@ -1,5 +1,6 @@
 <?php namespace Judge\Controllers;
 
+use Illuminate\Support\Facades\App;
 use Judge\Models\ContestSummaryCollection;
 
 use \View;
@@ -20,11 +21,9 @@ class HomeController extends BaseController
                 ->with('problems', array());
         }
 
-        $contest_summaries = new ContestSummaryCollection();
-        foreach ($this->contests->teamsForContest($current_contest) as $user) {
-            $contest_summaries->push($user->contestSummary($current_contest));
-        }
-        $contest_summaries->contestRankingSort();
+        $contest_summaries = App::make('Judge\Factories\ContestSummaryFactory')
+            ->make($current_contest)
+            ->contestRankingSort();
 
         return View::make('index')
             ->with('contest_summaries', $contest_summaries)
