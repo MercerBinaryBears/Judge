@@ -56,7 +56,7 @@ class ContestSummaryFactory
         foreach ($contest->problems as $problem) {
             $problem_info = array();
             $problem_info['points_for_problem'] = $this->pointsForProblem($problem, $user);
-            $problem_info['num_submissions'] = $this->solutions->incorrectSubmissionCountForProblem($user, $problem)
+            $problem_info['num_submissions'] = $this->solutions->incorrectSubmissionCountFromUserFromProblem($user, $problem)
                 + $this->solutions->hasCorrectSolutionFromUser($user, $problem);
 
             $summary->problem_summaries[] = $problem_info;
@@ -78,7 +78,7 @@ class ContestSummaryFactory
         // that is solved
         $total = 0;
         foreach ($this->problems->forContest($contest) as $problem) {
-            $total += $this->problems->hasCorrectSolutionFromUser($user, $problem);
+            $total += $this->solutions->hasCorrectSolutionFromUser($user, $problem);
         }
 
         // now sum up the solved states
@@ -113,11 +113,11 @@ class ContestSummaryFactory
     public function pointsForProblem(Problem $problem, User $user)
     {
         // if they didn't solve it, return 0
-        if (! $this->problems->hasCorrectSolutionFromUser($user, $problem)) {
+        if (! $this->solutions->hasCorrectSolutionFromUser($user, $problem)) {
             return 0;
         }
 
-        $incorrect_count = $this->solutions->incorrectSubmissionCountForProblem($user, $problem);
+        $incorrect_count = $this->solutions->incorrectSubmissionCountFromUserFromProblem($user, $problem);
 
         $earliest_solution = $this->solutions->earliestCorrectSolutionFromUserForProblem($user, $problem);
 
