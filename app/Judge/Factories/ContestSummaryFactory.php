@@ -56,7 +56,8 @@ class ContestSummaryFactory
         foreach ($contest->problems as $problem) {
             $problem_info = array();
             $problem_info['points_for_problem'] = $this->pointsForProblem($problem, $user);
-            $problem_info['num_submissions'] = $this->solutions->incorrectSubmissionCountFromUserFromProblem($user, $problem)
+            $problem_info['num_submissions'] =
+                $this->solutions->incorrectSubmissionCountFromUserFromProblem($user, $problem)
                 + $this->solutions->hasCorrectSolutionFromUser($user, $problem);
 
             $summary->problem_summaries[] = $problem_info;
@@ -72,7 +73,7 @@ class ContestSummaryFactory
      * @param Contest $contest
      * @return int
      */
-    public function problemsSolved(Contest $contest = null, User $user)
+    public function problemsSolved(Contest $contest, User $user)
     {
         // Loop over every problem, checking if there is a solution
         // that is solved
@@ -92,7 +93,7 @@ class ContestSummaryFactory
      * @param contest $contest the contest to score points on
      * @return int the total number of points for this user
      */
-    public function totalPoints(Contest $contest = null, User $user)
+    public function totalPoints(Contest $contest, User $user)
     {
         $problems = $this->problems->forContest($contest);
         $points = 0;

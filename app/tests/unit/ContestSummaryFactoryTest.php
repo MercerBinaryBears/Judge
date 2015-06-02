@@ -27,7 +27,7 @@ class ContestSummaryFactoryTest extends DbTestCase
     {
         $problem = new Problem();
         $user = new User();
-        $this->problems->shouldReceive('hasCorrectSolutionFromUser')->once()->with($user, $problem)->andReturn(false);
+        $this->solutions->shouldReceive('hasCorrectSolutionFromUser')->once()->with($user, $problem)->andReturn(false);
 
         $this->assertEquals(0, $this->factory->pointsForProblem($problem, $user));
     }
@@ -39,9 +39,9 @@ class ContestSummaryFactoryTest extends DbTestCase
         $problem->contest->starts_at = Carbon::create(2015, 1, 1, 0, 0, 0);
         $user = new User();
 
-        $this->problems->shouldReceive('hasCorrectSolutionFromUser')->once()->with($user, $problem)->andReturn(true);
+        $this->solutions->shouldReceive('hasCorrectSolutionFromUser')->once()->with($user, $problem)->andReturn(true);
 
-        $this->solutions->shouldReceive('incorrectSubmissionCountForProblem')->once()->with($user, $problem)->andReturn(2);
+        $this->solutions->shouldReceive('incorrectSubmissionCountFromUserFromProblem')->once()->with($user, $problem)->andReturn(2);
 
         $solution = Mockery::mock();
         $solution->created_at = Carbon::create(2015, 1, 1, 0, 50, 0);
@@ -61,7 +61,7 @@ class ContestSummaryFactoryTest extends DbTestCase
         $this->factory->shouldReceive('problemsSolved')->once()->andReturn(1);
         $this->factory->shouldReceive('totalPoints')->once()->andReturn(100);
         $this->factory->shouldReceive('pointsForProblem')->once()->andReturn(10);
-        $this->solutions->shouldReceive('incorrectSubmissionCountForProblem')->once()->andReturn(1);
+        $this->solutions->shouldReceive('incorrectSubmissionCountFromUserFromProblem')->once()->andReturn(1);
         $this->solutions->shouldReceive('hasCorrectSolutionFromUser')->once()->andReturn(1);
 
         $contest = Mockery::mock('Judge\Models\Contest');
@@ -83,7 +83,7 @@ class ContestSummaryFactoryTest extends DbTestCase
         $this->problems->shouldReceive('forContest')->once()->andReturn([
             new Problem()
         ]);
-        $this->problems->shouldReceive('hasCorrectSolutionFromUser')->once()->andReturn(false);
+        $this->solutions->shouldReceive('hasCorrectSolutionFromUser')->once()->andReturn(false);
 
         $this->assertEquals(0, $this->factory->problemsSolved($contest, $user));
     }
