@@ -12,7 +12,7 @@ return array(
 
 	'fallback_locale' => 'en',
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'M9EdZIGIWOSMmSMMditupoMnlQnJw9MP',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
