@@ -103,4 +103,25 @@ class ContestSummaryFactoryTest extends DbTestCase
 
         $this->assertEquals(123, $this->factory->totalPoints($contest, $user));
     }
+
+    public function testMake()
+    {
+        $this->factory = Mockery::mock('Judge\Factories\ContestSummaryFactory[makeForTeam]', [
+            $this->contests,
+            $this->problems,
+            $this->solutions,
+            $this->solution_states
+        ]);
+
+        $this->contests->shouldReceive('teamsForContest')->once()->andReturn([
+            new User()
+        ]);
+
+        $this->factory->shouldReceive('makeForTeam')->once()->andReturn(Mockery::mock('Judge\Models\ContestSummary'));
+
+        $result = $this->factory->make(new Contest());
+
+        $this->assertInstanceOf('Judge\Models\ContestSummaryCollection', $result);
+        $this->assertInstanceOf('Judge\Models\ContestSummary', $result->first());
+    }
 }

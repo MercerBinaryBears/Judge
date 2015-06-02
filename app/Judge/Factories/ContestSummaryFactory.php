@@ -4,6 +4,7 @@ use Carbon\Carbon;
 
 use Judge\Models\Contest;
 use Judge\Models\ContestSummary;
+use Judge\Models\ContestSummaryCollection;
 use Judge\Models\Problem;
 use Judge\Models\User;
 
@@ -31,7 +32,13 @@ class ContestSummaryFactory
 
     public function make(Contest $contest)
     {
-        $x = 1;
+        $collection = new ContestSummaryCollection();
+
+        foreach ($this->contests->teamsForContest($contest) as $team) {
+            $collection->push($this->makeForTeam($contest, $team));
+        }
+
+        return $collection;
     }
 
     public function makeForTeam(Contest $contest, User $user)
