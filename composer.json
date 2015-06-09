@@ -5,7 +5,7 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"laravelbook/ardent": "2.4.*",
-		"frozennode/administrator": "4.12.*",
+		"frozennode/administrator": "4.16.*",
 		"doctrine/dbal" : "2.4.*",
 		"laracasts/testdummy": "2.3.*"
 	},
