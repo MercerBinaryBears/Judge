@@ -1,5 +1,6 @@
 <?php namespace Judge\Controllers;
 
+use Illuminate\Support\Facades\App;
 use Judge\Models\ContestSummaryCollection;
 
 use \View;
@@ -12,29 +13,20 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        View::share('contest_name', 'Judge');
-
         $current_contest = $this->contests->firstCurrent();
 
         if (is_null($current_contest)) {
             return View::make('index')
-                ->with('contest_name', 'Judge')
                 ->with('contest_summaries', new ContestSummaryCollection)
                 ->with('problems', array());
         }
 
-        View::share($current_contest->name);
-
-        $contest_summaries = new ContestSummaryCollection();
-
-        foreach ($this->contests->teamsForContest($current_contest) as $user) {
-            $contest_summaries->add($user->contestSummary($current_contest));
-
-        }
+        $contest_summaries = App::make('Judge\Factories\ContestSummaryFactory')
+            ->make($current_contest)
+            ->contestRankingSort();
 
         return View::make('index')
-            ->with('contest_name', $current_contest->name)
             ->with('contest_summaries', $contest_summaries)
-            ->with('problems', $this->contests->problemsForContest($current_contest));
+            ->with('problems', $current_contest->problems);
     }
 }

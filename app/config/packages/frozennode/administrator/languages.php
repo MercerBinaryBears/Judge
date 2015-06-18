@@ -5,7 +5,7 @@ return array(
 
 	'single' => 'Language',
 
-	'model' => 'Judge\Models\Language\Language',
+	'model' => 'Judge\Models\Language',
 
 	'columns' => array(
 		'name' => array(

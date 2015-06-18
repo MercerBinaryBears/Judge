@@ -29,6 +29,36 @@ class SolutionTest extends TestCase {
 		Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($user);
 	}
 
+    public function testProblemRelationship()
+    {
+        $solution = new Solution();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $solution->problem());
+    }
+
+    public function testUserRelationship()
+    {
+        $solution = new Solution();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $solution->user());
+    }
+
+    public function testSolutionStateRelationship()
+    {
+        $solution = new Solution();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $solution->solutionState());
+    }
+
+    public function testClaimingJudge()
+    {
+        $solution = new Solution();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $solution->claimingJudge());
+    }
+
+    public function testLanguage()
+    {
+        $solution = new Solution();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $solution->language());
+    }
+
 	public function testNoLoginNoAlter() {
 		$this->mockUser();
 		$this->mockSolution('save');
@@ -74,6 +104,20 @@ class SolutionTest extends TestCase {
 
 		$this->assertTrue($this->solution->canBeAltered());
 	}
+
+    public function testOwnedByCurrentUserWithMismatch()
+    {
+        Auth::shouldReceive('id')->once()->andReturn(1);
+        $solution = new Solution(['claiming_judge_id' => 2]);
+        $this->assertFalse($solution->ownedByCurrentUser());
+    }
+
+    public function testOwnedByCurrentUserWithMatch()
+    {
+        Auth::shouldReceive('id')->once()->andReturn(1);
+        $solution = new Solution(['claiming_judge_id' => 1]);
+        $this->assertTrue($solution->ownedByCurrentUser());
+    }
 
 	public function testClaimingFailsForNonAlterable() {
 		$this->mockUser(12, true);

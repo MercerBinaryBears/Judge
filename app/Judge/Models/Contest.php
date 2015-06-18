@@ -1,9 +1,11 @@
 <?php namespace Judge\Models;
 
-use Carbon\Carbon as Carbon;
+use Carbon\Carbon;
 
 class Contest extends Base
 {
+    protected $fillable = array('name', 'starts_at', 'ends_at');
+
     /**
      * Validation rules for a contest
      */
@@ -38,5 +40,10 @@ class Contest extends Base
     {
         return $query->where('starts_at', '<=', Carbon::now()->format('Y-m-d H:i:s'))
             ->orderBy('starts_at', 'desc');
+    }
+
+    public function getDates()
+    {
+        return array_merge(parent::getDates(), ['starts_at']);
     }
 }

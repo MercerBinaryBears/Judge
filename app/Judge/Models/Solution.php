@@ -19,13 +19,22 @@ class Solution extends Base
         'solution_code' => 'required',
         'language_id' => 'required',
         'solution_state_id' => 'required',
+        'solution_filename' => 'required',
         );
 
     /**
      * The set of attributes that can be mass-assigned onto a solution via
      * $solution->fill($input_array);
      */
-    protected $fillable = array('problem_id', 'user_id', 'solution_code', 'solution_language', 'solution_state_id');
+    protected $fillable = array(
+        'problem_id',
+        'user_id',
+        'solution_code',
+        'language_id',
+        'solution_state_id',
+        'claiming_judge_id',
+        'solution_filename'
+    );
 
     /**
      * Gets the problem that this solution solves
@@ -90,8 +99,8 @@ class Solution extends Base
      */
     public function scopeForCurrentContest($query)
     {
-        $problems = Problem::forCurrentContest()->get();
-        return $query->whereIn('problem_id', $problems->modelKeys())->orderBy('created_at');
+        $problem_ids = Problem::forCurrentContest()->lists('problems.id');
+        return $query->whereIn('problem_id', $problem_ids)->orderBy('created_at');
     }
 
     /**
@@ -137,7 +146,7 @@ class Solution extends Base
      */
     public function ownedByCurrentUser()
     {
-        return $this->claiming_judge_id == Auth::user()->id;
+        return $this->claiming_judge_id == Auth::id();
     }
 
     /**

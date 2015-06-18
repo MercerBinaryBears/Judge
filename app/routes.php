@@ -34,36 +34,4 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
     // Authentication routes
     Route::post('/login', array('as'=>'login', 'uses'=>'UserController@login'));
     Route::get('/logout', array('as'=>'logout', 'uses'=>'UserController@logout'));
-
-    // API Routes
-    Route::group(array('before'=>'apiAuth', 'prefix'=>'api'), function(){
-
-        // a ping pong route to verify api access
-        Route::get('ping', array('as'=>'api_ping', function(){
-            return ApiController::formatJSend('pong');
-        }));
-
-        // provide solution types
-        Route::get('solutionStates', array('as'=>'', 'uses'=>'ApiController@getSolutionStates'));
-
-        // Solution API routes
-        Route::group(array('prefix'=>'solutions'), function(){
-
-            // a listing of all available solutions
-            Route::get('', array('as'=>'api_get', 'uses'=>'ApiController@show'));
-
-            // claiming of solutions
-            Route::get('{id}/claim', array('as'=>'api_claim', 'uses'=>'ApiController@claim'));
-
-            // unclaim solutions
-            Route::get('{id}/unclaim', array('as'=>'api_unclaim', 'uses'=>'ApiController@unclaim'));
-
-            // update solutions
-            Route::post('{id}', array('as'=>'api_update', 'uses'=>'ApiController@update'));
-
-            // solution package
-            Route::get('{id}/package', array('as'=>'api_package', 'uses'=>'ApiController@package'));
-
-        });
-    });
 });

@@ -11,8 +11,19 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory>./app/tests/</directory>
+        <testsuite name="unit">
+            <directory>./app/tests/unit</directory>
         </testsuite>
+        <testsuite name="integration">
+            <directory>./app/tests/integration</directory>
+        </testsuite> 
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./app/Judge</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="build/coverage" charset="UTF-8" />
+    </logging>
 </phpunit>
