@@ -1,6 +1,7 @@
 Judge
 =====
 [![Build Status](https://travis-ci.org/chipbell4/Judge.svg?branch=develop)](https://travis-ci.org/chipbell4/Judge)
+[![Coverage Status](https://coveralls.io/repos/chipbell4/Judge/badge.svg)](https://coveralls.io/r/chipbell4/Judge)
 
 ## Menu ##
 * [Setup](#setup)
