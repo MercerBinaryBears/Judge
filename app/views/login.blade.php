@@ -6,10 +6,10 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="text-center">
                 <img src="/logo.png" style="height:5em;" />
+                {{ Form::text('username', Input::old('username'), array('placeholder' => 'Username', 'class' => 'form-control')) }}
+                {{ Form::password('password', array('placeholder'=>'Password', 'class' => 'form-control')) }}
+                {{ Form::submit('Login', array('class'=>'btn btn-default')) }}
             </div>
-            {{ Form::text('username', Input::old('username'), array('placeholder' => 'Username', 'class' => 'form-control')) }}
-            {{ Form::password('password', array('placeholder'=>'Password', 'class' => 'form-control')) }}
-            {{ Form::submit('Login', array('class'=>'btn btn-info')) }}
         </div>
     </div>
 </form>
