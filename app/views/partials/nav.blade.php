@@ -13,7 +13,7 @@
         <a class="admin-link" href="/solutions"><i data-toggle="tooltip" data-placement="right" title="Judge"class="fa fa-gavel"></i></a>
         <a class="admin-link" href="/messages">
             <i data-toggle="tooltip" data-placement="right" title="Messages" class="fa fa-envelope-o"></i>
-            @include('partials.message_count', array('message_count' => 1))
+            @include('partials.message_count')
         </a>
         @endif
 
