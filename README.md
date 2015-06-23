@@ -10,9 +10,9 @@ Judge
 ## <a name='setup'/> Setup
 Steps to set up Judge on your machine:
 
-1. Make sure you have PHP 5.4 with PDO, SQlite, and MCrypt enabled.
+1. Make sure you have PHP 5.4 or greater with PDO, SQlite, and MCrypt enabled.
 2. Have [Composer](http://getcomposer.org) installed and in your PATH.
-3. Run ```composer install``` to install any dependencies. This will also run a couple of extra steps within ```setup.sh```
+3. Run ```composer install``` to install any dependencies.
 4. Run ```php artisan migrate --seed``` which will setup the database, and fill with some dummy data.
 5. Run ```php artisan serve``` to start the server on port 8000.
 
