@@ -5,6 +5,8 @@ Route::group(array('namespace' => 'Judge\Controllers'), function () {
     // home route. This is where the scoreboard lives.
     Route::get('/', array('as'=>'index', 'uses'=>'HomeController@index'));
 
+    Route::get('/login', array('uses' => 'HomeController@login'));
+
     Route::group(array('before' => 'auth'), function () {
         Route::get('/solutions', array('as' => 'solutions.index', 'uses' => 'SolutionController@index'));
 
