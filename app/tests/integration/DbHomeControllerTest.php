@@ -24,4 +24,10 @@ class DbHomeControllerTest extends DbTestCase
         $this->assertCount(1, $view['contest_summaries']);
         $this->assertCount(1, $view['problems']);
     }
+
+    public function testLogin()
+    {
+        $controller = App::make('Judge\Controllers\HomeController');
+        $controller->login();
+    }
 }
