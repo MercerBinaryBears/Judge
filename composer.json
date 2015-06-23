@@ -28,12 +28,6 @@
         }
 	},
 	"scripts": {
-		"post-install-cmd": [
-			"bash setup.sh"
-		],
-		"post-update-cmd": [
-			"bash setup.sh"
-		],
 		"post-create-project-cmd": [
 			"php artisan key:generate"
 		]
