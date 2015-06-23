@@ -30,6 +30,11 @@
 		@section('scripts')
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script>    
+        $(function() {
+            $('[data-toggle=tooltip]').tooltip();
+        });
+        </script>
 		@show
 	</body>
 </html>
