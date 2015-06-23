@@ -29,4 +29,9 @@ class HomeController extends BaseController
             ->with('contest_summaries', $contest_summaries)
             ->with('problems', $current_contest->problems);
     }
+
+    public function login()
+    {
+        return View::make('login');
+    }
 }

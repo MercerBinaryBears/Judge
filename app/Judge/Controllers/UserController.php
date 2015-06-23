@@ -17,7 +17,7 @@ class UserController extends BaseController
             return Redirect::route('index');
         }
 
-        return Redirect::route('index')->withInput(Input::except('password'));
+        return Redirect::to('login')->withInput(Input::except('password'));
     }
 
     /**
