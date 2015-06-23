@@ -54,6 +54,6 @@ class BaseController extends Controller
      */
     protected function bindMessageCount()
     {
-        View::share('message_count', 1);    
+        View::share('message_count', $this->messages->unresponded()->count());
     }
 }
