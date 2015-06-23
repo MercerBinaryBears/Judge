@@ -4,6 +4,7 @@
 		<title>Judge</title>
 		@section('styles')
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <style rel="stylesheet" type="text/css">
         body {
             padding-top: 70px;
