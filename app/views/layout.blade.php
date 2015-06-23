@@ -3,7 +3,7 @@
 	<head>
 		<title>Judge</title>
 		@section('styles')
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
         <style rel="stylesheet" type="text/css">
         body {
             padding-top: 70px;
