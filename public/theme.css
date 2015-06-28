@@ -10,17 +10,6 @@
     width: 80%;
 }
 
-.message-count {
-    font-size: 0.5em;
-    display: inline-block;
-    min-width: 1.5em;
-    position: absolute;
-    background-color: #ff6;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-}
-
 .login-form img {
     height: 6em;
 }
