@@ -16,7 +16,7 @@
     </div>
     @if(Auth::user()->judge || Auth::user()->admin)
     <div class="panel-footer">
-        {{ link_to_route('edit_solution', 'Edit', array('id'=>$solution->id), array('class' => 'btn btn-default')) }}
+        <a href="/judge/solutions/{{ $solution->id }}/edit" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
     </div>
     @endif
 </div>
