@@ -8,16 +8,7 @@
         <div class="col-md-6">
             <h3>Unjudged Solutions</h3>
             @foreach($unjudged_solutions as $solution)
-                <dl class='dl-horizontal'>
-                    <dt>Problem</dt>
-                    <dd>{{ $solution->problem->name }}</dt>
-                    <dt>Submitted</dt>
-                    <dd>{{ $solution->submissionPrettyDiff() }}</dd>
-                    <dt>Team</dt>
-                    <dd>{{$solution->user->username}}</dd>
-                    <dt></dt>
-                    <dd>{{ link_to_route('edit_solution', 'Claim', array('id'=>$solution->id), array('class' => 'btn btn-default')) }}</dd>
-                </dl>
+                @include('Solutions.solution', compact('solution'))
             @endforeach
             </ul>
         </div>
