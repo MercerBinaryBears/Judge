@@ -12,6 +12,10 @@
             by <span class="label label-primary">{{ $solution->claimingJudge->username }}</span>
         @else
             by <span class="label label-primary">{{ $solution->user->username }}</span>
+            @if(!$solution->solution_state->pending)
+            and judged
+            <span class="label label-{{ $solution->solution_state->bootstrap_color }}">{{ $solution->solution_state->name }}</span>
+            @endif
         @endif
     </div>
     @if(Auth::user()->judge || Auth::user()->admin)
