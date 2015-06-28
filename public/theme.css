@@ -26,3 +26,7 @@
 .login-form img, .login-form input {
     margin-bottom: 2em;
 }
+
+.solution-panel .label {
+    font-size: 85%;
+}
