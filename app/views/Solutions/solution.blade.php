@@ -3,24 +3,15 @@
         <div class="panel-title">
             {{ $solution->problem->name }}
         </div>
-        {{ $solution->submissionPrettyDiff() }}
     </div>
     <div class="panel-body">
-        @if(Auth::user()->team)
-            <dt>Judged By</dt>
-            <dd>
-                @if($solution->claiming_judge_id != null)
-                    {{$solution->claimingJudge->username}}
-                @else
-                    No one yet
-                @endif
-            </dd>
+        Submitted {{ $solution->submissionPrettyDiff() }}
+        @if(Auth::user()->team && $solution->claiming_judge_id != null)
+            and judged {{ $solution->solution_state->name }}
+            by {{ $solution->claimingJudge->username }}
         @else
-            <dt>Team</dt>
-            <dd>{{ $solution->user->username}}</dd>
+            by {{ $solution->user->username }}
         @endif
-        <dt>Judged as</dt>
-        <dd>{{ $solution->solution_state->name }}</dd>
     </div>
     @if(Auth::user()->judge || Auth::user()->admin)
     <div class="panel-footer">
