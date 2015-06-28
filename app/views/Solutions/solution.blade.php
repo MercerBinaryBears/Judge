@@ -1,16 +1,17 @@
-<div class="panel panel-{{ $solution->solution_state->bootstrap_color }}">
+<div class="panel panel-{{ $solution->solution_state->bootstrap_color }} solution-panel">
     <div class="panel-heading">
         <div class="panel-title">
             {{ $solution->problem->name }}
         </div>
     </div>
     <div class="panel-body">
-        Submitted {{ $solution->submissionPrettyDiff() }}
+        Submitted <span class="label label-info">{{ $solution->submissionPrettyDiff() }}</span>
         @if(Auth::user()->team && $solution->claiming_judge_id != null)
-            and judged {{ $solution->solution_state->name }}
-            by {{ $solution->claimingJudge->username }}
+            and judged
+            <span class="label label-{{ $solution->solution_state->bootstrap_color }}">{{ $solution->solution_state->name }}</span>
+            by <span class="label label-info">{{ $solution->claimingJudge->username }}</span>
         @else
-            by {{ $solution->user->username }}
+            by <span class="label label-info">{{ $solution->user->username }}</span>
         @endif
     </div>
     @if(Auth::user()->judge || Auth::user()->admin)
