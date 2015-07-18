@@ -8,9 +8,9 @@ class ApiController extends BaseController
     /**
      * Formats an array in JSEND format
      *
-     * @param array $data The data to send to the user
-     * @param bool $success If the response is a success
-     * @param int $code The HTTP status code of the response. Defaults to 200
+     * @param array  $data    The data to send to the user
+     * @param bool   $success If the response is a success
+     * @param int    $code    The HTTP status code of the response. Defaults to 200
      * @param string $message The message to send to the user
      *
      * @return Response
