@@ -1,6 +1,6 @@
 <?php namespace Judge\Models;
 
-class ContestSummary
+class ContestSummary extends Base
 {
     /**
      * The user this contest summary represents
