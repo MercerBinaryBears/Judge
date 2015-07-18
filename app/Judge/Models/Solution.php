@@ -77,24 +77,6 @@ class Solution extends Base
     }
 
     /**
-     * Overrides the getter for the created_at field, so that
-     * it formats well on the admin
-     */
-    // public function getCreatedAtAttribute($value) {
-    //  if(!is_numeric($value)) {
-    //      $value = strtotime($value);
-    //  }
-
-    //  $contest_start_time = $this->problem->contest->starts_at;
-    //  if(!is_numeric($contest_start_time)) {
-    //      $contest_start_time = strtotime($contest_start_time);
-    //  }
-    //  return Carbon::createFromTimestamp($value)
-    //      ->diffForHumans(Carbon::createFromTimestamp($contest_start_time))
-    //      . ' contest start time';
-    // }
-
-    /**
      * Gets the solutions for the current contest
      */
     public function scopeForCurrentContest($query)
