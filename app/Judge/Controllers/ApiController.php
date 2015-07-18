@@ -12,6 +12,8 @@ class ApiController extends BaseController
      * @param bool $success If the response is a success
      * @param int $code The HTTP status code of the response. Defaults to 200
      * @param string $message The message to send to the user
+     *
+     * @return Response
      */
     public static function formatJSend($data = array(), $success = true, $code = 200, $message = '')
     {
