@@ -32,7 +32,9 @@ class ContestSummary extends Base
          */
         if ($c1->problems_solved < $c2->problems_solved) {
             return 1;
-        } elseif ($c1->problems_solved > $c2->problems_solved) {
+        }
+
+        if ($c1->problems_solved > $c2->problems_solved) {
             return -1;
         }
 
@@ -41,7 +43,9 @@ class ContestSummary extends Base
          */
         if ($c1->penalty_points < $c2->penalty_points) {
             return -1;
-        } elseif ($c1->penalty_points > $c2->penalty_points) {
+        }
+
+        if ($c1->penalty_points > $c2->penalty_points) {
             return 1;
         }
 
