@@ -1,6 +1,7 @@
 <?php
 
-use Carbon\Carbon as Carbon;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 use Judge\Models\Contest;
 use Judge\Models\Problem;
 use Judge\Models\Solution;
