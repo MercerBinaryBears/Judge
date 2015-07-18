@@ -20,7 +20,7 @@ class Solution extends Base
         'language_id' => 'required',
         'solution_state_id' => 'required',
         'solution_filename' => 'required',
-        );
+    );
 
     /**
      * The set of attributes that can be mass-assigned onto a solution via
@@ -154,7 +154,6 @@ class Solution extends Base
      */
     public function claim()
     {
-
         // check that the user can alter the problem first
         if (!$this->canBeAltered()) {
             return false;
@@ -172,7 +171,6 @@ class Solution extends Base
      */
     public function unclaim()
     {
-
         // check that the judge has permission
         if (!$this->canBeAltered()) {
             return false;
@@ -191,7 +189,6 @@ class Solution extends Base
     public function submissionPrettyDiff()
     {
         // get the contest for this solution
-
         $current_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         $submission_time = new Carbon($this->created_at);

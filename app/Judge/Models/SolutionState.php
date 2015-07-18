@@ -9,7 +9,7 @@ class SolutionState extends Base
      */
     public static $rules = array(
         'name'=>'required'
-        );
+    );
 
     /**
      * Gets all of the solutions with a give solution state
