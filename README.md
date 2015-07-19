@@ -13,8 +13,10 @@ Steps to set up Judge on your machine:
 1. Make sure you have PHP 5.4 or greater with PDO, SQlite, and MCrypt enabled.
 2. Have [Composer](http://getcomposer.org) installed and in your PATH.
 3. Run ```composer install``` to install any dependencies.
-4. Run ```php artisan migrate --seed``` which will setup the database, and fill with some dummy data.
-5. Run ```php artisan serve``` to start the server on port 8000.
+4. Run ```touch app/database/production.sqlite``` to create the empty
+   database file.
+5. Run ```php artisan migrate --seed``` which will setup the database, and fill with some dummy data.
+6. Run ```php artisan serve``` to start the server on port 8000.
 
 NOTE: If you are developing on the project, I'd recommend a ```composer install``` after any pull, followed by a
 ```php artisan migrate``` to capture any new packages/database changes that have been included in the application.
