@@ -63,7 +63,8 @@ class User extends Base implements UserInterface, RemindableInterface
     /**
      * Generates a random API key for a user. VERY low chance of non-uniqueness
      *
-     * @param The string length for the key. Default is 20
+     * @param int $length The string length for the key. Default is 20.
+     *
      * @return string
      */
     public static function generateApiKey($length = 20)

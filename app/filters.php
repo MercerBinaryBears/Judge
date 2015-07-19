@@ -38,28 +38,31 @@ Route::filter('auth', function() {
 });
 
 Route::filter('admin', function(){
-	if(!Auth::check()) {
+	if (!Auth::check()) {
 		return Redirect::to('/');
 	}
-	else if(!Auth::user()->admin) {
+
+	if (!Auth::user()->admin) {
 		return Redirect::to('/');
 	}
 });
 
 Route::filter('judge', function(){
-	if(!Auth::check()) {
+	if (!Auth::check()) {
 		return Redirect::to('/');
 	}
-	else if(!Auth::user()->judge && !Auth::user()->admin) {
+
+	if (!Auth::user()->judge && !Auth::user()->admin) {
 		return Redirect::to('/');
 	}
 });
 
 Route::filter('team', function() {
-	if(!Auth::check()) {
+	if (!Auth::check()) {
 		return Redirect::to('/');
 	}
-	else if(!Auth::user()->team && !Auth::user()->admin) {
+
+	if (!Auth::user()->team && !Auth::user()->admin) {
 		return Redirect::to('/');
 	}
 });
@@ -75,7 +78,7 @@ Route::filter('team', function() {
 Route::filter('apiAuth', function() {
 
 	// if the user did not provide an api key, kick them out
-	if(!Input::has('api_key')) {
+	if (!Input::has('api_key')) {
 		App::abort(401, 'No API key provided');
 	}
 
@@ -83,12 +86,12 @@ Route::filter('apiAuth', function() {
 	$user = User::where('api_key', '=', Input::get('api_key'))->first();
 
 	// check that we found a user
-	if($user == null) {
+	if ($user == null) {
 		App::abort(401, 'Invalid API key');
 	}
 
 	// lastly, check that they are a judge or admin
-	if(!$user->admin && !$user->judge) {
+	if (!$user->admin && !$user->judge) {
 		App::abort(401, 'No Permission');
 	}
 

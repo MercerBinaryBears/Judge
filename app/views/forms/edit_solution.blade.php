@@ -5,7 +5,7 @@
 <div class="col-md-6">
 	<dl class='dl-horizontal'>
 		<dt>Problem</dt>
-		<dd>{{ $solution->problem->name }}</dt>
+		<dd>{{ $solution->problem->name }}</dd>
 		<dt>Submitted</dt>
 		<dd>{{ $solution->created_at }}</dd>
 		<dt>Team</dt>

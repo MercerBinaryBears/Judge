@@ -1,5 +1,6 @@
 <?php namespace Judge\Repositories;
 
+use Illuminate\Support\Collection;
 use Judge\Models\Contest;
 use Judge\Repositories\ContestRepository;
 use Judge\Repositories\ProblemRepository;
@@ -34,7 +35,7 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest($c);
 
         if ($problems->count() < 1) {
-            return \Illuminate\Support\Collection::make(array());
+            return Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
@@ -53,7 +54,7 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest();
 
         if ($problems->count() < 1) {
-            return \Illuminate\Support\Collection::make(array());
+            return Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
@@ -70,7 +71,7 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest();
 
         if ($problems->count() < 1) {
-            return \Illuminate\Support\Collection::make(array());
+            return Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
