@@ -20,7 +20,7 @@ class Solution extends Base
         'language_id' => 'required',
         'solution_state_id' => 'required',
         'solution_filename' => 'required',
-        );
+    );
 
     /**
      * The set of attributes that can be mass-assigned onto a solution via
@@ -75,24 +75,6 @@ class Solution extends Base
     {
         return $this->belongsTo('Judge\Models\Language');
     }
-
-    /**
-     * Overrides the getter for the created_at field, so that
-     * it formats well on the admin
-     */
-    // public function getCreatedAtAttribute($value) {
-    //  if(!is_numeric($value)) {
-    //      $value = strtotime($value);
-    //  }
-
-    //  $contest_start_time = $this->problem->contest->starts_at;
-    //  if(!is_numeric($contest_start_time)) {
-    //      $contest_start_time = strtotime($contest_start_time);
-    //  }
-    //  return Carbon::createFromTimestamp($value)
-    //      ->diffForHumans(Carbon::createFromTimestamp($contest_start_time))
-    //      . ' contest start time';
-    // }
 
     /**
      * Gets the solutions for the current contest
@@ -154,7 +136,6 @@ class Solution extends Base
      */
     public function claim()
     {
-
         // check that the user can alter the problem first
         if (!$this->canBeAltered()) {
             return false;
@@ -172,7 +153,6 @@ class Solution extends Base
      */
     public function unclaim()
     {
-
         // check that the judge has permission
         if (!$this->canBeAltered()) {
             return false;
@@ -191,7 +171,6 @@ class Solution extends Base
     public function submissionPrettyDiff()
     {
         // get the contest for this solution
-
         $current_contest = App::make('Judge\Repositories\ContestRepository')->firstCurrent();
 
         $submission_time = new Carbon($this->created_at);

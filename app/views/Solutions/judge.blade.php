@@ -10,7 +10,6 @@
             @foreach($unjudged_solutions as $solution)
                 @include('Solutions.solution', compact('solution'))
             @endforeach
-            </ul>
         </div>
         <div class="col-md-6">
             <h3>Your Judged Solutions</h3>
