@@ -12,7 +12,7 @@ done
 composer install --no-dev
 
 # now tar everything up
-files="app/commands app/config app/database app/Judge app/lang app/library app/start app/storage app/views bootstrap public vendor artisan"
+files="VERSION app/*.php app/commands app/config app/database app/Judge app/lang app/library app/start app/storage app/views bootstrap public vendor artisan"
 tar czvf site.tgz $files
 
 # Go back to development mode
