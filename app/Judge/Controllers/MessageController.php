@@ -19,9 +19,11 @@ class MessageController extends BaseController
                 ->withUnrespondedMessages($this->messages->unresponded());
         }
 
+        $sent_messages = $user->sentMessages()->orderBy('created_at', 'DESC');
+
         return View::make('Messages.team')
             ->withProblems($this->problems->forContest())
-            ->withMessages(Auth::user()->sent_messages)
+            ->withMessages($sent_messages)
             ->withGlobalMessages($this->messages->allGlobal());
     }
 
