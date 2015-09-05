@@ -5,6 +5,7 @@ use Judge\Models\Base;
 class Message extends Base
 {
     public static $rules = array(
+        'contest_id' => 'required',
         'sender_id' => 'required',
         'text' => 'required'
     );
