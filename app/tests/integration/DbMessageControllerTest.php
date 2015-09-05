@@ -47,6 +47,7 @@ class DbMessageControllerTest extends DbTestCase
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($team);
         
         $this->action('POST', 'Judge\Controllers\MessageController@store', [
+            'contest_id' => Factory::create('contest')->id,
             'text' => 'TEXT'
         ]);
 
@@ -62,6 +63,7 @@ class DbMessageControllerTest extends DbTestCase
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($judge);
 
         $this->action('POST', 'Judge\Controllers\MessageController@store', [
+            'contest_id' => Factory::create('contest')->id,
             'text' => 'TEXT'
         ]);
 
