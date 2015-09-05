@@ -8,6 +8,7 @@ class MessageRepository
     public function allGlobal()
     {
         return Message::whereIsGlobal(true)
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 
@@ -15,6 +16,7 @@ class MessageRepository
     {
         return Message::whereIsGlobal(false)
             ->whereResponderId(null)
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 }
