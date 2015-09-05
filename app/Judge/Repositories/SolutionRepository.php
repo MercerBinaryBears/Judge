@@ -76,7 +76,7 @@ class SolutionRepository
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereUserId($u->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 
