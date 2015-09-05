@@ -11,6 +11,14 @@ class Message extends Base
 
     protected $guarded = array('id', 'created_at', 'updated_at');
 
+    /**
+     * Gets the contest associated with this message
+     */
+    public function contest()
+    {
+        return $this->belongsTo('Judge\Models\Contest');
+    }
+
     public function problem()
     {
         return $this->belongsTo('Judge\Models\Problem');
