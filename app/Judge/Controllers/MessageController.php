@@ -12,17 +12,18 @@ class MessageController extends BaseController
     public function index()
     {
         $user = Auth::user();
+        $contest_problems = $this->problems->forContest();
 
         if ($user->judge || $user->admin) {
             return View::make('Messages.judge')
-                ->withProblems($this->problems->forContest())
+                ->withProblems($contest_problems)
                 ->withUnrespondedMessages($this->messages->unresponded());
         }
 
         $sent_messages = $user->sentMessages()->orderBy('created_at', 'DESC');
 
         return View::make('Messages.team')
-            ->withProblems($this->problems->forContest())
+            ->withProblems($contest_problems)
             ->withMessages($sent_messages)
             ->withGlobalMessages($this->messages->allGlobal());
     }
