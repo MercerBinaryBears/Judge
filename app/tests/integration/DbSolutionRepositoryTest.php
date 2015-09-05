@@ -40,6 +40,32 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->assertCount(1, $this->repo->judgeableForContest());
     }
 
+    public function testJudgeableForContestForCorrectSorting()
+    {
+        $pending_state = SolutionState::wherePending(true)->first()->id;
+
+        $problem = Factory::create('problem');
+
+        $solution_1 = Factory::create('solution', [
+            'problem_id' => $problem->id, 
+            'solution_state_id' => $pending_state, 
+            'created_at' => Carbon::now()->subHour()
+        ]);
+
+        $solution_2 = Factory::create('solution', [
+            'problem_id' => $problem->id,
+            'solution_state_id' => $pending_state,
+        ]);
+
+        $results = $this->repo->judgeableForContest();
+
+        $this->assertCount(2, $results);
+
+        // Judged solutions should be in reverse chronological order
+        $this->assertEquals($solution_2, $results[0]);
+        $this->assertEquals($solution_1, $results[1]);
+    }
+
     public function testClaimedByJudgeInEmptyContest()
     {
         $judge = Factory::create('judge');
@@ -80,6 +106,33 @@ class DbSolutionRepositoryTest extends DbTestCase
         $user = $solution->user;
 
         $this->assertCount(1, $this->repo->forUserInContest($user));
+    }
+
+    public function testForUserInContestForCorrectSorting()
+    {
+        $problem = Factory::create('problem');
+        $user = Factory::create('team');
+
+        $solution_1 = Factory::create('solution', [
+            'problem_id' => $problem->id, 
+            'solution_state_id' => $pending_state, 
+            'created_at' => Carbon::now()->subHour(),
+            'user_id' => $user->id,
+        ]);
+
+        $solution_2 = Factory::create('solution', [
+            'problem_id' => $problem->id,
+            'solution_state_id' => $pending_state,
+            'user_id' => $user->id,
+        ]);
+
+        $results = $this->repo->forUserInContest($user, $problem->contest);
+
+        $this->assertCount(2, $results);
+
+        // Judged solutions should be in reverse chronological order
+        $this->assertEquals($solution_2, $results[1]);
+        $this->assertEquals($solution_1, $results[0]);
     }
 
     public function testHasCorrectSolutionFromUser()
