@@ -27,14 +27,15 @@ class DbMessageRepositoryTest extends DbTestCase
 
     public function testAllGlobalForCorrectSorting()
     {
-        $message_1 = Factory::create('message', ['is_global' => true, 'created_at' => Carbon::now()->subDay()]);
-        $message_2 = Factory::create('message', ['is_global' => true, 'created_at' => Carbon::now()]);
+        $contest = Factory::create('contest');
+        $message_1 = Factory::create('message', ['is_global' => true, 'created_at' => Carbon::now()->subDay(), 'contest_id' => $contest->id]);
+        $message_2 = Factory::create('message', ['is_global' => true, 'created_at' => Carbon::now(), 'contest_id' => $contest->id]);
 
         $results = $this->repo->allGlobal();
 
         // Results should appear in reverse chronological order
-        $this->assertEquals($message_2, $results[0]);
-        $this->assertEquals($message_1, $results[1]);
+        $this->assertEquals($message_2->id, $results[0]->id);
+        $this->assertEquals($message_1->id, $results[1]->id);
     }
 
     public function testAllGlobalForDifferentContest()
@@ -64,8 +65,9 @@ class DbMessageRepositoryTest extends DbTestCase
 
     public function testUnrespondedForCorrectSorting()
     {
-        $message_1 = Factory::create('message', ['is_global' => false, 'responder_id' => null, 'created_at' => Carbon::now()->subDay()]);
-        $message_2 = Factory::create('message', ['is_global' => false, 'responder_id' => null, 'created_at' => Carbon::now()]);
+        $contest = Factory::create('contest');
+        $message_1 = Factory::create('message', ['is_global' => false, 'responder_id' => null, 'created_at' => Carbon::now()->subDay(), 'contest_id' => $contest->id]);
+        $message_2 = Factory::create('message', ['is_global' => false, 'responder_id' => null, 'created_at' => Carbon::now(), 'contest_id' => $contest->id]);
 
         $results = $this->repo->unresponded();
 
