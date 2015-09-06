@@ -10,6 +10,11 @@ class ContestTest extends TestCase
 
         $this->contest = new Contest();
     }
+
+    public function testMessages()
+    {
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $this->contest->messages());
+    }
     
     public function testProblems()
     {

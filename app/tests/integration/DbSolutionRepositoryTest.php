@@ -40,6 +40,32 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->assertCount(1, $this->repo->judgeableForContest());
     }
 
+    public function testJudgeableForContestForCorrectSorting()
+    {
+        $pending_state = SolutionState::wherePending(true)->first()->id;
+
+        $problem = Factory::create('problem');
+
+        $solution_1 = Factory::create('solution', [
+            'problem_id' => $problem->id, 
+            'solution_state_id' => $pending_state, 
+            'created_at' => Carbon::now()->subHour()
+        ]);
+
+        $solution_2 = Factory::create('solution', [
+            'problem_id' => $problem->id,
+            'solution_state_id' => $pending_state,
+        ]);
+
+        $results = $this->repo->judgeableForContest();
+
+        $this->assertCount(2, $results);
+
+        // Judged solutions should be in chronological order
+        $this->assertEquals($solution_1->id, $results[0]->id);
+        $this->assertEquals($solution_2->id, $results[1]->id);
+    }
+
     public function testClaimedByJudgeInEmptyContest()
     {
         $judge = Factory::create('judge');
@@ -55,6 +81,31 @@ class DbSolutionRepositoryTest extends DbTestCase
         Factory::create('solution', ['claiming_judge_id' => $judge->id]);
 
         $this->assertCount(1, $this->repo->claimedByJudgeInContest($judge));
+    }
+
+    public function testClaimedByJudgeInContestForCorrectSorting()
+    {
+        $judge = Factory::create('judge');
+        $problem = Factory::create('problem');
+
+        $solution_1 = Factory::create('solution', [
+            'claiming_judge_id' => $judge->id,
+            'created_at' => Carbon::now()->subHour(),
+            'problem_id' => $problem->id,
+        ]);
+
+        $solution_2 = Factory::create('solution', [
+            'claiming_judge_id' => $judge->id,
+            'problem_id' => $problem->id,
+        ]);
+
+        $results = $this->repo->claimedByJudgeInContest($judge);
+
+        $this->assertCount(2, $results);
+
+        // Claimed solutions should be in reverse chronological order
+        $this->assertEquals($solution_1->id, $results[1]->id);
+        $this->assertEquals($solution_2->id, $results[0]->id);
     }
 
     public function testForUserInEmptyContest()
@@ -80,6 +131,35 @@ class DbSolutionRepositoryTest extends DbTestCase
         $user = $solution->user;
 
         $this->assertCount(1, $this->repo->forUserInContest($user));
+    }
+
+    public function testForUserInContestForCorrectSorting()
+    {
+        $pending_state = SolutionState::wherePending(true)->first()->id;
+
+        $problem = Factory::create('problem');
+        $user = Factory::create('team');
+
+        $solution_1 = Factory::create('solution', [
+            'problem_id' => $problem->id, 
+            'solution_state_id' => $pending_state, 
+            'created_at' => Carbon::now()->subHour(),
+            'user_id' => $user->id,
+        ]);
+
+        $solution_2 = Factory::create('solution', [
+            'problem_id' => $problem->id,
+            'solution_state_id' => $pending_state,
+            'user_id' => $user->id,
+        ]);
+
+        $results = $this->repo->forUserInContest($user, $problem->contest);
+
+        $this->assertCount(2, $results);
+
+        // Judged solutions should be in chronological order
+        $this->assertEquals($solution_1->id, $results[0]->id);
+        $this->assertEquals($solution_2->id, $results[1]->id);
     }
 
     public function testHasCorrectSolutionFromUser()
