@@ -12,8 +12,9 @@ class MessageRepository
         $this->contests = $contests;
     }
 
-    protected function resolveContest(Contest $contest = null) {
-        if($contest) {
+    protected function resolveContest(Contest $contest = null)
+    {
+        if ($contest) {
             return $contest;
         }
 
