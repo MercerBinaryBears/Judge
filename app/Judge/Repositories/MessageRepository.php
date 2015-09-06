@@ -16,7 +16,7 @@ class MessageRepository
     {
         return Message::whereIsGlobal(false)
             ->whereResponderId(null)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 }

@@ -59,7 +59,7 @@ class DbMessageRepositoryTest extends DbTestCase
         $results = $this->repo->unresponded();
 
         // Results should appear in reverse chronological order
-        $this->assertEquals($message_2->id, $results[0]->id);
-        $this->assertEquals($message_1->id, $results[1]->id);
+        $this->assertEquals($message_1->id, $results[0]->id);
+        $this->assertEquals($message_2->id, $results[1]->id);
     }
 }
