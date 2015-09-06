@@ -1,6 +1,7 @@
 <?php namespace Judge\Repositories;
 
 use Judge\Repositories\ContestRepository;
+use Judge\Models\Contest;
 use Judge\Models\User;
 use Judge\Models\Message;
 
@@ -24,6 +25,7 @@ class MessageRepository
         $contest = $this->resolveContest($contest);
 
         return Message::whereIsGlobal(true)
+            ->whereContestId($contest->id)
             ->orderBy('created_at', 'DESC')
             ->get();
     }
@@ -34,6 +36,7 @@ class MessageRepository
 
         return Message::whereIsGlobal(false)
             ->whereResponderId(null)
+            ->whereContestId($contest->id)
             ->orderBy('created_at', 'ASC')
             ->get();
     }

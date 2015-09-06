@@ -37,6 +37,17 @@ class DbMessageRepositoryTest extends DbTestCase
         $this->assertEquals($message_1, $results[1]);
     }
 
+    public function testAllGlobalForDifferentContest()
+    {
+        $message_1 = Factory::create('message', ['is_global' => true]);
+
+        $otherContest = Factory::create('contest');
+
+        $results = $this->repo->allGlobal($otherContest);
+
+        $this->assertCount(0, $results);
+    }
+
     public function testUnrespondedWithNoMatches()
     {
         // the message by default has a responder
@@ -61,5 +72,16 @@ class DbMessageRepositoryTest extends DbTestCase
         // Results should appear in reverse chronological order
         $this->assertEquals($message_1->id, $results[0]->id);
         $this->assertEquals($message_2->id, $results[1]->id);
+    }
+
+    public function testUnrespondedForOtherContest()
+    {
+        $message_1 = Factory::create('message', ['is_global' => false, 'responder_id' => null]);
+
+        $otherContest = Factory::create('contest');
+
+        $results = $this->repo->unresponded($otherContest);
+
+        $this->assertCount(0, $results);
     }
 }
