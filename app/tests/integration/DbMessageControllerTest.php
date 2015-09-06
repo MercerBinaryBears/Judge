@@ -43,11 +43,13 @@ class DbMessageControllerTest extends DbTestCase
 
     public function testStoreForTeam()
     {
+        // create the contest
+        Factory::create('contest');
+
         $team = Factory::create('team');
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($team);
         
         $this->action('POST', 'Judge\Controllers\MessageController@store', [
-            'contest_id' => Factory::create('contest')->id,
             'text' => 'TEXT'
         ]);
 
@@ -59,11 +61,13 @@ class DbMessageControllerTest extends DbTestCase
 
     public function testStoreForJudge()
     {
+        // create the contest
+        Factory::create('contest');
+
         $judge = Factory::create('judge');
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($judge);
 
         $this->action('POST', 'Judge\Controllers\MessageController@store', [
-            'contest_id' => Factory::create('contest')->id,
             'text' => 'TEXT'
         ]);
 
