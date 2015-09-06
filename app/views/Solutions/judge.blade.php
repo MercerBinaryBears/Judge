@@ -12,7 +12,7 @@
             @endforeach
         </div>
         <div class="col-md-6">
-            <h3>Your Judged Solutions</h3>
+            <h3>Your Claimed Solutions</h3>
             @foreach($claimed_solutions as $solution)
                 @include('Solutions.solution', compact('solution'))
             @endforeach
