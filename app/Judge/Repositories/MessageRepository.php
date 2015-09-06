@@ -14,11 +14,17 @@ class MessageRepository
 
     protected function resolveContest(Contest $contest = null)
     {
-        if ($contest) {
-            return $contest;
+        // No contest? try to find one
+        if (!$contest) {
+            $contest = $this->contests->firstCurrent();
         }
 
-        return $this->contests->firstCurrent();
+        // Still no contest, just use an empty one, so we can pull an empty id
+        if (!$contest) {
+            $contest = new Contest();
+        }
+
+        return $contest;
     }
 
     public function allGlobal(Contest $contest = null)

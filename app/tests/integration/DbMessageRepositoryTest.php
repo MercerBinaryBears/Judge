@@ -49,6 +49,13 @@ class DbMessageRepositoryTest extends DbTestCase
         $this->assertCount(0, $results);
     }
 
+    public function testAllGlobalWithMissingContest()
+    {
+        $results = $this->repo->allGlobal();
+
+        $this->assertCount(0, $results);
+    }
+
     public function testUnrespondedWithNoMatches()
     {
         // the message by default has a responder
