@@ -86,17 +86,20 @@ class DbSolutionRepositoryTest extends DbTestCase
     public function testClaimedByJudgeInContestForCorrectSorting()
     {
         $judge = Factory::create('judge');
+        $problem = Factory::create('problem');
 
         $solution_1 = Factory::create('solution', [
-            'claiming_judge_id' => $judge->id, 
-            'created_at' => Carbon::now()->subHour()
+            'claiming_judge_id' => $judge->id,
+            'created_at' => Carbon::now()->subHour(),
+            'problem_id' => $problem->id,
         ]);
 
         $solution_2 = Factory::create('solution', [
-            'claiming_judge_id' => $judge->id, 
+            'claiming_judge_id' => $judge->id,
+            'problem_id' => $problem->id,
         ]);
 
-        $results = $this->repo->claimedByJudgeInContest();
+        $results = $this->repo->claimedByJudgeInContest($judge);
 
         $this->assertCount(2, $results);
 
