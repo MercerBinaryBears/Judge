@@ -7,6 +7,7 @@ $factory('Judge\Models\Contest', 'contest', [
 ]);
 
 $factory('Judge\Models\Message', 'message', [
+    'contest_id' => 'factory:contest',
     'problem_id' => 'factory:problem',
     'text' => $faker->paragraph,
     'sender_id' => 'factory:team',

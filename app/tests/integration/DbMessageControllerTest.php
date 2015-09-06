@@ -11,10 +11,13 @@ class DbMessageControllerTest extends DbTestCase
         $judge = Factory::create('judge');
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($judge);
 
-        Factory::create('problem');
+        $contest = Factory::create('contest');
+
+        Factory::create('problem', ['contest_id' => $contest->id]);
         Factory::create('message', [
             'is_global' => false,
-            'responder_id' => null
+            'responder_id' => null,
+            'contest_id' => $contest->id
         ]);
 
         $view = App::make('Judge\Controllers\MessageController')->index();
@@ -24,15 +27,19 @@ class DbMessageControllerTest extends DbTestCase
 
     public function testIndexForTeam()
     {
+        $contest = Factory::create('contest');
+
         $team = Factory::create('team');
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($team);
 
-        Factory::create('problem');
+        Factory::create('problem', ['contest_id' => $contest->id]);
         Factory::create('message', [
-            'sender_id' => $team->id
+            'sender_id' => $team->id,
+            'contest_id' => $contest->id
         ]);
         Factory::create('message', [
-            'is_global' => true
+            'is_global' => true,
+            'contest_id' => $contest->id
         ]);
 
         $view = App::make('Judge\Controllers\MessageController')->index();
@@ -43,6 +50,9 @@ class DbMessageControllerTest extends DbTestCase
 
     public function testStoreForTeam()
     {
+        // create the contest
+        Factory::create('contest');
+
         $team = Factory::create('team');
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($team);
         
@@ -58,6 +68,9 @@ class DbMessageControllerTest extends DbTestCase
 
     public function testStoreForJudge()
     {
+        // create the contest
+        Factory::create('contest');
+
         $judge = Factory::create('judge');
         Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($judge);
 

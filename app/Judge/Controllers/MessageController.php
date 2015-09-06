@@ -31,7 +31,7 @@ class MessageController extends BaseController
     public function store()
     {
         $user = Auth::user();
-        $defaults = ['text' => '', 'sender_id' => $user->id];
+        $defaults = ['text' => '', 'sender_id' => $user->id, 'contest_id' => $this->contests->firstCurrent()->id];
 
         if ($user->judge || $user->admin) {
             $defaults['is_global'] = true;

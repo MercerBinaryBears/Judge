@@ -15,6 +15,14 @@ class Contest extends Base
     );
 
     /**
+     * Gets the messages associated with a contest
+     */
+    public function messages()
+    {
+        return $this->hasMany('Judge\Models\Message');
+    }
+
+    /**
      * Gets the problems associated with a contest
      */
     public function problems()
