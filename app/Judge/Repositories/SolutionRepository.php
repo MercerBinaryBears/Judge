@@ -41,7 +41,7 @@ class SolutionRepository
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereSolutionStateId($this->solution_states->firstPendingId())
             ->whereClaimingJudgeId(null)
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 
@@ -59,6 +59,7 @@ class SolutionRepository
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereClaimingJudgeId($u->id)
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 
@@ -76,7 +77,7 @@ class SolutionRepository
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereUserId($u->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 
