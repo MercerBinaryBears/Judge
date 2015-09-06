@@ -62,8 +62,8 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->assertCount(2, $results);
 
         // Judged solutions should be in reverse chronological order
-        $this->assertEquals($solution_2, $results[0]);
-        $this->assertEquals($solution_1, $results[1]);
+        $this->assertEquals($solution_2->id, $results[0]->id);
+        $this->assertEquals($solution_1->id, $results[1]->id);
     }
 
     public function testClaimedByJudgeInEmptyContest()
@@ -110,6 +110,8 @@ class DbSolutionRepositoryTest extends DbTestCase
 
     public function testForUserInContestForCorrectSorting()
     {
+        $pending_state = SolutionState::wherePending(true)->first()->id;
+
         $problem = Factory::create('problem');
         $user = Factory::create('team');
 
@@ -131,8 +133,8 @@ class DbSolutionRepositoryTest extends DbTestCase
         $this->assertCount(2, $results);
 
         // Judged solutions should be in reverse chronological order
-        $this->assertEquals($solution_2, $results[1]);
-        $this->assertEquals($solution_1, $results[0]);
+        $this->assertEquals($solution_2->id, $results[1]->id);
+        $this->assertEquals($solution_1->id, $results[0]->id);
     }
 
     public function testHasCorrectSolutionFromUser()
