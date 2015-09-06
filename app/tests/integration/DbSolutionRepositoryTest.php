@@ -61,9 +61,9 @@ class DbSolutionRepositoryTest extends DbTestCase
 
         $this->assertCount(2, $results);
 
-        // Judged solutions should be in reverse chronological order
-        $this->assertEquals($solution_2->id, $results[0]->id);
-        $this->assertEquals($solution_1->id, $results[1]->id);
+        // Judged solutions should be in chronological order
+        $this->assertEquals($solution_1->id, $results[0]->id);
+        $this->assertEquals($solution_2->id, $results[1]->id);
     }
 
     public function testClaimedByJudgeInEmptyContest()
@@ -81,6 +81,28 @@ class DbSolutionRepositoryTest extends DbTestCase
         Factory::create('solution', ['claiming_judge_id' => $judge->id]);
 
         $this->assertCount(1, $this->repo->claimedByJudgeInContest($judge));
+    }
+
+    public function testClaimedByJudgeInContestForCorrectSorting()
+    {
+        $judge = Factory::create('judge');
+
+        $solution_1 = Factory::create('solution', [
+            'claiming_judge_id' => $judge->id, 
+            'created_at' => Carbon::now()->subHour()
+        ]);
+
+        $solution_2 = Factory::create('solution', [
+            'claiming_judge_id' => $judge->id, 
+        ]);
+
+        $results = $this->repo->claimedByJudgeInContest();
+
+        $this->assertCount(2, $results);
+
+        // Claimed solutions should be in reverse chronological order
+        $this->assertEquals($solution_1->id, $results[1]->id);
+        $this->assertEquals($solution_2->id, $results[0]->id);
     }
 
     public function testForUserInEmptyContest()
@@ -132,9 +154,9 @@ class DbSolutionRepositoryTest extends DbTestCase
 
         $this->assertCount(2, $results);
 
-        // Judged solutions should be in reverse chronological order
-        $this->assertEquals($solution_2->id, $results[1]->id);
+        // Judged solutions should be in chronological order
         $this->assertEquals($solution_1->id, $results[0]->id);
+        $this->assertEquals($solution_2->id, $results[1]->id);
     }
 
     public function testHasCorrectSolutionFromUser()
