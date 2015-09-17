@@ -5,7 +5,9 @@ return array(
 
 	'single' => 'Problem',
 
-	'model' => 'Judge\Models\Problem',
+    'model' => 'Judge\Models\Problem',
+
+    'rules' => Judge\Models\Problem::$rules,
 
 	'columns' => array(
 		'name' => array(
@@ -37,6 +39,10 @@ return array(
 			'title' => 'Judging Output',
 			'type' => 'file',
 			'location' => storage_path() . "/judging_output/",
-			)
+        ),
+        'difficulty' => array(
+            'title' => 'Difficulty',
+            'type' => 'number',
+        ),
 		)
 	);
