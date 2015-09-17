@@ -8,7 +8,8 @@ class Problem extends Base
         'name' => 'required',
         'contest_id' => 'required',
         'judging_input' => 'required',
-        'judging_output' => 'required'
+        'judging_output' => 'required',
+        'difficulty' => 'between:1,5'
     );
 
     /**
