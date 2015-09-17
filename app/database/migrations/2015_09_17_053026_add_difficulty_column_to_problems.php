@@ -13,7 +13,7 @@ class AddDifficultyColumnToProblems extends Migration {
     public function up()
     {
         Schema::table('problems', function (Blueprint $table) {
-            $table->integer('difficuly')->default(1);
+            $table->integer('difficulty')->default(1);
         });
     }
 
