@@ -30,6 +30,7 @@ class BaseController extends Controller
 
         $this->bindContestName();
         $this->bindMessageCount();
+        $this->bindUnjudgedProblemCount();
     }
 
     /**
@@ -55,5 +56,13 @@ class BaseController extends Controller
     protected function bindMessageCount()
     {
         View::share('message_count', $this->messages->unresponded()->count());
+    }
+
+    /**
+     * Binds the umber of current unjudged problems to the view
+     */
+    protected function bindUnjudgedProblemCount()
+    {
+        View::share('unjudged_count', 0);
     }
 }
