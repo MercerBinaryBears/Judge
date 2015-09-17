@@ -10,7 +10,10 @@
         @endif
 
         @if(Auth::user()->judge || Auth::user()->admin)
-        <a class="admin-link" href="/solutions"><i data-toggle="tooltip" data-placement="right" title="Judge"class="fa fa-gavel"></i></a>
+        <a class="admin-link" href="/solutions">
+            <i data-toggle="tooltip" data-placement="right" title="Judge"class="fa fa-gavel"></i>
+            @include('partials.unjudged_count')
+        </a>
         <a class="admin-link" href="/messages">
             <i data-toggle="tooltip" data-placement="right" title="Messages" class="fa fa-envelope-o"></i>
             @include('partials.message_count')

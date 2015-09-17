@@ -10,6 +10,7 @@ class DbBaseControllerTest extends DbTestCase
     {
         View::shouldReceive('share')->once()->with('contest_name', 'Judge');
         View::shouldReceive('share')->once()->with('message_count', 0);
+        View::shouldReceive('share')->once()->with('unjudged_count', 0);
         App::make('Judge\Controllers\BaseController');
     }
 
@@ -21,6 +22,7 @@ class DbBaseControllerTest extends DbTestCase
 
         View::shouldReceive('share')->once()->with('contest_name', 'CONTEST NAME');
         View::shouldReceive('share')->once()->with('message_count', 0);
+        View::shouldReceive('share')->once()->with('unjudged_count', 0);
         App::make('Judge\Controllers\BaseController');
     }
 }
