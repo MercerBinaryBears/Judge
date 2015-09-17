@@ -2,14 +2,14 @@
 
 class Problem extends Base
 {
-    protected $fillable = ['name', 'contest_id', 'judging_input', 'judging_output'];
+    protected $fillable = ['name', 'contest_id', 'judging_input', 'judging_output', 'difficulty'];
 
     public static $rules = array(
         'name' => 'required',
         'contest_id' => 'required',
         'judging_input' => 'required',
         'judging_output' => 'required',
-        'difficulty' => 'between:1,5'
+        'difficulty' => 'in:1,2,3,4,5'
     );
 
     /**
