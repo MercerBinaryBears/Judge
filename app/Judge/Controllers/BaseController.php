@@ -63,6 +63,6 @@ class BaseController extends Controller
      */
     protected function bindUnjudgedProblemCount()
     {
-        View::share('unjudged_count', 1);
+        View::share('unjudged_count', $this->solutions->judgeableForContest()->count());
     }
 }
