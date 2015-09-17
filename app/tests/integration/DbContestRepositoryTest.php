@@ -12,6 +12,11 @@ class DbContestRepositoryTest extends DbTestCase
         $this->repo = new ContestRepository();
     }
 
+    public function testProblemsForContestWithNoContest()
+    {
+        $this->assertCount(0, $this->repo->problemsForContest());
+    }
+
     public function testTeamsForContestWithNoTeams()
     {
         $contest = Factory::create('contest');
