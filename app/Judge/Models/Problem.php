@@ -9,7 +9,7 @@ class Problem extends Base
         'contest_id' => 'required',
         'judging_input' => 'required',
         'judging_output' => 'required',
-        'difficulty' => 'in:1,2,3,4,5'
+        'difficulty' => 'integer|min:1|max:5'
     );
 
     /**
