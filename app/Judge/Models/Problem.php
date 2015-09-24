@@ -28,6 +28,11 @@ class Problem extends Base
         return $this->hasMany('Judge\Models\Solution');
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany('Judge\Models\Tag');
+    }
+
     /**
      * Gets the problems for the current contest
      */
