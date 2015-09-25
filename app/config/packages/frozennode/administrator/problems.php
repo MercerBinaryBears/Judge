@@ -12,14 +12,13 @@ return array(
 	'columns' => array(
 		'name' => array(
 			'title' => 'Problem Name'
-			),
+        ),
 		'contest' => array(
 			'title' => 'Contest',
 			'relationship' => 'contest',
 			'select' => '(:table).name'
-			),
-
-		),
+        ),
+    ),
 	'edit_fields' => array(
 		'name' => array(
 			'title' => 'Problem Name',
