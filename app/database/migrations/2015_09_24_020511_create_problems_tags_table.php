@@ -12,7 +12,7 @@ class CreateProblemsTagsTable extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('problems_tags', function(Blueprint $table) {
+        Schema::create('problem_tag', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('problem_id')->unsigned();
             $table->integer('tag_id')->unsigned();
@@ -29,7 +29,7 @@ class CreateProblemsTagsTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::drop('problems_tags');
+        Schema::drop('problem_tag');
 	}
 
 }
