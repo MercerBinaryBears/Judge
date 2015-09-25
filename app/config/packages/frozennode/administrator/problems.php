@@ -18,6 +18,11 @@ return array(
 			'relationship' => 'contest',
 			'select' => '(:table).name'
         ),
+        'tags' => array(
+            'title' => 'Tags',
+            'relationship' => 'tags',
+            'select' => "GROUP_CONCAT((:table).name, ' ')"
+        ),
     ),
 	'edit_fields' => array(
 		'name' => array(
