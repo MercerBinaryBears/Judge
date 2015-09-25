@@ -2,6 +2,8 @@
 
 set -e
 
+composer install
+
 # Codesniffing
 php vendor/bin/phpcs --standard=PSR2 app/Judge
 
