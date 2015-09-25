@@ -52,6 +52,7 @@ return array(
 		'users',
 		'contests',
 		'problems',
+        'tags',
 		'solutions',
 		'languages',
 		),
