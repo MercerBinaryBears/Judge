@@ -34,6 +34,11 @@ return array(
 			'type' => 'relationship',
 			'name_field' => 'name',
         ),
+        'tags' => array(
+            'title' => 'Tags',
+            'type' => 'relationship',
+            'name_field' => 'name'
+        ),
 		'judging_input' => array(
 			'title' => 'Judging Input',
 			'type' => 'file',
