@@ -16,6 +16,12 @@ class ProblemTest extends TestCase
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $problem->solutions());
     }
 
+    public function testTagsRelationship()
+    {
+        $problem = new Problem();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsToMany', $problem->tags());
+    }
+
     public function testDifficultyValidation()
     {
         $problem = new Problem([
