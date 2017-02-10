@@ -7,9 +7,4 @@ class Tag extends Base
     public static $rules = [
         'name' => 'required'
     ];
-
-    public function problems()
-    {
-        return $this->belongsToMany('Judge\Models\Problem');
-    }
 }
