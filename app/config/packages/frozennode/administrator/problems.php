@@ -49,9 +49,5 @@ return array(
 			'type' => 'file',
 			'location' => storage_path() . "/judging_output/",
         ),
-        'difficulty' => array(
-            'title' => 'Difficulty',
-            'type' => 'number',
-        ),
     )
 );
