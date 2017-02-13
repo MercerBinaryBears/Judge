@@ -17,12 +17,7 @@ return array(
 			'title' => 'Contest',
 			'relationship' => 'contest',
 			'select' => '(:table).name'
-        ),
-        'tags' => array(
-            'title' => 'Tags',
-            'relationship' => 'tags',
-            'select' => "GROUP_CONCAT((:table).name, ' ')"
-        ),
+        )
     ),
 	'edit_fields' => array(
 		'name' => array(
@@ -33,11 +28,6 @@ return array(
 			'title' => 'Contest',
 			'type' => 'relationship',
 			'name_field' => 'name',
-        ),
-        'tags' => array(
-            'title' => 'Tags',
-            'type' => 'relationship',
-            'name_field' => 'name'
         ),
 		'judging_input' => array(
 			'title' => 'Judging Input',
