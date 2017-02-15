@@ -1,7 +1,7 @@
 Judge
 =====
-[![Build Status](https://travis-ci.org/chipbell4/Judge.svg?branch=develop)](https://travis-ci.org/chipbell4/Judge)
-[![Coverage Status](https://coveralls.io/repos/chipbell4/Judge/badge.svg?branch=develop)](https://coveralls.io/r/chipbell4/Judge?branch=develop)
+[![Build Status](https://travis-ci.org/MercerBinaryBears/Judge.svg?branch=develop)](https://travis-ci.org/MercerBinaryBears/Judge)
+[![Coverage Status](https://coveralls.io/repos/github/MercerBinaryBears/Judge/badge.svg?branch=develop)](https://coveralls.io/github/MercerBinaryBears/Judge?branch=develop)
 
 ## Menu ##
 * [Setup](#setup)
