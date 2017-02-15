@@ -17,12 +17,7 @@ return array(
 			'title' => 'Contest',
 			'relationship' => 'contest',
 			'select' => '(:table).name'
-        ),
-        'tags' => array(
-            'title' => 'Tags',
-            'relationship' => 'tags',
-            'select' => "GROUP_CONCAT((:table).name, ' ')"
-        ),
+        )
     ),
 	'edit_fields' => array(
 		'name' => array(
@@ -34,11 +29,6 @@ return array(
 			'type' => 'relationship',
 			'name_field' => 'name',
         ),
-        'tags' => array(
-            'title' => 'Tags',
-            'type' => 'relationship',
-            'name_field' => 'name'
-        ),
 		'judging_input' => array(
 			'title' => 'Judging Input',
 			'type' => 'file',
@@ -48,10 +38,6 @@ return array(
 			'title' => 'Judging Output',
 			'type' => 'file',
 			'location' => storage_path() . "/judging_output/",
-        ),
-        'difficulty' => array(
-            'title' => 'Difficulty',
-            'type' => 'number',
         ),
     )
 );

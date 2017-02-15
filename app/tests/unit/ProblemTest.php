@@ -15,23 +15,4 @@ class ProblemTest extends TestCase
         $problem = new Problem();
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $problem->solutions());
     }
-
-    public function testTagsRelationship()
-    {
-        $problem = new Problem();
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsToMany', $problem->tags());
-    }
-
-    public function testDifficultyValidation()
-    {
-        $problem = new Problem([
-            'name' => 'name',
-            'contest_id' => '1',
-            'judging_input' => '1',
-            'judging_output' => '2',
-            'difficulty' => '12'
-        ]);
-
-        $this->assertFalse($problem->validate());
-    }
 }
