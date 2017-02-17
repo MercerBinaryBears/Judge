@@ -28,6 +28,8 @@ return array(
 			'title' => 'Contest',
 			'type' => 'relationship',
 			'name_field' => 'name',
+			'options_sort_field' => 'starts_at',
+			'options_sort_direction' => 'desc',
         ),
 		'judging_input' => array(
 			'title' => 'Judging Input',
