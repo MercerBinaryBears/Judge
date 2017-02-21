@@ -33,13 +33,11 @@ return array(
         ),
 		'judging_input' => array(
 			'title' => 'Judging Input',
-			'type' => 'file',
-			'location' => storage_path() . "/judging_input/",
+			'type' => 'textarea',
         ),
 		'judging_output' => array(
 			'title' => 'Judging Output',
-			'type' => 'file',
-			'location' => storage_path() . "/judging_output/",
+			'type' => 'textarea',
         ),
     )
 );
