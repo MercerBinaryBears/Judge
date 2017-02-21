@@ -12,7 +12,15 @@ class Contest extends Base
     public static $rules = array(
         'name' => 'required',
         'starts_at' => 'required',
-        );
+    );
+
+    /**
+     * Gets the messages associated with a contest
+     */
+    public function messages()
+    {
+        return $this->hasMany('Judge\Models\Message');
+    }
 
     /**
      * Gets the problems associated with a contest

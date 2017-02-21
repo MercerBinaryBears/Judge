@@ -1,7 +1,7 @@
 <?php namespace Judge\Repositories;
 
 use Carbon\Carbon as Carbon;
-
+use Illuminate\Support\Collection;
 use Judge\Models\Contest;
 
 class ContestRepository
@@ -10,6 +10,9 @@ class ContestRepository
     {
         if ($c == null) {
             $c = $this->firstCurrent();
+        }
+        if ($c == null) {
+            return Collection::make([]);
         }
         return $c->problems;
     }

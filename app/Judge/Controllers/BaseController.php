@@ -29,6 +29,8 @@ class BaseController extends Controller
         $this->messages = $messages;
 
         $this->bindContestName();
+        $this->bindMessageCount();
+        $this->bindUnjudgedProblemCount();
     }
 
     /**
@@ -46,5 +48,21 @@ class BaseController extends Controller
         }
 
         View::share('contest_name', $contest_name);
+    }
+
+    /**
+     * Binds the number of current unread messages to the view
+     */
+    protected function bindMessageCount()
+    {
+        View::share('message_count', $this->messages->unresponded()->count());
+    }
+
+    /**
+     * Binds the umber of current unjudged problems to the view
+     */
+    protected function bindUnjudgedProblemCount()
+    {
+        View::share('unjudged_count', $this->solutions->judgeableForContest()->count());
     }
 }

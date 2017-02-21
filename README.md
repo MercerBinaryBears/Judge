@@ -1,7 +1,7 @@
 Judge
 =====
-[![Build Status](https://travis-ci.org/chipbell4/Judge.svg?branch=develop)](https://travis-ci.org/chipbell4/Judge)
-[![Coverage Status](https://coveralls.io/repos/chipbell4/Judge/badge.svg)](https://coveralls.io/r/chipbell4/Judge)
+[![Build Status](https://travis-ci.org/MercerBinaryBears/Judge.svg?branch=develop)](https://travis-ci.org/MercerBinaryBears/Judge)
+[![Coverage Status](https://coveralls.io/repos/github/MercerBinaryBears/Judge/badge.svg?branch=develop)](https://coveralls.io/github/MercerBinaryBears/Judge?branch=develop)
 
 ## Menu ##
 * [Setup](#setup)
@@ -10,11 +10,13 @@ Judge
 ## <a name='setup'/> Setup
 Steps to set up Judge on your machine:
 
-1. Make sure you have PHP 5.4 with PDO, SQlite, and MCrypt enabled.
+1. Make sure you have PHP 5.4 or greater with PDO, SQlite, and MCrypt enabled.
 2. Have [Composer](http://getcomposer.org) installed and in your PATH.
-3. Run ```composer install``` to install any dependencies. This will also run a couple of extra steps within ```setup.sh```
-4. Run ```php artisan migrate --seed``` which will setup the database, and fill with some dummy data.
-5. Run ```php artisan serve``` to start the server on port 8000.
+3. Run ```composer install``` to install any dependencies.
+4. Run ```touch app/database/production.sqlite``` to create the empty
+   database file.
+5. Run ```php artisan migrate --seed``` which will setup the database, and fill with some dummy data.
+6. Run ```php artisan serve``` to start the server on port 8000.
 
 NOTE: If you are developing on the project, I'd recommend a ```composer install``` after any pull, followed by a
 ```php artisan migrate``` to capture any new packages/database changes that have been included in the application.

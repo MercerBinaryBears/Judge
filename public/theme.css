@@ -1,0 +1,32 @@
+.admin-link {
+    display: block;
+    text-align: center;
+    font-size: 2em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.admin-link img {
+    width: 80%;
+}
+
+.login-form img {
+    height: 6em;
+}
+
+.login-form input {
+    font-size: 1.5em;
+    padding: 1.2em;
+}
+
+.login-form input[type=submit] {
+    padding: 0.7em;
+}
+
+.login-form img, .login-form input {
+    margin-bottom: 2em;
+}
+
+.solution-panel .label {
+    font-size: 85%;
+}

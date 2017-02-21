@@ -1,5 +1,6 @@
 <?php namespace Judge\Repositories;
 
+use Illuminate\Support\Collection;
 use Judge\Models\Contest;
 use Judge\Repositories\ContestRepository;
 use Judge\Repositories\ProblemRepository;
@@ -34,13 +35,13 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest($c);
 
         if ($problems->count() < 1) {
-            return \Illuminate\Support\Collection::make(array());
+            return Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereSolutionStateId($this->solution_states->firstPendingId())
             ->whereClaimingJudgeId(null)
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 
@@ -53,11 +54,12 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest();
 
         if ($problems->count() < 1) {
-            return \Illuminate\Support\Collection::make(array());
+            return Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereClaimingJudgeId($u->id)
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 
@@ -70,12 +72,12 @@ class SolutionRepository
         $problems = $this->contests->problemsForContest();
 
         if ($problems->count() < 1) {
-            return \Illuminate\Support\Collection::make(array());
+            return Collection::make(array());
         }
 
         return Solution::whereIn('problem_id', $problems->lists('id'))
             ->whereUserId($u->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 

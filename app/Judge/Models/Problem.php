@@ -9,7 +9,7 @@ class Problem extends Base
         'contest_id' => 'required',
         'judging_input' => 'required',
         'judging_output' => 'required'
-        );
+    );
 
     /**
      * Gets the contest that this problem belongs to
