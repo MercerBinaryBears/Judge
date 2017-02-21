@@ -86,11 +86,13 @@ class SolutionPackageFactory
         $this->addToZip($this->solution->solution_filename, $solution_full_path);
 
         // add the judging input
-        $judging_input_full_path = $this->solution->problem->getPathForResource('judging_input');
+        $judging_input_full_path = tempnam(sys_get_temp_dir(), 'judging_input');
+        file_put_contents($judging_input_full_path, $this->solution->problem->judging_input);
         $this->addToZip('judge.in', $judging_input_full_path);
 
         // add the judging output
-        $judging_output_full_path = $this->solution->problem->getPathForResource('judging_output');
+        $judging_output_full_path = tempnam(sys_get_temp_dir(), 'judging_output');
+        file_put_contents($judging_output_full_path, $this->solution->problem->judging_output);
         $this->addToZip('judge.out', $judging_output_full_path);
 
         // close the file
