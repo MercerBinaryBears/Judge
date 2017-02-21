@@ -6,7 +6,7 @@ return array(
 
 	'url' => 'http://localhost',
 
-	'timezone' => 'UTC',
+	'timezone' => 'America/New_York',
 
 	'locale' => 'en',
 
