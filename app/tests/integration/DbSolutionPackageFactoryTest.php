@@ -11,13 +11,9 @@ class DbSolutionPackageFactoryTest extends DbTestCase
     {
         // make the folders needed
         File::makeDirectory(storage_path() . '/solution_code', 511, false, true);
-        File::makeDirectory(storage_path() . '/judging_input', 511, false, true);
-        File::makeDirectory(storage_path() . '/judging_output', 511, false, true);
 
         // make the files needed
         File::put(storage_path() . '/solution_code/CODE', 'CODE');
-        File::put(storage_path() . '/judging_input/INPUT', 'CODE');
-        File::put(storage_path() . '/judging_output/OUTPUT', 'CODE');
 
         // stub the database records
         $problem = Factory::create('problem', [
@@ -39,7 +35,7 @@ class DbSolutionPackageFactoryTest extends DbTestCase
 
         $this->assertEquals(3, $zip->numFiles);
         $this->assertEquals('CODE', $zip->getFromIndex(0));
-        $this->assertEquals('CODE', $zip->getFromIndex(1));
-        $this->assertEquals('CODE', $zip->getFromIndex(2));
+        $this->assertEquals('INPUT', $zip->getFromIndex(1));
+        $this->assertEquals('OUTPUT', $zip->getFromIndex(2));
     }
 }
