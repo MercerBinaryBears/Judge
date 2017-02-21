@@ -17,6 +17,7 @@ class MessageController extends BaseController
         if ($user->judge || $user->admin) {
             return View::make('Messages.judge')
                 ->withProblems($contest_problems)
+                ->withTeams($this->users->forContest())
                 ->withUnrespondedMessages($this->messages->unresponded());
         }
 

@@ -3,6 +3,9 @@
     {{ Form::label('problem_id', 'Problem') }}
     {{ Form::select('problem_id',  ['' => 'General'] + $problems->lists('name', 'id'), '', ['class' => 'form-control']) }}
     <br/>
+    {{ Form::label('team_id', 'Team') }}
+    {{ Form::select('team_id', ['' => 'Everyone'] + $teams->lists('username', 'id'), '', ['class' => 'form-control']) }}
+    <br/>
     {{ Form::label('text', 'Message') }}
     {{ Form::textarea('text', null, ['class' => 'form-control']) }} 
     <br/>
