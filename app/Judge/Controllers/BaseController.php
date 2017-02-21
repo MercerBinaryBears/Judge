@@ -9,6 +9,7 @@ use Judge\Repositories\ProblemRepository;
 use Judge\Repositories\SolutionRepository;
 use Judge\Repositories\SolutionStateRepository;
 use Judge\Repositories\MessageRepository;
+use Judge\Repositories\UserRepository;
 
 class BaseController extends Controller
 {
@@ -18,7 +19,8 @@ class BaseController extends Controller
         ProblemRepository $problems,
         SolutionRepository $solutions,
         SolutionStateRepository $solution_states,
-        MessageRepository $messages
+        MessageRepository $messages,
+        UserRepository $users
     ) {
             
         $this->contests = $contests;
@@ -27,6 +29,7 @@ class BaseController extends Controller
         $this->solutions = $solutions;
         $this->solution_states = $solution_states;
         $this->messages = $messages;
+        $this->users = $users;
 
         $this->bindContestName();
         $this->bindMessageCount();
