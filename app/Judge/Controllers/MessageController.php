@@ -27,7 +27,7 @@ class MessageController extends BaseController
         return View::make('Messages.team')
             ->withProblems($contest_problems)
             ->withMessages($sent_messages)
-            ->withGlobalMessages($this->messages->allGlobal());
+            ->withGlobalMessages($this->messages->fromJudgeToTeam($user));
     }
 
     public function store()

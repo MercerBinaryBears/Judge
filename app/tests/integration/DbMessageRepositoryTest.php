@@ -13,55 +13,32 @@ class DbMessageRepositoryTest extends DbTestCase
         $this->repo = App::make('Judge\Repositories\MessageRepository');
     }
 
-    public function testAllGlobalWithNoMatches()
+    public function testFromJudgeToTeam()
     {
-        Factory::create('message');
-        $this->assertCount(0, $this->repo->allGlobal());
+        $judge = Factory::create('judge');
+        $team = Factory::create('team');
+        Factory::create('message', ['sender_id' => $judge->id, 'responder_id' => $team->id]);
+
+        $this->repo->fromJudgeToTeam($team);
+        $this->assertCount(1, $this->repo->fromJudgeToTeam($team));
     }
 
-    public function testAllGlobalWithMatches()
+    public function testFromJudgeToTeamWithGlobalMessage()
     {
+        $team = Factory::create('team');
         Factory::create('global_message');
-        $this->assertCount(1, $this->repo->allGlobal());
+        
+        $this->assertCount(1, $this->repo->fromJudgeToTeam($team));
     }
 
-    public function testAllGlobalForCorrectSorting()
+    public function testFromJudgeToTeamWithOtherTeam()
     {
-        $contest = Factory::create('contest');
-        $message_1 = Factory::create('global_message', [
-            'created_at' => Carbon::now()->subDay(),
-            'contest_id' => $contest->id
-        ]);
-        $message_2 = Factory::create('global_message', [
-            'created_at' => Carbon::now(),
-            'contest_id' => $contest->id
-        ]);
-
-        $results = $this->repo->allGlobal();
-
-        $this->assertCount(2, $results);
-
-        // Results should appear in reverse chronological order
-        $this->assertEquals($message_2->id, $results[0]->id);
-        $this->assertEquals($message_1->id, $results[1]->id);
-    }
-
-    public function testAllGlobalForDifferentContest()
-    {
-        $message_1 = Factory::create('global_message');
-
-        $otherContest = Factory::create('contest');
-
-        $results = $this->repo->allGlobal($otherContest);
-
-        $this->assertCount(0, $results);
-    }
-
-    public function testAllGlobalWithMissingContest()
-    {
-        $results = $this->repo->allGlobal();
-
-        $this->assertCount(0, $results);
+        $judge = Factory::create('judge');
+        $other_team = Factory::create('team');
+        $team = Factory::create('team');
+        Factory::create('message', ['sender_id' => $judge->id, 'responder_id' => $other_team->id]);
+        
+        $this->assertCount(0, $this->repo->fromJudgeToTeam($team));
     }
 
     public function testUnrespondedWithNoMatches()

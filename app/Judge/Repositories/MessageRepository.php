@@ -27,13 +27,15 @@ class MessageRepository
         return $contest;
     }
 
-    public function allGlobal(Contest $contest = null)
+    public function fromJudgeToTeam(User $team, Contest $contest = null)
     {
-        $contest = $this->resolveContest($contest);
-
-        return Message::whereContestId($contest->id)
-            ->fromJudge()
-            ->orderBy('created_at', 'DESC')
+        return Message::fromJudge()
+            ->where(function ($query) use ($team) {
+                $query->where('responder_id', '=', $team->id)
+                    ->orWhere(function ($query) {
+                        $query->whereNull('responder_id');
+                    });
+            })
             ->get();
     }
 
