@@ -34,10 +34,6 @@ class MessageController extends BaseController
         $user = Auth::user();
         $defaults = ['text' => '', 'sender_id' => $user->id, 'contest_id' => $this->contests->firstCurrent()->id];
 
-        if ($user->judge || $user->admin) {
-            $defaults['is_global'] = true;
-        }
-
         Message::create(array_merge($defaults, array_filter(Input::all())));
 
         return Redirect::to('/messages');
