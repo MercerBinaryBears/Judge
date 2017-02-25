@@ -78,6 +78,12 @@ class DbMessageRepositoryTest extends DbTestCase
         $this->assertCount(1, $this->repo->unresponded());
     }
 
+    public function testUnrespondedDoesntGetJudgeMessages()
+    {
+        $message = Factory::create('global_message', ['responder_id' => null]);
+        $this->assertCount(0, $this->repo->unresponded());
+    }
+
     public function testUnrespondedForCorrectSorting()
     {
         $contest = Factory::create('contest');

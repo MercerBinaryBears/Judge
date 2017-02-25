@@ -32,9 +32,7 @@ class MessageRepository
         $contest = $this->resolveContest($contest);
 
         return Message::whereContestId($contest->id)
-            ->join('users as judges', 'judges.id', '=', 'messages.sender_id')
-            ->where('judges.judge', '=', true)
-            ->select('messages.*')
+            ->fromJudge()
             ->orderBy('created_at', 'DESC')
             ->get();
     }
@@ -43,7 +41,7 @@ class MessageRepository
     {
         $contest = $this->resolveContest($contest);
 
-        return Message::whereIsGlobal(false)
+        return Message::fromTeam()
             ->whereResponderId(null)
             ->whereContestId($contest->id)
             ->orderBy('created_at', 'ASC')

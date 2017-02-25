@@ -59,4 +59,21 @@ class Message extends Base
     {
         return nl2br($this->attributes['text']);
     }
+
+    public function scopeFromJudge($query)
+    {
+        return $query
+            ->join('users as judges', 'judges.id', '=', 'messages.sender_id')
+            ->where('judges.judge', '=', true)
+            ->select('messages.*');
+    }
+
+    public function scopeFromTeam($query)
+    {
+        return $query
+            ->join('users as judges', 'judges.id', '=', 'messages.sender_id')
+            ->where('judges.judge', '=', false)
+            ->where('judges.admin', '=', false)
+            ->select('messages.*');
+    }
 }
