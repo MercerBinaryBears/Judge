@@ -37,7 +37,7 @@ class Message extends Base
     }
 
     /**
-     * Gets the responder to this message
+     * Gets the responder/recipient to this message
      */
     public function responder()
     {
