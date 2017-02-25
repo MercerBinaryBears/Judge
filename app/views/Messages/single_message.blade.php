@@ -15,7 +15,7 @@
 
     <p>{{ $message->text }}</p>
 
-@if($message->responder)
+@if($message->responder && !empty($show_response))
     <blockquote>
         {{ $message->response_text }}
         <footer>{{ $message->responder->username }}</footer>
