@@ -31,8 +31,10 @@ class MessageRepository
     {
         $contest = $this->resolveContest($contest);
 
-        return Message::whereIsGlobal(true)
-            ->whereContestId($contest->id)
+        return Message::whereContestId($contest->id)
+            ->join('users as judges', 'judges.id', '=', 'messages.sender_id')
+            ->where('judges.judge', '=', true)
+            ->select('messages.*')
             ->orderBy('created_at', 'DESC')
             ->get();
     }

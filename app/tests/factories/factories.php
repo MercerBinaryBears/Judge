@@ -16,6 +16,15 @@ $factory('Judge\Models\Message', 'message', [
     'is_global' => false,
 ]);
 
+$factory('Judge\Models\Message', 'global_message', [
+    'contest_id' => 'factory:contest',
+    'problem_id' => 'factory:problem',
+    'text' => $faker->paragraph,
+    'sender_id' => 'factory:judge',
+    'response_text' => null,
+    'responder_id' => null,
+]);
+
 $factory('Judge\Models\Problem', 'problem', [
     'name' => $faker->sentence(2),
     'contest_id' => 'factory:contest',
