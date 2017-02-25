@@ -47,4 +47,13 @@ class MessageRepository
             ->orderBy('created_at', 'ASC')
             ->get();
     }
+
+    public function from(User $user, Contest $contest = null)
+    {
+        $contest = $this->resolveContest($contest);
+
+        return Message::whereContestId($contest->id)
+            ->whereSenderId($user->id)
+            ->get();
+    }
 }

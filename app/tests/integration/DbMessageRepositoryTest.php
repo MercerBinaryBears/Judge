@@ -107,4 +107,25 @@ class DbMessageRepositoryTest extends DbTestCase
 
         $this->assertCount(0, $results);
     }
+
+    public function testFrom()
+    {
+        $judge = Factory::create('judge');
+        $team = Factory::create('team');
+        $message = Factory::create('message', ['sender_id' => $judge->id]);
+
+        $results = $this->repo->from($judge);
+        $this->assertEquals($judge->id, $results[0]->sender_id);
+
+        $this->assertCount(0, $this->repo->from($team));
+    }
+
+    public function testFromDifferentContest()
+    {
+        $contest = Factory::create('contest');
+        $judge = Factory::create('judge');
+        $message = Factory::create('message', ['sender_id' => $judge->id]);
+
+        $this->assertCount(0, $this->repo->from($judge, $contest));
+    }
 }
