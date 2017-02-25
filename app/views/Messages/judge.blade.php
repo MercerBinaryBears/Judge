@@ -7,6 +7,12 @@
         @include('forms.create_judge_message')
     </div>
     <div class="col-md-4">
+        <h3>Your Messages</h3>
+        @foreach($my_messages as $message)
+          @include('Messages.single_global_message')
+        @endforeach
+    </div>
+    <div class="col-md-4">
         <h3>Unresponded Messages</h3>
         @foreach($unresponded_messages as $message)
             @include('Messages.single_judge_message')
