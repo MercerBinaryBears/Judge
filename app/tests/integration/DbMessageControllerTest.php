@@ -109,4 +109,21 @@ class DbMessageControllerTest extends DbTestCase
         $this->assertEquals('RESPONSE', $message->response_text);
         $this->assertNotEquals('DONT UPDATE', $message->text);
     }
+
+    public function testUpdateWithoutMessage()
+    {
+        $judge = Factory::create('judge');
+        $message = Factory::create('message', ['responder_id' => null, 'response_text' => null]);
+        
+        $this->action('POST', 'Judge\Controllers\MessageController@update', [$message->id], [
+            'responder_id' => $judge->id,
+            'response_text' => ''
+        ]);
+        
+        $this->assertTrue(Session::has('flash_notification.message'));
+
+        $message = Message::first();
+        $this->assertEquals(null, $message->responder_id);
+        $this->assertEquals(null, $message->response_text);
+    }
 }
