@@ -45,7 +45,7 @@ class SolutionController extends BaseController
 
         // claim the problem, reporting errors if the user couldn't claim it
         if (!$solution->claim()) {
-            Session::flash('error', 'You cannot claim that solution');
+            \Flash::warning('It looks like that solution was already claimed');
             return Redirect::route('solutions.index');
         }
 
@@ -80,7 +80,7 @@ class SolutionController extends BaseController
         // Save, (attempting validation). If validation fails, we show the errors before saving.
         // Otherwise, the team will see the file in their list of submitted problems
         if (!$solution->save()) {
-            Session::flash('error', $solution->errors());
+            \Flash::error($solution->errors());
         }
 
         return Redirect::route('solutions.index');
@@ -100,7 +100,7 @@ class SolutionController extends BaseController
 
         // Only allow the current user to update if they're the claiming judge for the problem
         if (!$solution->ownedByCurrentUser()) {
-            Session::flash('error', 'You are not the claiming judge for this problem any more');
+            \Flash::error('You are not the claiming judge for this problem any more');
             return $redirect;
         }
         
@@ -108,7 +108,7 @@ class SolutionController extends BaseController
 
         // Attempt to save, reporting any errors
         if (!$solution->save()) {
-            Session::flash('error', $solution->errors());
+            \Flash::error($solution->errors());
         }
 
         return $redirect;
@@ -124,7 +124,7 @@ class SolutionController extends BaseController
         $solution = $this->solutions->find($id);
 
         if (!$solution->unclaim()) {
-            Session::flash('error', 'You are not the claiming judge for this problem');
+            \Flash::error('You are not the claiming judge for this problem');
         }
         return Redirect::route('solutions.index');
     }

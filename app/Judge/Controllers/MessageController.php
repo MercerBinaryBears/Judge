@@ -35,16 +35,24 @@ class MessageController extends BaseController
         $user = Auth::user();
         $defaults = ['text' => '', 'sender_id' => $user->id, 'contest_id' => $this->contests->firstCurrent()->id];
 
-        Message::create(array_merge($defaults, array_filter(Input::all())));
+        $result = Message::create(array_merge($defaults, array_filter(Input::all())));
+
+        if ($result->validationErrors->has('text')) {
+            \Flash::warning('Please provide some message text');
+        }
 
         return Redirect::to('/messages');
     }
 
     public function update($id)
     {
-        $message = Message::find($id);
-        $message->fill(Input::only('responder_id', 'response_text'));
-        $message->save();
+        if (Input::get('response_text') != '') {
+            $message = Message::find($id);
+            $message->fill(Input::only('responder_id', 'response_text'));
+            $message->save();
+        } else {
+            \Flash::warning('Please provide a response');
+        }
 
         return Redirect::to('/messages');
     }

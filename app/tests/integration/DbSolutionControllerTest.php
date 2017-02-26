@@ -69,7 +69,7 @@ class DbSolutionControllerTest extends DbTestCase
         $solution_code = Mockery::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
         $this->action('POST', 'Judge\Controllers\SolutionController@store', [ ], ['solution_code' => $solution_code]);
 
-        $this->assertTrue(Session::has('error'));
+        $this->assertTrue(Session::has('flash_notification.message'));
     }
 
     public function testUpdateWithWrongOwner()
@@ -80,7 +80,7 @@ class DbSolutionControllerTest extends DbTestCase
         Auth::shouldReceive('id')->zeroOrMoreTimes()->andReturn($judge);
 
         $this->controller->update($solution->id);
-        $this->assertTrue(Session::has('error'));
+        $this->assertTrue(Session::has('flash_notification.message'));
     }
 
     public function testUpdateWithInvalidSolutionStateId()
@@ -93,7 +93,7 @@ class DbSolutionControllerTest extends DbTestCase
         // Forgot a solution state
         $this->action('POST', 'Judge\Controllers\SolutionController@update', [$solution->id]);
 
-        $this->assertTrue(Session::has('error'));
+        $this->assertTrue(Session::has('flash_notification.message'));
     }
 
     public function testUnclaimWithWrongJudge()
@@ -104,7 +104,7 @@ class DbSolutionControllerTest extends DbTestCase
 
         $this->action('POST', 'Judge\Controllers\SolutionController@unclaim', [$solution->id]);
 
-        $this->assertTrue(Session::has('error'));
+        $this->assertTrue(Session::has('flash_notification.message'));
     }
 
     public function testUnclaimWithCorrectJudge()
@@ -116,7 +116,7 @@ class DbSolutionControllerTest extends DbTestCase
 
         $this->action('POST', 'Judge\Controllers\SolutionController@unclaim', [$solution->id]);
 
-        $this->assertFalse(Session::has('error'));
+        $this->assertFalse(Session::has('flash_notification.message'));
     }
 
     public function testPackageDownload()
