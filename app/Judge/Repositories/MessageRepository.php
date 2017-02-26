@@ -27,13 +27,15 @@ class MessageRepository
         return $contest;
     }
 
-    public function allGlobal(Contest $contest = null)
+    public function fromJudgeToTeam(User $team, Contest $contest = null)
     {
-        $contest = $this->resolveContest($contest);
-
-        return Message::whereIsGlobal(true)
-            ->whereContestId($contest->id)
-            ->orderBy('created_at', 'DESC')
+        return Message::fromJudge()
+            ->where(function ($query) use ($team) {
+                $query->where('responder_id', '=', $team->id)
+                    ->orWhere(function ($query) {
+                        $query->whereNull('responder_id');
+                    });
+            })
             ->get();
     }
 
@@ -41,10 +43,19 @@ class MessageRepository
     {
         $contest = $this->resolveContest($contest);
 
-        return Message::whereIsGlobal(false)
+        return Message::fromTeam()
             ->whereResponderId(null)
             ->whereContestId($contest->id)
             ->orderBy('created_at', 'ASC')
+            ->get();
+    }
+
+    public function from(User $user, Contest $contest = null)
+    {
+        $contest = $this->resolveContest($contest);
+
+        return Message::whereContestId($contest->id)
+            ->whereSenderId($user->id)
             ->get();
     }
 }

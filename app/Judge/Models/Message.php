@@ -37,7 +37,7 @@ class Message extends Base
     }
 
     /**
-     * Gets the responder to this message
+     * Gets the responder/recipient to this message
      */
     public function responder()
     {
@@ -58,5 +58,22 @@ class Message extends Base
     public function getTextAttribute()
     {
         return nl2br($this->attributes['text']);
+    }
+
+    public function scopeFromJudge($query)
+    {
+        return $query
+            ->join('users as judges', 'judges.id', '=', 'messages.sender_id')
+            ->where('judges.judge', '=', true)
+            ->select('messages.*');
+    }
+
+    public function scopeFromTeam($query)
+    {
+        return $query
+            ->join('users as judges', 'judges.id', '=', 'messages.sender_id')
+            ->where('judges.judge', '=', false)
+            ->where('judges.admin', '=', false)
+            ->select('messages.*');
     }
 }

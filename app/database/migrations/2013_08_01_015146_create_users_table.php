@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration {
             'username' => 'admin',
             'password' => 'admin',
             'admin' => true,
+            'judge' => true,
             'api_key' => 'admin'
         ]);
 	}

@@ -15,7 +15,6 @@ class DbMessageControllerTest extends DbTestCase
 
         Factory::create('problem', ['contest_id' => $contest->id]);
         Factory::create('message', [
-            'is_global' => false,
             'responder_id' => null,
             'contest_id' => $contest->id
         ]);
@@ -37,10 +36,7 @@ class DbMessageControllerTest extends DbTestCase
             'sender_id' => $team->id,
             'contest_id' => $contest->id
         ]);
-        Factory::create('message', [
-            'is_global' => true,
-            'contest_id' => $contest->id
-        ]);
+        Factory::create('global_message', ['contest_id' => $contest->id]);
 
         $view = App::make('Judge\Controllers\MessageController')->index();
         $this->assertCount(1, $view['problems']);
@@ -63,7 +59,7 @@ class DbMessageControllerTest extends DbTestCase
         $message = Message::first();
         $this->assertNotNull($message);
         $this->assertEquals('TEXT', $message->text);
-        $this->assertEquals(false, (bool) $message->is_global);
+        $this->assertEquals($team->id, $message->sender_id);
     }
 
     public function testStoreForJudge()
@@ -81,7 +77,7 @@ class DbMessageControllerTest extends DbTestCase
         $message = Message::first();
         $this->assertNotNull($message);
         $this->assertEquals('TEXT', $message->text);
-        $this->assertEquals(true, (bool) $message->is_global);
+        $this->assertEquals($judge->id, $message->sender_id);
     }
 
     public function testUpdate()

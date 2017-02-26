@@ -17,6 +17,8 @@ class MessageController extends BaseController
         if ($user->judge || $user->admin) {
             return View::make('Messages.judge')
                 ->withProblems($contest_problems)
+                ->withTeams($this->users->forContest())
+                ->withMyMessages($this->messages->from($user))
                 ->withUnrespondedMessages($this->messages->unresponded());
         }
 
@@ -25,17 +27,13 @@ class MessageController extends BaseController
         return View::make('Messages.team')
             ->withProblems($contest_problems)
             ->withMessages($sent_messages)
-            ->withGlobalMessages($this->messages->allGlobal());
+            ->withGlobalMessages($this->messages->fromJudgeToTeam($user));
     }
 
     public function store()
     {
         $user = Auth::user();
         $defaults = ['text' => '', 'sender_id' => $user->id, 'contest_id' => $this->contests->firstCurrent()->id];
-
-        if ($user->judge || $user->admin) {
-            $defaults['is_global'] = true;
-        }
 
         Message::create(array_merge($defaults, array_filter(Input::all())));
 

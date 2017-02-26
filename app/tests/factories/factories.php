@@ -13,7 +13,15 @@ $factory('Judge\Models\Message', 'message', [
     'sender_id' => 'factory:team',
     'response_text' => $faker->paragraph,
     'responder_id' => 'factory:judge',
-    'is_global' => false,
+]);
+
+$factory('Judge\Models\Message', 'global_message', [
+    'contest_id' => 'factory:contest',
+    'problem_id' => 'factory:problem',
+    'text' => $faker->paragraph,
+    'sender_id' => 'factory:judge',
+    'response_text' => null,
+    'responder_id' => null,
 ]);
 
 $factory('Judge\Models\Problem', 'problem', [
