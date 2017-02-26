@@ -80,6 +80,19 @@ class DbMessageControllerTest extends DbTestCase
         $this->assertEquals($judge->id, $message->sender_id);
     }
 
+    public function testStoreWithMissingText()
+    {
+        Factory::create('contest');
+
+        $judge = Factory::create('judge');
+        Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($judge);
+
+        $this->action('POST', 'Judge\Controllers\MessageController@store');
+
+        $this->assertCount(0, Message::all());
+        $this->assertTrue(Session::has('flash_notification.message'));
+    }
+
     public function testUpdate()
     {
         $judge = Factory::create('judge');
