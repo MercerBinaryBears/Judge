@@ -80,6 +80,19 @@ class DbMessageControllerTest extends DbTestCase
         $this->assertEquals($judge->id, $message->sender_id);
     }
 
+    public function testStoreWithMissingText()
+    {
+        Factory::create('contest');
+
+        $judge = Factory::create('judge');
+        Auth::shouldReceive('user')->zeroOrMoreTimes()->andReturn($judge);
+
+        $this->action('POST', 'Judge\Controllers\MessageController@store');
+
+        $this->assertCount(0, Message::all());
+        $this->assertTrue(Session::has('flash_notification.message'));
+    }
+
     public function testUpdate()
     {
         $judge = Factory::create('judge');
@@ -95,5 +108,22 @@ class DbMessageControllerTest extends DbTestCase
         $this->assertEquals($judge->id, $message->responder_id);
         $this->assertEquals('RESPONSE', $message->response_text);
         $this->assertNotEquals('DONT UPDATE', $message->text);
+    }
+
+    public function testUpdateWithoutMessage()
+    {
+        $judge = Factory::create('judge');
+        $message = Factory::create('message', ['responder_id' => null, 'response_text' => null]);
+        
+        $this->action('POST', 'Judge\Controllers\MessageController@update', [$message->id], [
+            'responder_id' => $judge->id,
+            'response_text' => ''
+        ]);
+        
+        $this->assertTrue(Session::has('flash_notification.message'));
+
+        $message = Message::first();
+        $this->assertEquals(null, $message->responder_id);
+        $this->assertEquals(null, $message->response_text);
     }
 }

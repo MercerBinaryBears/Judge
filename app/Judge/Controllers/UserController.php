@@ -17,6 +17,7 @@ class UserController extends BaseController
             return Redirect::route('index');
         }
 
+        \Flash::error('Incorrect username or password');
         return Redirect::to('login')->withInput(Input::except('password'));
     }
 

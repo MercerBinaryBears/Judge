@@ -17,7 +17,7 @@
                 </div>
                 <div class='col-md-11'>
                     <h1 class="text-center">{{ $contest_name }}</h1>
-                    {{ HTML::flash() }}
+                    @include('partials.flash')
                     @section('content')
                     @show
                     @if(file_exists(base_path('VERSION')))
