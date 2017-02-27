@@ -2,6 +2,8 @@
 
 use Carbon\Carbon;
 
+use Judge\Cache\CacheWrapper;
+
 use Judge\Models\Contest;
 use Judge\Models\ContestSummary;
 use Judge\Models\ContestSummaryCollection;
@@ -23,11 +25,10 @@ class ContestSummaryFactory
         SolutionRepository $solutions,
         SolutionStateRepository $solution_states
     ) {
-            
-        $this->contests = $contests;
-        $this->problems = $problems;
-        $this->solutions = $solutions;
-        $this->solution_states = $solution_states;
+        $this->contests = new CacheWrapper($contests, 1);
+        $this->problems = new CacheWrapper($problems, 1);
+        $this->solutions = new CacheWrapper($solutions, 1);
+        $this->solution_states = new CacheWrapper($solution_states, 10);
     }
 
     public function make(Contest $contest)
