@@ -45,6 +45,9 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Frozennode\Administrator\AdministratorServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
+
+        // For debug only
+        'Barryvdh\Debugbar\ServiceProvider',
 	),
 
 	'manifest' => storage_path().'/meta',
