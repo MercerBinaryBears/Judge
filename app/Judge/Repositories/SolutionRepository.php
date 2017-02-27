@@ -33,8 +33,13 @@ class SolutionRepository
             $c = $this->contests->firstCurrent();
         }
 
+        $contest_id = -1;
+        if ($c != null) {
+            $contest_id = $c->id;
+        }
+
         return Solution::join('problems', 'problems.id', '=', 'solutions.problem_id')
-            ->where('problems.contest_id', '=', $c->id)
+            ->where('problems.contest_id', '=', $contest_id)
             ->whereSolutionStateId($this->solution_states->firstPendingId())
             ->whereClaimingJudgeId(null)
             ->select('solutions.*')
