@@ -16,6 +16,7 @@ class ProblemRepository
         if ($c == null) {
             $c = $this->contests->firstCurrent();
         }
-        return Problem::whereContestId($c->id)->get();
+
+        return Problem::with('contest')->whereContestId($c->id)->get();
     }
 }

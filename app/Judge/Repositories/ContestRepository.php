@@ -19,7 +19,7 @@ class ContestRepository
         if ($c == null) {
             return Collection::make([]);
         }
-        return $c->problems;
+        return $c->problems()->with('contest')->get();
     }
 
     public function teamsForContest(Contest $c = null)
