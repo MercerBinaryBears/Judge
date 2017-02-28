@@ -53,15 +53,11 @@ class SolutionRepository
             $c = $this->contests->firstCurrent();
         }
 
-        $problems = $this->contests->problemsForContest();
-
-        if ($problems->count() < 1) {
-            return Collection::make(array());
-        }
-
-        return Solution::whereIn('problem_id', $problems->lists('id'))
+        return Solution::join('problems', 'problem_id', '=', 'problems.id')
+            ->where('problems.contest_id', '=', $c->id)
             ->whereClaimingJudgeId($u->id)
             ->orderBy('created_at', 'DESC')
+            ->select('solutions.*')
             ->get();
     }
 
@@ -71,15 +67,11 @@ class SolutionRepository
             $c = $this->contests->firstCurrent();
         }
 
-        $problems = $this->contests->problemsForContest();
-
-        if ($problems->count() < 1) {
-            return Collection::make(array());
-        }
-
-        return Solution::whereIn('problem_id', $problems->lists('id'))
+        return Solution::join('problems', 'problem_id', '=', 'problems.id')
+            ->where('problems.contest_id', '=', $c->id)
             ->whereUserId($u->id)
             ->orderBy('created_at', 'ASC')
+            ->select('solutions.*')
             ->get();
     }
 
