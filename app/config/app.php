@@ -45,6 +45,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Frozennode\Administrator\AdministratorServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
+        'Judge\ServiceProvider',
 
         // For debug only
         'Barryvdh\Debugbar\ServiceProvider',
