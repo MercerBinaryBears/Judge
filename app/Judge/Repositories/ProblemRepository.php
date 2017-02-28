@@ -17,6 +17,6 @@ class ProblemRepository
             $c = $this->contests->firstCurrent();
         }
 
-        return Problem::with('contest')->whereContestId($c->id)->get();
+        return $c->problems;
     }
 }

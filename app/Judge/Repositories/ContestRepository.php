@@ -32,7 +32,8 @@ class ContestRepository
 
     public function currentContests()
     {
-        return Contest::where('starts_at', '<=', Carbon::now()->format('Y-m-d H:i:s'))
+        return Contest::with('problems')
+            ->where('starts_at', '<=', Carbon::now()->format('Y-m-d H:i:s'))
             ->orderBy('starts_at', 'desc')->get();
     }
     
