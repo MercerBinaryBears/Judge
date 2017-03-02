@@ -56,7 +56,7 @@ class ContestSummaryFactory
 
         foreach ($contest->problems as $problem) {
             $problem_info = array();
-            $problem_info['points_for_problem'] = $this->pointsForProblem($problem, $user);
+            $problem_info['points_for_problem'] = $this->pointsForProblem($problem, $user, $contest);
             $problem_info['num_submissions'] =
                 $this->solutions->incorrectSubmissionCountFromUserFromProblem($user, $problem)
                 + $this->solutions->hasCorrectSolutionFromUser($user, $problem);
@@ -99,7 +99,7 @@ class ContestSummaryFactory
         $problems = $this->problems->forContest($contest);
         $points = 0;
         foreach ($problems as $problem) {
-            $points += $this->pointsForProblem($problem, $user);
+            $points += $this->pointsForProblem($problem, $user, $contest);
         }
         return $points;
     }
@@ -112,8 +112,12 @@ class ContestSummaryFactory
      * @param problem $problem the problem to score
      * @return int the number of points
      */
-    public function pointsForProblem(Problem $problem, User $user)
+    public function pointsForProblem(Problem $problem, User $user, Contest $contest = null)
     {
+        if ($contest == null) {
+            $contest = $problem->contest;
+        }
+
         // if they didn't solve it, return 0
         if (! $this->solutions->hasCorrectSolutionFromUser($user, $problem)) {
             return 0;
@@ -123,7 +127,7 @@ class ContestSummaryFactory
 
         $earliest_solution = $this->solutions->earliestCorrectSolutionFromUserForProblem($user, $problem);
 
-        $minutes_since_contest = $earliest_solution->created_at->diffInMinutes($problem->contest->starts_at);
+        $minutes_since_contest = $earliest_solution->created_at->diffInMinutes($contest->starts_at);
         
         return $incorrect_count * 20 + $minutes_since_contest;
     }
