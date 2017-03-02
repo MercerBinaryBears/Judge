@@ -15,5 +15,15 @@ class ServiceProvider extends LaravelServiceProvider
         $this->app->singleton('Judge\Repositories\ProblemRepository', function () use ($problem_repository) {
             return $problem_repository;
         });
+
+        $solution_state_repository = new \Judge\Repositories\SolutionStateRepository();
+        $this->app->singleton('Judge\Repositories\SolutionStateRepository', function () use ($solution_state_repository) {
+            return $solution_state_repository;
+        });
+
+        $solution_repository = new \Judge\Repositories\SolutionRepository($contest_repository, $problem_repository, $solution_state_repository);
+        $this->app->singleton('Judge\Repositories\SolutionRepository', function () use ($solution_repository) {
+            return $solution_repository;
+        });
     }
 }
