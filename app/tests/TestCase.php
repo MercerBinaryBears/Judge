@@ -1,6 +1,5 @@
 <?php
 
-use \Mockery;
 use Illuminate\Database\Eloquent\Collection as Collection;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {

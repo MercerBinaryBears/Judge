@@ -1,6 +1,5 @@
 <?php
 
-use \Mockery;
 use Judge\Models\Message;
 
 class MessageTest extends TestCase
