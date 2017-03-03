@@ -59,9 +59,9 @@ class CacheWrapper
      */
     protected function serializeArgument($argument)
     {
-        if ($argument instanceof Judge\Models\Base) {
+        if ($argument instanceof \Judge\Models\Base) {
             return get_class($argument) . '_' . $argument->id;
-        } elseif ($argument instanceof Carbon\Carbon) {
+        } elseif ($argument instanceof \Carbon\Carbon) {
             return $argument->timestamp;
         } else {
             return serialize($argument);
