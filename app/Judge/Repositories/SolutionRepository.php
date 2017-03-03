@@ -32,15 +32,17 @@ class SolutionRepository
         if ($c == null) {
             $c = $this->contests->firstCurrent();
         }
-        $problems = $this->contests->problemsForContest($c);
 
-        if ($problems->count() < 1) {
-            return Collection::make(array());
+        $contest_id = -1;
+        if ($c != null) {
+            $contest_id = $c->id;
         }
 
-        return Solution::whereIn('problem_id', $problems->lists('id'))
+        return Solution::join('problems', 'problems.id', '=', 'solutions.problem_id')
+            ->where('problems.contest_id', '=', $contest_id)
             ->whereSolutionStateId($this->solution_states->firstPendingId())
             ->whereClaimingJudgeId(null)
+            ->select('solutions.*')
             ->orderBy('created_at', 'ASC')
             ->get();
     }
@@ -51,15 +53,11 @@ class SolutionRepository
             $c = $this->contests->firstCurrent();
         }
 
-        $problems = $this->contests->problemsForContest();
-
-        if ($problems->count() < 1) {
-            return Collection::make(array());
-        }
-
-        return Solution::whereIn('problem_id', $problems->lists('id'))
+        return Solution::join('problems', 'problem_id', '=', 'problems.id')
+            ->where('problems.contest_id', '=', $c->id)
             ->whereClaimingJudgeId($u->id)
             ->orderBy('created_at', 'DESC')
+            ->select('solutions.*')
             ->get();
     }
 
@@ -69,47 +67,39 @@ class SolutionRepository
             $c = $this->contests->firstCurrent();
         }
 
-        $problems = $this->contests->problemsForContest();
-
-        if ($problems->count() < 1) {
-            return Collection::make(array());
-        }
-
-        return Solution::whereIn('problem_id', $problems->lists('id'))
+        return Solution::join('problems', 'problem_id', '=', 'problems.id')
+            ->where('problems.contest_id', '=', $c->id)
             ->whereUserId($u->id)
             ->orderBy('created_at', 'ASC')
+            ->select('solutions.*')
             ->get();
     }
 
     public function hasCorrectSolutionFromUser(User $user, Problem $problem)
     {
-        $solved_solution_state = SolutionState::whereIsCorrect(true)->firstOrFail()->id;
-
-        return Solution::whereUserId($user->id)
+        return Solution::join('solution_states', 'solution_state_id', '=', 'solution_states.id')
+            ->whereUserId($user->id)
             ->whereProblemId($problem->id)
-            ->whereSolutionStateId($solved_solution_state)
+            ->where('solution_states.is_correct', '=', true)
             ->count() > 0;
     }
 
     public function incorrectSubmissionCountFromUserFromProblem(User $user, Problem $problem)
     {
-        $non_incorrect_ids = SolutionState::where('is_correct', true)
-            ->orWhere('pending', true)
-            ->lists('id');
-
-        return Solution::whereUserId($user->id)
+        return Solution::join('solution_states', 'solution_state_id', '=', 'solution_states.id')
+            ->whereUserId($user->id)
             ->whereProblemId($problem->id)
-            ->whereNotIn('solution_state_id', $non_incorrect_ids)
+            ->where('solution_states.pending', '=', false)
+            ->where('solution_states.is_correct', '=', false)
             ->count();
     }
 
     public function earliestCorrectSolutionFromUserForProblem(User $user, Problem $problem)
     {
-        $solved_solution_state = SolutionState::whereIsCorrect(true)->firstOrFail()->id;
-
-        return Solution::whereUserId($user->id)
+        return Solution::join('solution_states', 'solution_state_id', '=', 'solution_states.id')
+            ->whereUserId($user->id)
             ->whereProblemId($problem->id)
-            ->whereSolutionStateId($solved_solution_state)
+            ->where('solution_states.is_correct', '=', true)
             ->orderBy('created_at')
             ->first();
     }

@@ -77,24 +77,6 @@ class Solution extends Base
     }
 
     /**
-     * Gets the solutions for the current contest
-     */
-    public function scopeForCurrentContest($query)
-    {
-        $problem_ids = Problem::forCurrentContest()->lists('problems.id');
-        return $query->whereIn('problem_id', $problem_ids)->orderBy('created_at');
-    }
-
-    /**
-     * Gets the unjudged problems for this contest
-     */
-    public function scopeUnjudged($query)
-    {
-        $unjudged_state = SolutionState::pending();
-        return $query->where('solution_state_id', $unjudged_state->id);
-    }
-
-    /**
      * Gets the unclaimed problems for this contest
      */
     public function scopeUnclaimed($query)

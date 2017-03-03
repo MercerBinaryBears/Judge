@@ -14,7 +14,8 @@
 		"mockery/mockery": "0.9.*",
 		"squizlabs/php_codesniffer": "2.1.*",
 		"satooshi/php-coveralls": "dev-master",
-		"laracasts/testdummy": "2.3.*"
+		"laracasts/testdummy": "2.3.*",
+		"barryvdh/laravel-debugbar": "1.8"
 	},
 	"autoload": {
 		"classmap": [

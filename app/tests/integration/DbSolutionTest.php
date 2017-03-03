@@ -33,35 +33,6 @@ class DbSolutionTest extends DbTestCase
         ]);
     }
 
-    public function testScopeForCurrentContestWithMatch()
-    {
-        $this->stubSolution();
-        $this->assertEquals(1, Solution::forCurrentContest()->count());
-    }
-
-    public function testScopeForCurrentContestWithNoProblems()
-    {
-        $this->assertEquals(0, Solution::forCurrentContest()->count());
-    }
-
-    public function testScopeUnjudged()
-    {
-        $solution = $this->stubSolution();
-        $solution->solution_state_id = SolutionState::pending()->id;
-        $solution->save();
-
-        $this->assertEquals(1, Solution::unjudged()->count());
-    }
-
-    public function testScopeUnjudgedWithNonPending()
-    {
-        $solution = $this->stubSolution();
-        $solution->solution_state_id = SolutionState::first()->id;
-        $solution->save();
-
-        $this->assertEquals(0, Solution::unjudged()->count());
-    }
-
     public function testScopeUnclaimed()
     {
         $solution = $this->stubSolution();

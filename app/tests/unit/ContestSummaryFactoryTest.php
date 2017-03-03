@@ -64,9 +64,12 @@ class ContestSummaryFactoryTest extends DbTestCase
         $this->solutions->shouldReceive('incorrectSubmissionCountFromUserFromProblem')->once()->andReturn(1);
         $this->solutions->shouldReceive('hasCorrectSolutionFromUser')->once()->andReturn(1);
 
+        $problem = Mockery::mock('Judge\Models\Problem');
+        $problem->shouldReceive('getAttribute')->twice()->with('id')->andReturn(2);
         $contest = Mockery::mock('Judge\Models\Contest');
-        $contest->shouldReceive('getAttribute')->once()->with('problems')->andReturn([Mockery::mock('Judge\Models\Problem')]);
+        $contest->shouldReceive('getAttribute')->once()->with('problems')->andReturn([$problem]);
         $user = Mockery::mock('Judge\Models\User');
+        $user->shouldReceive('getAttribute')->twice()->with('id')->andReturn(1);
 
         $result = $this->factory->makeForTeam($contest, $user);
 

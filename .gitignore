@@ -55,3 +55,4 @@ cache.properties
 # Package files to ignore
 /public/packages/
 site.tgz
+app/storage/debugbar
