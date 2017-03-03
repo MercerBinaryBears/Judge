@@ -77,15 +77,6 @@ class Solution extends Base
     }
 
     /**
-     * Gets the unjudged problems for this contest
-     */
-    public function scopeUnjudged($query)
-    {
-        $unjudged_state = SolutionState::pending();
-        return $query->where('solution_state_id', $unjudged_state->id);
-    }
-
-    /**
      * Gets the unclaimed problems for this contest
      */
     public function scopeUnclaimed($query)

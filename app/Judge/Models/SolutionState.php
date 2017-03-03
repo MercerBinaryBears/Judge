@@ -19,11 +19,6 @@ class SolutionState extends Base
         return $this->hasMany('Judge\Models\Solution');
     }
 
-    public static function pending()
-    {
-        return static::where('pending', true)->firstOrFail();
-    }
-
     public function getBootstrapColorAttribute()
     {
         if ($this->pending) {
